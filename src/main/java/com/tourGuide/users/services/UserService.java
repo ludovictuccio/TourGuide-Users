@@ -25,14 +25,14 @@ import gpsUtil.location.VisitedLocation;
 import tripPricer.TripPricer;
 
 @Service
-public class UserService {
+public class UserService implements IUserService {
 
     private Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final GpsUtil gpsUtil;
 //    private final RewardsService rewardsService;
     private final TripPricer tripPricer = new TripPricer();
-    public Tracker tracker;
+    public final Tracker tracker;
     boolean testMode = true;
 
     public UserService(GpsUtil gpsUtil
@@ -51,11 +51,35 @@ public class UserService {
         addShutDownHook();
     }
 
-//    public List<UserReward> getUserRewards(User user) {
-//        return user.getUserRewards();
-//    }
+    /**
+     * Method service used to retrieve the last user visited location.
+     *
+     * @param user
+     * @return visitedLocation
+     */
+    public VisitedLocation getUserLocation(final User user) {
+        VisitedLocation visitedLocation = (user.getVisitedLocations()
+                .size() > 0) ? user.getLastVisitedLocation()
+                        : trackUserLocation(user);
+        return visitedLocation;
+    }
 
-    public User getUser(String userName) {
+    /**
+     * Method service used when no location already exist for an user. This
+     * method will search localisation and add it in user visited locations.
+     *
+     * @param user
+     * @return visitedLocation
+     */
+    public VisitedLocation trackUserLocation(final User user) {
+        VisitedLocation visitedLocation = gpsUtil
+                .getUserLocation(user.getUserId());
+        user.addToVisitedLocations(visitedLocation);
+        // rewardsService.calculateRewards(user);
+        return visitedLocation;
+    }
+
+    public User getUser(final String userName) {
         return internalUserMap.get(userName);
     }
 
@@ -63,7 +87,7 @@ public class UserService {
         return internalUserMap.values().stream().collect(Collectors.toList());
     }
 
-    public void addUser(User user) {
+    public void addUser(final User user) {
         if (!internalUserMap.containsKey(user.getUserName())) {
             internalUserMap.put(user.getUserName(), user);
         }
@@ -81,13 +105,6 @@ public class UserService {
 //        return providers;
 //    }
 
-    public VisitedLocation trackUserLocation(User user) {
-        VisitedLocation visitedLocation = gpsUtil
-                .getUserLocation(user.getUserId());
-        user.addToVisitedLocations(visitedLocation);
-        // rewardsService.calculateRewards(user);
-        return visitedLocation;
-    }
 //
 //    public List<Attraction> getNearByAttractions(
 //            VisitedLocation visitedLocation) {
