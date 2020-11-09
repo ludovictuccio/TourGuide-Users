@@ -79,18 +79,39 @@ public class UserService implements IUserService {
         return visitedLocation;
     }
 
-    public User getUser(final String userName) {
-        return internalUserMap.get(userName);
+    /**
+     * Method service used to add a new user, if userName not already exists and
+     * not empty.
+     *
+     * @param user
+     */
+    public boolean addUser(final User user) {
+        boolean isAdded = false;
+        if (!internalUserMap.containsKey(user.getUserName())
+                && !user.getUserName().isBlank()) {
+            user.setUserId(UUID.randomUUID());
+            internalUserMap.put(user.getUserName(), user);
+            isAdded = true;
+        }
+        return isAdded;
+    }
+
+    /**
+     * Method service used to return all userNames list.
+     *
+     * @return all userNames list
+     */
+    public List<String> getAllUsernames() {
+        return internalUserMap.values().stream().map(u -> u.getUserName())
+                .collect(Collectors.toList());
     }
 
     public List<User> getAllUsers() {
         return internalUserMap.values().stream().collect(Collectors.toList());
     }
 
-    public void addUser(final User user) {
-        if (!internalUserMap.containsKey(user.getUserName())) {
-            internalUserMap.put(user.getUserName(), user);
-        }
+    public User getUser(final String userName) {
+        return internalUserMap.get(userName);
     }
 
 //    public List<Provider> getTripDeals(User user) {

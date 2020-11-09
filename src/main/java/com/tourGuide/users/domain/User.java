@@ -7,16 +7,19 @@ import java.util.UUID;
 
 import gpsUtil.location.VisitedLocation;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tripPricer.Provider;
 
+@NoArgsConstructor
 public class User {
 
     @Getter
-    private final UUID userId;
+    @Setter
+    private UUID userId;
 
     @Getter
-    private final String userName;
+    private String userName;
 
     @Getter
     @Setter
@@ -43,6 +46,12 @@ public class User {
     public User(UUID userId, String userName, String phoneNumber,
             String emailAddress) {
         this.userId = userId;
+        this.userName = userName;
+        this.phoneNumber = phoneNumber;
+        this.emailAddress = emailAddress;
+    }
+
+    public User(String userName, String phoneNumber, String emailAddress) {
         this.userName = userName;
         this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;

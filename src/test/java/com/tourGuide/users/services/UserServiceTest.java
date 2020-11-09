@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -126,45 +127,102 @@ public class UserServiceTest {
         assertThat(result.userId).isEqualTo(user.getUserId());
     }
 
-//    @Test
-//    @DisplayName("Add User")
-//    public void addUser() {
-//        // GIVEN
-//        user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
-//        user2 = new User(UUID.randomUUID(), "jon2", "000",
-//                "jon2@tourGuide.com");
-//
-//        userService.addUser(user);
-//        userService.addUser(user2);
-//
-//        // WHEN
-//        User retrivedUser = userService.getUser(user.getUserName());
-//        User retrivedUser2 = userService.getUser(user2.getUserName());
-//        userService.tracker.stopTracking();
-//
-//        // THEN
-//        assertThat(user).isEqualTo(retrivedUser);
-//        assertThat(user2).isEqualTo(retrivedUser2);
-//    }
-//
-//    @Test
-//    @DisplayName("Get All Users")
-//    public void getAllUsers() {
-//        // GIVEN
-//        user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
-//        user2 = new User(UUID.randomUUID(), "jon2", "000",
-//                "jon2@tourGuide.com");
-//        userService.addUser(user);
-//        userService.addUser(user2);
-//
-//        // WHEN
-//        List<User> allUsers = userService.getAllUsers();
-//        userService.tracker.stopTracking();
-//
-//        // THEN
-//        assertThat(allUsers.contains(user)).isTrue();
-//        assertThat(allUsers.contains(user2)).isTrue();
-//    }
+    @Test
+    @Tag("addUser_getAllUsernames")
+    @DisplayName("getAllUsernames")
+    public void givenTwoUser_whenGetAllUsernames_thenReturnTwo() {
+        // GIVEN
+        userService = new UserService(gpsUtil);
+
+        user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+        user2 = new User(UUID.randomUUID(), "jon2", "000",
+                "jon2@tourGuide.com");
+        userService.addUser(user);
+        userService.addUser(user2);
+
+        // WHEN
+        List<String> allUsers = userService.getAllUsernames();
+        userService.tracker.stopTracking();
+
+        // THEN
+        assertThat(allUsers.size()).isEqualTo(2);
+        assertThat(allUsers.contains(user.getUserName())).isTrue();
+        assertThat(allUsers.contains(user2.getUserName())).isTrue();
+    }
+
+    @Test
+    @Tag("addUser")
+    @DisplayName("Add User - Ok - Different username")
+    public void giwenTwoUsers_whenAddNewUserWithDifferentUsername_thenReturnAdded() {
+        // GIVEN
+        userService = new UserService(gpsUtil);
+
+        user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+        user2 = new User(UUID.randomUUID(), "jon2", "000",
+                "jon2@tourGuide.com");
+        userService.addUser(user);
+        userService.addUser(user2);
+
+        // WHEN
+        boolean result = userService.addUser(new User(UUID.randomUUID(),
+                "newUser", "123456789", "email@email.com"));
+        userService.tracker.stopTracking();
+
+        List<String> allUsers = userService.getAllUsernames();
+
+        // THEN
+        assertThat(result).isTrue();
+        assertThat(allUsers.size()).isEqualTo(3);
+    }
+
+    @Test
+    @Tag("addUser")
+    @DisplayName("Add User - Already existing username")
+    public void giwenTwoUsers_whenAddNewUserWithExistingUsername_thenReturnNotAdded() {
+        // GIVEN
+        userService = new UserService(gpsUtil);
+
+        user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+        user2 = new User(UUID.randomUUID(), "jon2", "000",
+                "jon2@tourGuide.com");
+        userService.addUser(user);
+        userService.addUser(user2);
+
+        // WHEN
+        boolean result = userService.addUser(user);
+        userService.tracker.stopTracking();
+
+        List<String> allUsers = userService.getAllUsernames();
+
+        // THEN
+        assertThat(result).isFalse();
+        assertThat(allUsers.size()).isEqualTo(2);
+    }
+
+    @Test
+    @Tag("addUser")
+    @DisplayName("Add User - Empty username")
+    public void giwenTwoUsers_whenAddNewUserWithEmptyUsername_thenReturnNotAdded() {
+        // GIVEN
+        userService = new UserService(gpsUtil);
+
+        user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+        user2 = new User(UUID.randomUUID(), "jon2", "000",
+                "jon2@tourGuide.com");
+        userService.addUser(user);
+        userService.addUser(user2);
+
+        // WHEN
+        boolean result = userService.addUser(new User(UUID.randomUUID(), "",
+                "123456789", "email@email.com"));
+        userService.tracker.stopTracking();
+
+        List<String> allUsers = userService.getAllUsernames();
+
+        // THEN
+        assertThat(result).isFalse();
+        assertThat(allUsers.size()).isEqualTo(2);
+    }
 
 //    @Test // Not yet implemented
 //    @DisplayName("Get Near by Attractions")
@@ -180,7 +238,6 @@ public class UserServiceTest {
 //        // THEN
 //        assertThat(attractions.size()).isEqualTo(5);
 //    }
-
 //    @Test
 //    @DisplayName("Get Trip Deals")
 //    public void getTripDeals() {

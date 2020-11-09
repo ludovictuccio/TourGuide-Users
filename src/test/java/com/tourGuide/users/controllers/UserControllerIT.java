@@ -43,7 +43,9 @@ public class UserControllerIT {
     @Autowired
     private GpsUtil gpsUtil;
 
+    private static final String URI_POST_ADD_USER = "/user";
     private static final String URI_GET_LOCATION = "/user/getLocation";
+    private static final String URI_GET_ALL_USERNAMES = "/user/getAllUsernames";
 
     private static final String USER_TEST_1 = "internalUser1";
 
@@ -82,5 +84,78 @@ public class UserControllerIT {
                 .andExpect(status().isNotFound())
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isNotFound()).andReturn();
+    }
+
+    @Test
+    @Tag("AddUser")
+    @DisplayName("Add User - OK - Valid username")
+    public void givenValidUsername_whenAddUser_thenReturnOk() throws Exception {
+
+        String jsonContent = "{\"userName\":\"usertest\", \"phoneNumber\":\"123456789\",\"emailAddress\": \"email@email.com\"}";
+
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.post(URI_POST_ADD_USER)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonContent))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    @Tag("AddUser")
+    @DisplayName("Add User - Error - Already existing username username")
+    public void givenInvalidUsername_whenAddUser_thenReturnBadRequest()
+            throws Exception {
+
+        String jsonContent = "{\"userName\":\"usernameTest\", \"phoneNumber\":\"123456789\",\"emailAddress\": \"email@email.com\"}";
+
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.post(URI_POST_ADD_USER)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonContent))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk()).andReturn();
+
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.post(URI_POST_ADD_USER)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonContent))
+                .andExpect(status().isBadRequest())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    @Tag("getAllUsernames")
+    @DisplayName("Get All usernames - Ok - Empty list")
+    public void givenEmptyList_whenGetAllUsernames_thenReturnOk()
+            throws Exception {
+
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get(URI_GET_ALL_USERNAMES)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    @Tag("getAllUsernames")
+    @DisplayName("Get All usernames - Ok - 1 user")
+    public void givenOneUser_whenGetAllUsernames_thenReturnOk()
+            throws Exception {
+
+        String jsonContent = "{\"userName\":\"usernameTest\", \"phoneNumber\":\"123456789\",\"emailAddress\": \"email@email.com\"}";
+
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.post(URI_POST_ADD_USER)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonContent))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk()).andReturn();
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get(URI_GET_ALL_USERNAMES)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk()).andReturn();
     }
 }
