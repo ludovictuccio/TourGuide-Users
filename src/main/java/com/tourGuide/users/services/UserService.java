@@ -2,6 +2,7 @@ package com.tourGuide.users.services;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +64,23 @@ public class UserService implements IUserService {
                 .size() > 0) ? user.getLastVisitedLocation()
                         : trackUserLocation(user);
         return visitedLocation;
+    }
+
+    /**
+     * Method service used to retrieve all the last users visited locations.
+     *
+     * @param an user list
+     * @return allUsersLocations, a VisitedLocation list
+     */
+    public List<VisitedLocation> getAllUsersLocations() {
+        List<User> allUsers = getAllUsers();
+        List<VisitedLocation> allUsersLocations = new ArrayList<>();
+
+        for (User user : allUsers) {
+            VisitedLocation visitedLocation = getUserLocation(user);
+            allUsersLocations.add(visitedLocation);
+        }
+        return allUsersLocations;
     }
 
     /**

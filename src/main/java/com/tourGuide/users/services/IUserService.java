@@ -11,6 +11,8 @@ public interface IUserService {
 
     VisitedLocation getUserLocation(final User user);
 
+    List<VisitedLocation> getAllUsersLocations();
+
     User getUser(final String userName);
 
     boolean addUser(final User user);

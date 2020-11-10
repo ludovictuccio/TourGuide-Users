@@ -41,6 +41,7 @@ public class UserControllerIT {
 
     private static final String URI_POST_ADD_USER = "/user";
     private static final String URI_GET_LOCATION = "/user/getLocation";
+    private static final String URI_GET_ALL_LOCATION = "/user/getAllUsersLocations";
     private static final String URI_GET_ALL_USERNAMES = "/user/getAllUsernames";
     private static final String URI_GET_USER = "/user/getUser";
     private static final String URI_UPDATE_PREFERENCES = "/user/updatePreferences";
@@ -116,6 +117,17 @@ public class UserControllerIT {
                 .andExpect(status().isNotFound())
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isNotFound()).andReturn();
+    }
+
+    @Test
+    @Tag("GetAllUsersLocations")
+    @DisplayName("Get All UsersLocation- OK")
+    public void givenUsers_whenGetAllLocations_thenReturnOk() throws Exception {
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get(URI_GET_ALL_LOCATION)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk()).andReturn();
     }
 
     @Test

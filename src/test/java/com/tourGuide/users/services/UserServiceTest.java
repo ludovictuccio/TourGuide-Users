@@ -41,9 +41,10 @@ public class UserServiceTest {
     private User user;
     private User user2;
 
+    private static final int USERS_TEST_NUMBER = 100;
+
     @BeforeEach
     public void setUpPerTest() {
-        // gpsUtil = new GpsUtil();
         userService = new UserService(gpsUtil);
         // rewardsService = new RewardsService(gpsUtil, new RewardCentral());
         InternalTestHelper.setInternalUserNumber(0);
@@ -311,6 +312,35 @@ public class UserServiceTest {
         assertThat(user.getUserPreferences().getNumberOfAdults()).isEqualTo(1);
         assertThat(user.getUserPreferences().getNumberOfChildren())
                 .isEqualTo(0);
+    }
+
+    @Test
+    @Tag("getAllUsersLocations")
+    @DisplayName("All Users Locations - Ok")
+    public void givenTwoUsers_whenGetAllLocations_thenReturnAllLocationsValues() {
+        // GIVEN
+        Location location = new Location(
+                ThreadLocalRandom.current().nextDouble(-85.05112878D,
+                        85.05112878D),
+                ThreadLocalRandom.current().nextDouble(-180.0D, 180.0D));
+
+        user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+        user2 = new User(UUID.randomUUID(), "jon2", "222",
+                "jon2@tourGuide.com");
+        userService.addUser(user);
+        userService.addUser(user2);
+        user.addToVisitedLocations(
+                new VisitedLocation(user.getUserId(), location, new Date()));
+        user2.addToVisitedLocations(
+                new VisitedLocation(user.getUserId(), location, new Date()));
+
+        // WHEN
+        List<VisitedLocation> result = userService.getAllUsersLocations();
+        userService.tracker.stopTracking();
+
+        // THEN
+        assertThat(result).isNotNull();
+        assertThat(result.size()).isEqualTo(2);
     }
 
 //    @Test // Not yet implemented

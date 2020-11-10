@@ -51,6 +51,17 @@ public class UserController {
     }
 
     /**
+     * Controller method use to return all the last users locations saved (the
+     * last visited location saved in the history).
+     *
+     * @return all users locations
+     */
+    @GetMapping("/getAllUsersLocations")
+    public List<VisitedLocation> getAllUsersLocations() {
+        return userService.getAllUsersLocations();
+    }
+
+    /**
      * Controller method used to add a new user.
      *
      * @param user
