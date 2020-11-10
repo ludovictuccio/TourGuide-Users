@@ -46,6 +46,7 @@ public class UserControllerIT {
     private static final String URI_POST_ADD_USER = "/user";
     private static final String URI_GET_LOCATION = "/user/getLocation";
     private static final String URI_GET_ALL_USERNAMES = "/user/getAllUsernames";
+    private static final String URI_GET_USER = "/user/getUser";
 
     private static final String USER_TEST_1 = "internalUser1";
 
@@ -158,4 +159,32 @@ public class UserControllerIT {
                 .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk()).andReturn();
     }
+
+    @Test
+    @Tag("getUser")
+    @DisplayName("Get user - Ok")
+    public void givenUser_whenGetWhithHisUsernam_thenReturnOk()
+            throws Exception {
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get(URI_GET_USER)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("userName", "internalUser1"))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    @Tag("getUser")
+    @DisplayName("Get user - Error 404")
+    public void givenUnknowUsername_whenGetUser_thenReturnNotfound()
+            throws Exception {
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get(URI_GET_USER)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("userName", "jon"))
+                .andExpect(status().isNotFound())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isNotFound()).andReturn();
+    }
+
 }

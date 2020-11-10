@@ -31,7 +31,7 @@ public class UserController {
     }
 
     /**
-     * Controller method use to return the last user location.
+     * Controller method use to return the last saved user location.
      *
      * @param userName
      * @return user location or error 404
@@ -75,6 +75,21 @@ public class UserController {
     public List<String> getAllUsernames() {
         List<String> allUsers = userService.getAllUsernames();
         return allUsers;
+    }
+
+    /**
+     * Controller method used to get an user with his userName.
+     *
+     * @return user
+     */
+    @GetMapping("/getUser")
+    public User getUser(@RequestParam final String userName) {
+        User user = userService.getUser(userName);
+        if (user == null) {
+            throw new ApiRequestException(
+                    "User not found with userName: " + userName);
+        }
+        return user;
     }
 
 }

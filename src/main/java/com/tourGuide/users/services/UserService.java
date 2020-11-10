@@ -106,12 +106,22 @@ public class UserService implements IUserService {
                 .collect(Collectors.toList());
     }
 
-    public List<User> getAllUsers() {
-        return internalUserMap.values().stream().collect(Collectors.toList());
-    }
-
+    /**
+     * Method service used to get an user with his userName.
+     *
+     * @return user
+     */
     public User getUser(final String userName) {
         return internalUserMap.get(userName);
+    }
+
+    /**
+     * Method service used for Tracker to retrieve all users.
+     *
+     * @return all users
+     */
+    public List<User> getAllUsers() {
+        return internalUserMap.values().stream().collect(Collectors.toList());
     }
 
 //    public List<Provider> getTripDeals(User user) {

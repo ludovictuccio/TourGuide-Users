@@ -153,7 +153,7 @@ public class UserServiceTest {
     @Test
     @Tag("addUser")
     @DisplayName("Add User - Ok - Different username")
-    public void giwenTwoUsers_whenAddNewUserWithDifferentUsername_thenReturnAdded() {
+    public void givenTwoUsers_whenAddNewUserWithDifferentUsername_thenReturnAdded() {
         // GIVEN
         userService = new UserService(gpsUtil);
 
@@ -178,7 +178,7 @@ public class UserServiceTest {
     @Test
     @Tag("addUser")
     @DisplayName("Add User - Already existing username")
-    public void giwenTwoUsers_whenAddNewUserWithExistingUsername_thenReturnNotAdded() {
+    public void givenTwoUsers_whenAddNewUserWithExistingUsername_thenReturnNotAdded() {
         // GIVEN
         userService = new UserService(gpsUtil);
 
@@ -202,7 +202,7 @@ public class UserServiceTest {
     @Test
     @Tag("addUser")
     @DisplayName("Add User - Empty username")
-    public void giwenTwoUsers_whenAddNewUserWithEmptyUsername_thenReturnNotAdded() {
+    public void givenTwoUsers_whenAddNewUserWithEmptyUsername_thenReturnNotAdded() {
         // GIVEN
         userService = new UserService(gpsUtil);
 
@@ -222,6 +222,40 @@ public class UserServiceTest {
         // THEN
         assertThat(result).isFalse();
         assertThat(allUsers.size()).isEqualTo(2);
+    }
+
+    @Test
+    @Tag("getUser")
+    @DisplayName("Get User - Ok - Valid username")
+    public void givenOneUser_whenGetWithValidUserName_thenReturnNotNull() {
+        // GIVEN
+        user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+        userService.addUser(user);
+
+        // WHEN
+        User result = userService.getUser("jon");
+        userService.tracker.stopTracking();
+
+        // THEN
+        assertThat(result).isNotNull();
+        assertThat(result.getEmailAddress()).isEqualTo("jon@tourGuide.com");
+        assertThat(result.getPhoneNumber()).isEqualTo("000");
+    }
+
+    @Test
+    @Tag("getUser")
+    @DisplayName("Get User - Error - Invalid username")
+    public void givenOneUser_whenGetWithInvalidUserName_thenReturnNull() {
+        // GIVEN
+        user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+        userService.addUser(user);
+
+        // WHEN
+        User result = userService.getUser("unknow");
+        userService.tracker.stopTracking();
+
+        // THEN
+        assertThat(result).isNull();
     }
 
 //    @Test // Not yet implemented
