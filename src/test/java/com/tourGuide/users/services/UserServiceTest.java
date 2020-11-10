@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.tourGuide.users.domain.User;
+import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.helper.InternalTestHelper;
 
 import gpsUtil.GpsUtil;
@@ -256,6 +257,60 @@ public class UserServiceTest {
 
         // THEN
         assertThat(result).isNull();
+    }
+
+    @Test
+    @Tag("updateUserPreferences")
+    @DisplayName("Update UserPreferences - Ok - Valid username")
+    public void givenUser_whenUpdatePreferences_thenReturnUpdated() {
+        // GIVEN
+        user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+        userService.addUser(user);
+
+        assertThat(user.getUserPreferences().getTripDuration()).isEqualTo(1);
+        assertThat(user.getUserPreferences().getTicketQuantity()).isEqualTo(1);
+        assertThat(user.getUserPreferences().getNumberOfAdults()).isEqualTo(1);
+        assertThat(user.getUserPreferences().getNumberOfChildren())
+                .isEqualTo(0);
+
+        UserPreferences userPreferences = new UserPreferences(3, 7, 2, 5);
+
+        // WHEN
+        boolean result = userService.updateUserPreferences("jon",
+                userPreferences);
+        userService.tracker.stopTracking();
+
+        // THEN
+        assertThat(result).isTrue();
+        assertThat(user.getUserPreferences().getTripDuration()).isEqualTo(3);
+        assertThat(user.getUserPreferences().getTicketQuantity()).isEqualTo(7);
+        assertThat(user.getUserPreferences().getNumberOfAdults()).isEqualTo(2);
+        assertThat(user.getUserPreferences().getNumberOfChildren())
+                .isEqualTo(5);
+    }
+
+    @Test
+    @Tag("updateUserPreferences")
+    @DisplayName("Update UserPreferences - ERROR - Invalid username")
+    public void givenInvalidUsername_whenUpdatePreferences_thenReturnNotUpdated() {
+        // GIVEN
+        user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+        userService.addUser(user);
+
+        UserPreferences userPreferences = new UserPreferences(3, 7, 2, 5);
+
+        // WHEN
+        boolean result = userService.updateUserPreferences("UNKNOW",
+                userPreferences);
+        userService.tracker.stopTracking();
+
+        // THEN
+        assertThat(result).isFalse();
+        assertThat(user.getUserPreferences().getTripDuration()).isEqualTo(1);
+        assertThat(user.getUserPreferences().getTicketQuantity()).isEqualTo(1);
+        assertThat(user.getUserPreferences().getNumberOfAdults()).isEqualTo(1);
+        assertThat(user.getUserPreferences().getNumberOfChildren())
+                .isEqualTo(0);
     }
 
 //    @Test // Not yet implemented

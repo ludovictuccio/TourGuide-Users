@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.tourGuide.users.domain.User;
+import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.helper.InternalTestHelper;
 import com.tourGuide.users.tracker.Tracker;
 
@@ -122,6 +123,23 @@ public class UserService implements IUserService {
      */
     public List<User> getAllUsers() {
         return internalUserMap.values().stream().collect(Collectors.toList());
+    }
+
+    /**
+     * Method service used to update user preferences with userName.
+     *
+     * @return boolean isUpdated
+     */
+    public boolean updateUserPreferences(final String userName,
+            final UserPreferences userPreferences) {
+        boolean isUpdated = true;
+        User user = internalUserMap.get(userName);
+        if (user == null) {
+            isUpdated = false;
+            return isUpdated;
+        }
+        user.setUserPreferences(userPreferences);
+        return isUpdated;
     }
 
 //    public List<Provider> getTripDeals(User user) {

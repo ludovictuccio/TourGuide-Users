@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jsoniter.output.JsonStream;
 import com.tourGuide.users.domain.User;
+import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.services.IUserService;
 import com.tourGuide.users.web.exceptions.ApiRequestException;
 import com.tourGuide.users.web.exceptions.ApiRequestUsernameException;
@@ -90,6 +92,25 @@ public class UserController {
                     "User not found with userName: " + userName);
         }
         return user;
+    }
+
+    /**
+     * Method controller used to update user preferences with userName.
+     *
+     * @return
+     */
+    @PutMapping("/updatePreferences")
+    public String updateUserPreferences(@RequestParam final String userName,
+            @RequestBody final UserPreferences userPreferences) {
+
+        boolean isUpdated = userService.updateUserPreferences(userName,
+                userPreferences);
+
+        if (!isUpdated) {
+            throw new ApiRequestException(
+                    "User not found with userName: " + userName);
+        }
+        return "User preferences updated for user: " + userName;
     }
 
 }

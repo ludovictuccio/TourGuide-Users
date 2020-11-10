@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tourGuide.users.helper.InternalTestHelper;
 import com.tourGuide.users.services.UserService;
 
@@ -35,9 +34,6 @@ public class UserControllerIT {
     private WebApplicationContext wac;
 
     @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
     public UserService userService;
 
     @Autowired
@@ -47,6 +43,7 @@ public class UserControllerIT {
     private static final String URI_GET_LOCATION = "/user/getLocation";
     private static final String URI_GET_ALL_USERNAMES = "/user/getAllUsernames";
     private static final String URI_GET_USER = "/user/getUser";
+    private static final String URI_UPDATE_PREFERENCES = "/user/updatePreferences";
 
     private static final String USER_TEST_1 = "internalUser1";
 
@@ -58,6 +55,40 @@ public class UserControllerIT {
         userService = new UserService(gpsUtil);
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         InternalTestHelper.setInternalUserNumber(2);
+    }
+
+    @Test
+    @Tag("updatePreferences")
+    @DisplayName("Update UserPreferences - Ok")
+    public void givenValidUsername_whenUpdatePreferences_thenReturnOk()
+            throws Exception {
+
+        String jsonContent = "{\"tripDuration\":\"3\",\"ticketQuantity\":\"7\", \"numberOfAdults\": \"2\", \"numberOfChildren\": \"5\"}";
+
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.put(URI_UPDATE_PREFERENCES)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param(PARAM_USERNAME, USER_TEST_1)
+                        .content(jsonContent))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    @Tag("updatePreferences")
+    @DisplayName("Update UserPreferences - Error 404 - invalid username")
+    public void givenInvalidUsername_whenUpdatePreferences_thenReturnNotfound()
+            throws Exception {
+
+        String jsonContent = "{\"tripDuration\":\"3\",\"ticketQuantity\":\"7\", \"numberOfAdults\": \"2\", \"numberOfChildren\": \"5\"}";
+
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.put(URI_UPDATE_PREFERENCES)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param(PARAM_USERNAME, "unknow").content(jsonContent))
+                .andExpect(status().isNotFound())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isNotFound()).andReturn();
     }
 
     @Test

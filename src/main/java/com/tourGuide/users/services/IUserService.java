@@ -3,6 +3,7 @@ package com.tourGuide.users.services;
 import java.util.List;
 
 import com.tourGuide.users.domain.User;
+import com.tourGuide.users.domain.UserPreferences;
 
 import gpsUtil.location.VisitedLocation;
 
@@ -17,5 +18,8 @@ public interface IUserService {
     List<String> getAllUsernames();
 
     List<User> getAllUsers();
+
+    boolean updateUserPreferences(final String userName,
+            final UserPreferences userPreferences);
 
 }
