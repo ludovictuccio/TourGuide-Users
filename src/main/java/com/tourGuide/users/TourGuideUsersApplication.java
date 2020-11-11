@@ -18,4 +18,5 @@ public class TourGuideUsersApplication {
     public GpsUtil getGpsUtil() {
         return new GpsUtil();
     }
+
 }

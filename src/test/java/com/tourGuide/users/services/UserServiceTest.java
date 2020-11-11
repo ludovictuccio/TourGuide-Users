@@ -21,6 +21,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.helper.InternalTestHelper;
+import com.tourGuide.users.repository.InternalUserRepository;
 
 import gpsUtil.GpsUtil;
 import gpsUtil.location.Location;
@@ -38,16 +39,18 @@ public class UserServiceTest {
     @MockBean
     private GpsUtil gpsUtil;
 
+    @MockBean
+    private InternalUserRepository internalUserDao;
+
     private User user;
     private User user2;
-
-    private static final int USERS_TEST_NUMBER = 100;
 
     @BeforeEach
     public void setUpPerTest() {
         userService = new UserService(gpsUtil);
         // rewardsService = new RewardsService(gpsUtil, new RewardCentral());
         InternalTestHelper.setInternalUserNumber(0);
+        // internalUserDao.internalUserMap.clear();
     }
 
     @Test
