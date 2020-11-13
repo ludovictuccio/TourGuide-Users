@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import gpsUtil.location.VisitedLocation;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,7 +38,7 @@ public class User {
 
     private List<VisitedLocation> visitedLocations = new ArrayList<>();
 
-    private List<UserReward> userRewards = new ArrayList<>();
+    // private List<UserReward> userRewards = new ArrayList<>();
 
     private UserPreferences userPreferences = new UserPreferences();
 
@@ -69,18 +68,18 @@ public class User {
         visitedLocations.clear();
     }
 
-    public void addUserReward(UserReward userReward) {
-        if (userRewards.stream()
-                .filter(r -> !r.attraction.attractionName.toString()
-                        .equals(userReward.attraction.toString()))
-                .count() == 0) {
-            userRewards.add(userReward);
-        }
-    }
-
-    public List<UserReward> getUserRewards() {
-        return userRewards;
-    }
+//    public void addUserReward(UserReward userReward) {
+//        if (userRewards.stream()
+//                .filter(r -> !r.attraction.attractionName.toString()
+//                        .equals(userReward.attraction.toString()))
+//                .count() == 0) {
+//            userRewards.add(userReward);
+//        }
+//    }
+//
+//    public List<UserReward> getUserRewards() {
+//        return userRewards;
+//    }
 
     public UserPreferences getUserPreferences() {
         return userPreferences;

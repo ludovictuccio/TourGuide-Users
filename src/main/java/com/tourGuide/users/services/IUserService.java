@@ -4,18 +4,13 @@ import java.util.List;
 
 import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.UserPreferences;
-
-import gpsUtil.location.VisitedLocation;
+import com.tourGuide.users.domain.VisitedLocation;
 
 public interface IUserService {
 
-    VisitedLocation getUserLocation(final User user);
-
-    List<VisitedLocation> getAllUsersLocations();
+    boolean addUser(final User user);
 
     User getUser(final String userName);
-
-    boolean addUser(final User user);
 
     List<String> getAllUsernames();
 
@@ -23,5 +18,14 @@ public interface IUserService {
 
     boolean updateUserPreferences(final String userName,
             final UserPreferences userPreferences);
+
+    VisitedLocation getUserLocation(final User user);
+
+    List<VisitedLocation> getAllUsersLocations();
+
+//    List<Attraction> getTheFiveClosestAttractions(
+//            VisitedLocation visitedLocation);
+//
+//    List<Attraction> getAllAttractions();
 
 }

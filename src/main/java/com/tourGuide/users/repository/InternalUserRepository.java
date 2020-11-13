@@ -9,18 +9,21 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
+import com.tourGuide.users.domain.Location;
 import com.tourGuide.users.domain.User;
+import com.tourGuide.users.domain.VisitedLocation;
 import com.tourGuide.users.helper.InternalTestHelper;
 
-import gpsUtil.location.Location;
-import gpsUtil.location.VisitedLocation;
-
+@Repository
 public class InternalUserRepository {
 
-    private static Logger logger = LoggerFactory
+    private static final Logger LOGGER = LoggerFactory
             .getLogger(InternalUserRepository.class);
 
     /**********************************************************************************
@@ -28,13 +31,20 @@ public class InternalUserRepository {
      * Methods Below: For Internal Testing
      * 
      **********************************************************************************/
-    private static final String tripPricerApiKey = "test-server-api-key";
+    static final String tripPricerApiKey = "test-server-api-key";
 
     // Database connection will be used for external users, but for testing
     // purposes internal users are provided and stored in memory
     public final Map<String, User> internalUserMap = new HashMap<>();
 
+    /**
+     * Method used to create users tests. Must set InternalTestHelper to modify
+     * users test number.
+     */
+    @PostConstruct
     public void initializeInternalUsers() {
+        LOGGER.info("TestMode enabled");
+        LOGGER.debug("Initializing users");
         IntStream.range(0, InternalTestHelper.getInternalUserNumber())
                 .forEach(i -> {
                     String userName = "internalUser" + i;
@@ -46,11 +56,12 @@ public class InternalUserRepository {
 
                     internalUserMap.put(userName, user);
                 });
-        logger.debug("Created " + InternalTestHelper.getInternalUserNumber()
+        LOGGER.debug("Created " + InternalTestHelper.getInternalUserNumber()
                 + " internal test users.");
+        LOGGER.debug("Finished initializing users");
     }
 
-    private static void generateUserLocationHistory(User user) {
+    public static void generateUserLocationHistory(User user) {
         IntStream.range(0, 3).forEach(i -> {
             user.addToVisitedLocations(
                     new VisitedLocation(user.getUserId(),

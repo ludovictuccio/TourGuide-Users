@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import gpsUtil.GpsUtil;
+import com.tourGuide.users.repository.InternalUserRepository;
 
 //@EnableFeignClients
 @SpringBootApplication
@@ -15,8 +15,8 @@ public class TourGuideUsersApplication {
     }
 
     @Bean
-    public GpsUtil getGpsUtil() {
-        return new GpsUtil();
+    public InternalUserRepository getInternalUserRepository() {
+        return new InternalUserRepository();
     }
 
 }

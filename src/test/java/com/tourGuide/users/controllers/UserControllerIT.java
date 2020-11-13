@@ -2,6 +2,8 @@ package com.tourGuide.users.controllers;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.UUID;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -17,10 +19,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.tourGuide.users.domain.User;
 import com.tourGuide.users.helper.InternalTestHelper;
+import com.tourGuide.users.repository.InternalUserRepository;
 import com.tourGuide.users.services.UserService;
-
-import gpsUtil.GpsUtil;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,7 +39,13 @@ public class UserControllerIT {
     public UserService userService;
 
     @Autowired
-    private GpsUtil gpsUtil;
+    private InternalUserRepository internalUserRepository;
+
+//    @Autowired
+//    private GpsUtil gpsUtil;
+//
+//    @Autowired
+//    private RewardsService rewardsService;
 
     private static final String URI_POST_ADD_USER = "/user";
     private static final String URI_GET_LOCATION = "/user/getLocation";
@@ -52,8 +60,7 @@ public class UserControllerIT {
 
     @BeforeEach
     public void setUpPerTest() {
-        gpsUtil = new GpsUtil();
-        userService = new UserService(gpsUtil);
+        // userService = new UserService();
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         InternalTestHelper.setInternalUserNumber(2);
     }
@@ -77,7 +84,7 @@ public class UserControllerIT {
 
     @Test
     @Tag("updatePreferences")
-    @DisplayName("Update UserPreferences - Error 404 - invalid username")
+    @DisplayName("Update UserPreferences - Error 400 - invalid username")
     public void givenInvalidUsername_whenUpdatePreferences_thenReturnNotfound()
             throws Exception {
 
@@ -87,9 +94,9 @@ public class UserControllerIT {
                 .perform(MockMvcRequestBuilders.put(URI_UPDATE_PREFERENCES)
                         .contentType(MediaType.APPLICATION_JSON)
                         .param(PARAM_USERNAME, "unknow").content(jsonContent))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isNotFound()).andReturn();
+                .andExpect(status().isBadRequest()).andReturn();
     }
 
     @Test
@@ -114,6 +121,25 @@ public class UserControllerIT {
                 .perform(MockMvcRequestBuilders.get(URI_GET_LOCATION)
                         .contentType(MediaType.APPLICATION_JSON)
                         .param(PARAM_USERNAME, "unknow"))
+                .andExpect(status().isBadRequest())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    @Tag("GetLocation")
+    @DisplayName("Get Location- Error - User without visited location")
+    public void givenUserWithoutVisitedLocation_whenGetLocation_thenReturnNotFound()
+            throws Exception {
+
+        User user = new User(UUID.randomUUID(), "Usertest", "000",
+                "jon@tourGuide.com");
+        internalUserRepository.internalUserMap.put("Usertest", user);
+
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get(URI_GET_LOCATION)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param(PARAM_USERNAME, "Usertest"))
                 .andExpect(status().isNotFound())
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isNotFound()).andReturn();
@@ -206,7 +232,7 @@ public class UserControllerIT {
     @Test
     @Tag("getUser")
     @DisplayName("Get user - Ok")
-    public void givenUser_whenGetWhithHisUsernam_thenReturnOk()
+    public void givenUser_whenGetWhithHisUsername_thenReturnOk()
             throws Exception {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get(URI_GET_USER)
@@ -218,16 +244,16 @@ public class UserControllerIT {
 
     @Test
     @Tag("getUser")
-    @DisplayName("Get user - Error 404")
+    @DisplayName("Get user - Error 400")
     public void givenUnknowUsername_whenGetUser_thenReturnNotfound()
             throws Exception {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get(URI_GET_USER)
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("userName", "jon"))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isNotFound()).andReturn();
+                .andExpect(status().isBadRequest()).andReturn();
     }
 
 }
