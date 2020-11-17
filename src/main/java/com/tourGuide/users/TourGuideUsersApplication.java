@@ -2,11 +2,12 @@ package com.tourGuide.users;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 
 import com.tourGuide.users.repository.InternalUserRepository;
 
-//@EnableFeignClients
+@EnableFeignClients
 @SpringBootApplication
 public class TourGuideUsersApplication {
 

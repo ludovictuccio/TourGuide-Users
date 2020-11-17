@@ -10,10 +10,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tourGuide.users.domain.ClosestAttraction;
 import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.domain.VisitedLocation;
+import com.tourGuide.users.domain.dto.AttractionDto;
+import com.tourGuide.users.proxies.MicroserviceGpsProxy;
+import com.tourGuide.users.proxies.MicroserviceRewardsProxy;
 import com.tourGuide.users.repository.InternalUserRepository;
+import com.tourGuide.users.util.DistanceCalculator;
 import com.tourGuide.users.web.exceptions.InvalidLocationException;
 
 @Service
@@ -27,6 +32,15 @@ public class UserService implements IUserService {
     @Autowired
     private InternalUserRepository internalUserRepository;
 
+    @Autowired
+    private MicroserviceGpsProxy microserviceGpsProxy;
+
+    @Autowired
+    private MicroserviceRewardsProxy microserviceRewardsProxy;
+
+    @Autowired
+    private DistanceCalculator distanceCalculator;
+
     /**
      * Method service used to retrieve the last user visited location.
      *
@@ -35,11 +49,13 @@ public class UserService implements IUserService {
      */
     public VisitedLocation getUserLocation(final User user) {
 
-        if (user.getVisitedLocations().size() == 0) {
+        List<VisitedLocation> allVisitedLocations = user.getVisitedLocations();
+
+        if (allVisitedLocations.size() == 0) {
             throw new InvalidLocationException(
                     "Not location available. Please wait less than 5 minutes.");
         }
-        return user.getLastVisitedLocation();
+        return allVisitedLocations.get(allVisitedLocations.size() - 1);
     }
 
     /**
@@ -49,14 +65,11 @@ public class UserService implements IUserService {
      * @return allUsersLocations, a VisitedLocation list
      */
     public List<VisitedLocation> getAllUsersLocations() {
-        List<User> allUsers = getAllUsers();
-        List<VisitedLocation> allUsersLocations = new ArrayList<>();
 
-        for (User user : allUsers) {
-            VisitedLocation visitedLocation = getUserLocation(user);
-            allUsersLocations.add(visitedLocation);
-        }
-        return allUsersLocations;
+        return internalUserRepository.internalUserMap.values().stream()
+                .map(u -> u.getVisitedLocations()
+                        .get(u.getVisitedLocations().size() - 1))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -67,9 +80,11 @@ public class UserService implements IUserService {
      */
     public boolean addUser(final User user) {
         boolean isAdded = false;
+
         if (!internalUserRepository.internalUserMap
                 .containsKey(user.getUserName())
                 && !user.getUserName().isBlank()) {
+
             user.setUserId(UUID.randomUUID());
             internalUserRepository.internalUserMap.put(user.getUserName(),
                     user);
@@ -124,32 +139,56 @@ public class UserService implements IUserService {
         return isUpdated;
     }
 
-    // Return a new JSON object that contains:
-    // Name of Tourist attraction,
-    // Tourist attractions lat/long,
-    // The user's location lat/long,
-    // The distance in miles between the user's location and each of the
-    // attractions.
-    // The reward points for visiting each Attraction.
-    // Note: Attraction reward points can be gathered from RewardsCentral
-//    public List<Attraction> getTheFiveClosestAttractions(
-//            VisitedLocation visitedLocation) {
-//
-//        List<Attraction> allAttractionsList = getAllAttractions();
-//        List<Attraction> theFiveClosestAttractionsList = new ArrayList<>();
-//
-//        allAttractionsList.stream()
-//                .sorted((attraction1, attraction2) -> Double.compare(
-//                        rewardsService.getDistance(visitedLocation.location,
-//                                attraction1),
-//                        rewardsService.getDistance(visitedLocation.location,
-//                                attraction2)))
-//                .limit(5).forEach(attraction -> {
-//                    theFiveClosestAttractionsList.add(attraction);
-//                });
-//        return theFiveClosestAttractionsList;
-//    }
-//
+    /**
+     * Method used to return the five closest attractions since his last visited
+     * location.
+     *
+     * @param userName
+     * @param visitedLocation the last user's visited location
+     * @return a ClosestAttraction list, the five closest attractions
+     */
+    public List<ClosestAttraction> getTheFiveClosestAttractions(
+            final String userName, final VisitedLocation visitedLocation) {
+
+        User user = internalUserRepository.internalUserMap.get(userName);
+
+        List<AttractionDto> attractionsList = microserviceGpsProxy
+                .getAllAttractions();
+        List<ClosestAttraction> theFiveClosestAttractions = new ArrayList<>();
+
+        if (visitedLocation == null || attractionsList == null) {
+            return theFiveClosestAttractions;
+        }
+
+        attractionsList.stream()
+                .sorted((attraction1, attraction2) -> Double.compare(
+                        distanceCalculator.getDistanceInMiles(
+                                visitedLocation.location,
+                                attraction1.getLocation()),
+                        distanceCalculator.getDistanceInMiles(
+                                visitedLocation.location,
+                                attraction2.getLocation())))
+                .limit(5).forEach(attraction -> {
+
+                    int attractionRewardsPoints = microserviceRewardsProxy
+                            .getAttractionRewards(attraction.getAttractionId(),
+                                    user.getUserId());
+
+                    ClosestAttraction closestAttraction = new ClosestAttraction(
+                            attraction.getAttractionName(),
+                            attraction.getLocation(),
+                            visitedLocation.getLocation(),
+                            distanceCalculator.getDistanceInMiles(
+                                    attraction.getLocation(),
+                                    visitedLocation.getLocation()),
+                            attractionRewardsPoints);
+
+                    theFiveClosestAttractions.add(closestAttraction);
+                });
+
+        return theFiveClosestAttractions;
+    }
+
 //    public List<Attraction> getNearByAttractions(
 //            VisitedLocation visitedLocation) {
 //        List<Attraction> nearbyAttractions = new ArrayList<>();

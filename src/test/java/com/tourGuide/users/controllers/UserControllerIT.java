@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,6 +22,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.tourGuide.users.domain.User;
 import com.tourGuide.users.helper.InternalTestHelper;
+import com.tourGuide.users.proxies.MicroserviceGpsProxy;
+import com.tourGuide.users.proxies.MicroserviceRewardsProxy;
 import com.tourGuide.users.repository.InternalUserRepository;
 import com.tourGuide.users.services.UserService;
 
@@ -41,17 +44,18 @@ public class UserControllerIT {
     @Autowired
     private InternalUserRepository internalUserRepository;
 
-//    @Autowired
-//    private GpsUtil gpsUtil;
-//
-//    @Autowired
-//    private RewardsService rewardsService;
+    @MockBean
+    private MicroserviceGpsProxy microserviceGpsProxy;
+
+    @MockBean
+    private MicroserviceRewardsProxy microserviceRewardsProxy;
 
     private static final String URI_POST_ADD_USER = "/user";
     private static final String URI_GET_LOCATION = "/user/getLocation";
     private static final String URI_GET_ALL_LOCATION = "/user/getAllUsersLocations";
     private static final String URI_GET_ALL_USERNAMES = "/user/getAllUsernames";
     private static final String URI_GET_USER = "/user/getUser";
+    private static final String URI_GET_FIVE_CLOSEST_ATTRACTIONS = "/user/getTheFiveClosestAttractions";
     private static final String URI_UPDATE_PREFERENCES = "/user/updatePreferences";
 
     private static final String USER_TEST_1 = "internalUser1";
@@ -60,9 +64,54 @@ public class UserControllerIT {
 
     @BeforeEach
     public void setUpPerTest() {
-        // userService = new UserService();
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         InternalTestHelper.setInternalUserNumber(2);
+    }
+
+    @Test
+    @Tag("GetTheFiveClosestAttractions")
+    @DisplayName("Get The Five Closest Attractions- OK")
+    public void givenUserWithVisitedLocations_whenGetTheFiveClosestAttractions_thenReturnOk()
+            throws Exception {
+        this.mockMvc
+                .perform(MockMvcRequestBuilders
+                        .get(URI_GET_FIVE_CLOSEST_ATTRACTIONS)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param(PARAM_USERNAME, USER_TEST_1))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    @Tag("getTheFiveClosestAttractions")
+    @DisplayName("Get The Five Closest Attractions- Error - Username not found")
+    public void givenUnknowUsername_whenGetTheFiveClosestAttractions_thenReturnBadRequest()
+            throws Exception {
+        this.mockMvc
+                .perform(MockMvcRequestBuilders
+                        .get(URI_GET_FIVE_CLOSEST_ATTRACTIONS)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param(PARAM_USERNAME, "unknow"))
+                .andExpect(status().isBadRequest())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    @Tag("getTheFiveClosestAttractions")
+    @DisplayName("Get The Five Closest Attractions- Error - User without visited location")
+    public void givenUserWithoutVisitedLocation_whenGetTheFiveClosestAttractions_thenReturnBadRequest()
+            throws Exception {
+        userService.addUser(
+                new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com"));
+        this.mockMvc
+                .perform(MockMvcRequestBuilders
+                        .get(URI_GET_FIVE_CLOSEST_ATTRACTIONS)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param(PARAM_USERNAME, "unknow"))
+                .andExpect(status().isBadRequest())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isBadRequest()).andReturn();
     }
 
     @Test

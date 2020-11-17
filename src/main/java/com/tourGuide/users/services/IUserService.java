@@ -2,6 +2,7 @@ package com.tourGuide.users.services;
 
 import java.util.List;
 
+import com.tourGuide.users.domain.ClosestAttraction;
 import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.domain.VisitedLocation;
@@ -23,9 +24,7 @@ public interface IUserService {
 
     List<VisitedLocation> getAllUsersLocations();
 
-//    List<Attraction> getTheFiveClosestAttractions(
-//            VisitedLocation visitedLocation);
-//
-//    List<Attraction> getAllAttractions();
+    List<ClosestAttraction> getTheFiveClosestAttractions(String userName,
+            VisitedLocation visitedLocation);
 
 }

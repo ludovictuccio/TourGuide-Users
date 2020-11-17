@@ -1,13 +1,16 @@
-//package com.tourGuide.users.proxies;
-//
-//import org.springframework.cloud.openfeign.FeignClient;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.RequestParam;
-//
-//@FeignClient(value = "tracker", url = "http://localhost:8082/gps")
-//public interface MicroserviceGpsProxy {
-//
-//    @GetMapping("/getLocation")
-//    public String getUserLocation(@RequestParam final String userName);
-//
-//}
+package com.tourGuide.users.proxies;
+
+import java.util.List;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import com.tourGuide.users.domain.dto.AttractionDto;
+
+@FeignClient(value = "microservice-gps", url = "localhost:9002/gps")
+public interface MicroserviceGpsProxy {
+
+    @GetMapping("/getAllAttractions")
+    public List<AttractionDto> getAllAttractions();
+
+}

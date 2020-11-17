@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jsoniter.output.JsonStream;
+import com.tourGuide.users.domain.ClosestAttraction;
 import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.domain.VisitedLocation;
 import com.tourGuide.users.services.IUserService;
+import com.tourGuide.users.web.exceptions.InvalidLocationException;
 import com.tourGuide.users.web.exceptions.UserInputException;
 
 @RestController
@@ -89,6 +91,7 @@ public class UserController {
     /**
      * Controller method used to get an user with his userName.
      *
+     * @param userName
      * @return user
      */
     @GetMapping("/getUser")
@@ -103,6 +106,10 @@ public class UserController {
 
     /**
      * Method controller used to update user preferences with userName.
+     * 
+     * @param userName
+     * @param userPreferences
+     * @return String
      */
     @PutMapping("/updatePreferences")
     public String updateUserPreferences(@RequestParam final String userName,
@@ -119,24 +126,30 @@ public class UserController {
     }
 
     /**
-     * @return all attractions list
+     * Method controller used to get the five user's closest attractions.
+     *
+     * @param userName
+     * @return the 5 user's closest attractions
      */
-//    @GetMapping("/getAllAttractions")
-//    public List<Attraction> getAllAttractions() {
-//        return userService.getAllAttractions();
-//    }
-//
-//    @GetMapping("/getTheFiveClosestAttractions")
-//    public List<Attraction> getTheFiveClosestAttractions(
-//            @RequestParam String userName) {
-//        User user = userService.getUser(userName);
-//        if (user == null) {
-//            throw new UserInputException(
-//                    "User not found with userName: " + userName);
-//        }
-//        return userService.getTheFiveClosestAttractions(
-//                userService.getUserLocation(user));
-//    }
+    @GetMapping("/getTheFiveClosestAttractions")
+    public List<ClosestAttraction> getTheFiveClosestAttractions(
+            @RequestParam final String userName) {
+        User user = userService.getUser(userName);
+
+        if (user == null) {
+            throw new UserInputException(
+                    "User not found with userName: " + userName);
+        }
+
+        if (user.getVisitedLocations().size() == 0) {
+            throw new InvalidLocationException(
+                    "User without visited location. Please try in few minutes.");
+        }
+
+        return userService.getTheFiveClosestAttractions(userName,
+                user.getVisitedLocations()
+                        .get(user.getVisitedLocations().size() - 1));
+    }
 
 //    @RequestMapping("/getTripDeals")
 //    public String getTripDeals(@RequestParam String userName) {
