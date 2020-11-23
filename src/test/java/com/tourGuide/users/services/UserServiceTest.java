@@ -23,10 +23,8 @@ import com.tourGuide.users.domain.Location;
 import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.domain.VisitedLocation;
-import com.tourGuide.users.domain.dto.AttractionDto;
 import com.tourGuide.users.helper.InternalTestHelper;
 import com.tourGuide.users.proxies.MicroserviceGpsProxy;
-import com.tourGuide.users.proxies.MicroserviceRewardsProxy;
 import com.tourGuide.users.repository.InternalUserRepository;
 import com.tourGuide.users.web.exceptions.InvalidLocationException;
 
@@ -34,7 +32,7 @@ import com.tourGuide.users.web.exceptions.InvalidLocationException;
 public class UserServiceTest {
 
     @Autowired
-    public UserService userService;
+    public IUserService userService;
 
     @Autowired
     private InternalUserRepository internalUserRepository;
@@ -42,53 +40,37 @@ public class UserServiceTest {
     @MockBean
     private MicroserviceGpsProxy microserviceGpsProxy;
 
-    @MockBean
-    private MicroserviceRewardsProxy microserviceRewardsProxy;
-
     private User user;
     private User user2;
 
-    private List<AttractionDto> attractionsList;
+    private List<ClosestAttraction> attractionsList;
 
-    private AttractionDto tourEiffel;
-    private AttractionDto louvre;
-    private AttractionDto lesInvalides;
-    private AttractionDto lePantheon;
-    private AttractionDto disneylandParis;
-    private AttractionDto futuroscope;
-    private AttractionDto vieuxPortDeMarseille;
-    private AttractionDto basiliqueNotreDameDeFourviere;
+    private ClosestAttraction tourEiffel;
+    private ClosestAttraction louvre;
+    private ClosestAttraction lesInvalides;
+    private ClosestAttraction lePantheon;
+    private ClosestAttraction disneylandParis;
+
+    private static Location userLocation;
 
     @BeforeEach
     public void setUpPerTest() {
         internalUserRepository.internalUserMap.clear();
         InternalTestHelper.setInternalUserNumber(0);
 
-        tourEiffel = new AttractionDto("Tour Eiffel",
-                new Location(48.858331, 2.294481), "Paris", "France",
-                UUID.randomUUID());
-        louvre = new AttractionDto("Musée du Louvre",
-                new Location(48.861147, 2.338028), "Paris", "France",
-                UUID.randomUUID());
-        lesInvalides = new AttractionDto("Hôtel des Invalides",
-                new Location(48.853241, 2.312107), "Paris", "France",
-                UUID.randomUUID());
-        lePantheon = new AttractionDto("Le Panthéon",
-                new Location(48.846012, 2.345924), "Paris", "France",
-                UUID.randomUUID());
-        disneylandParis = new AttractionDto("Disneyland Paris",
-                new Location(48.872448, 2.776794), "Paris", "France",
-                UUID.randomUUID());
-        futuroscope = new AttractionDto("Futuroscope",
-                new Location(46.667134, 0.367085), "Poitiers", "France",
-                UUID.randomUUID());
-        vieuxPortDeMarseille = new AttractionDto("Vieux-Port de Marseille",
-                new Location(43.295364, 5.37439), "Marseille", "France",
-                UUID.randomUUID());
-        basiliqueNotreDameDeFourviere = new AttractionDto(
-                "Basilique Notre-Dame de Fourvière",
-                new Location(45.761347, 4.821883), "Lyon", "France",
-                UUID.randomUUID());
+        // user in Eiffel Tower location
+        userLocation = new Location(48.858331, 2.294481);
+
+        tourEiffel = new ClosestAttraction("Tour Eiffel",
+                new Location(48.858331, 2.294481), userLocation, 0.10, 100);
+        louvre = new ClosestAttraction("Musée du Louvre",
+                new Location(48.861147, 2.338028), userLocation, 1.65, 200);
+        lesInvalides = new ClosestAttraction("Hôtel des Invalides",
+                new Location(48.853241, 2.312107), userLocation, 2.33, 300);
+        lePantheon = new ClosestAttraction("Le Panthéon",
+                new Location(48.846012, 2.345924), userLocation, 4.87, 400);
+        disneylandParis = new ClosestAttraction("Disneyland Paris",
+                new Location(48.872448, 2.776794), userLocation, 21.18, 500);
 
         attractionsList = new ArrayList<>();
         attractionsList.add(tourEiffel);
@@ -96,9 +78,6 @@ public class UserServiceTest {
         attractionsList.add(lesInvalides);
         attractionsList.add(lePantheon);
         attractionsList.add(disneylandParis);
-        attractionsList.add(futuroscope);
-        attractionsList.add(vieuxPortDeMarseille);
-        attractionsList.add(basiliqueNotreDameDeFourviere);
     }
 
     @Test
@@ -112,27 +91,12 @@ public class UserServiceTest {
                 tourEiffelLocation, new Date()));
         userService.addUser(user);
 
-        when(microserviceGpsProxy.getAllAttractions())
+        when(microserviceGpsProxy.getClosestAttractions(user.getUserName()))
                 .thenReturn(attractionsList);
-
-        when(microserviceRewardsProxy.getAttractionRewards(
-                tourEiffel.getAttractionId(), user.getUserId())).thenReturn(10);
-        when(microserviceRewardsProxy.getAttractionRewards(
-                lesInvalides.getAttractionId(), user.getUserId()))
-                        .thenReturn(20);
-        when(microserviceRewardsProxy.getAttractionRewards(
-                louvre.getAttractionId(), user.getUserId())).thenReturn(30);
-        when(microserviceRewardsProxy.getAttractionRewards(
-                lePantheon.getAttractionId(), user.getUserId())).thenReturn(40);
-        when(microserviceRewardsProxy.getAttractionRewards(
-                disneylandParis.getAttractionId(), user.getUserId()))
-                        .thenReturn(50);
 
         // WHEN
         List<ClosestAttraction> result = userService
-                .getTheFiveClosestAttractions(user.getUserName(),
-                        user.getVisitedLocations()
-                                .get(user.getVisitedLocations().size() - 1));
+                .getTheFiveClosestAttractions(user.getUserName());
 
         // THEN
         assertThat(result.size()).isEqualTo(5);
@@ -140,89 +104,46 @@ public class UserServiceTest {
         assertThat(result.get(0).getAttractionName()
                 .contains(tourEiffel.getAttractionName())).isTrue();
         assertThat(result.get(1).getAttractionName()
-                .contains(lesInvalides.getAttractionName())).isTrue();
-        assertThat(result.get(2).getAttractionName()
                 .contains(louvre.getAttractionName())).isTrue();
-        assertThat(result.get(3).getAttractionName()
-                .contains(lePantheon.getAttractionName())).isTrue();
-        assertThat(result.get(4).getAttractionName()
-                .contains(disneylandParis.getAttractionName())).isTrue();
-
-        assertThat(result.get(0).getAttractionRewardsPoints()).isEqualTo(10);
-        assertThat(result.get(1).getAttractionRewardsPoints()).isEqualTo(20);
-        assertThat(result.get(2).getAttractionRewardsPoints()).isEqualTo(30);
-        assertThat(result.get(3).getAttractionRewardsPoints()).isEqualTo(40);
-        assertThat(result.get(4).getAttractionRewardsPoints()).isEqualTo(50);
-    }
-
-    @Test
-    @Tag("getTheFiveClosestAttractions")
-    @DisplayName("Get The Five Closest Attractions - Ok - User in Marseille city")
-    public void givenUserInMarseillleCityLocation_whenGetTheFiveClosestAttraction_thenReturnValidAttractions() {
-        // GIVEN
-        user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
-        Location marseilleLocation = new Location(43.291928, 5.378692);
-        user.addToVisitedLocations(new VisitedLocation(user.getUserId(),
-                marseilleLocation, new Date()));
-        userService.addUser(user);
-
-        when(microserviceGpsProxy.getAllAttractions())
-                .thenReturn(attractionsList);
-
-        when(microserviceRewardsProxy.getAttractionRewards(
-                vieuxPortDeMarseille.getAttractionId(), user.getUserId()))
-                        .thenReturn(10);
-        when(microserviceRewardsProxy.getAttractionRewards(
-                basiliqueNotreDameDeFourviere.getAttractionId(),
-                user.getUserId())).thenReturn(20);
-        when(microserviceRewardsProxy.getAttractionRewards(
-                futuroscope.getAttractionId(), user.getUserId()))
-                        .thenReturn(30);
-        when(microserviceRewardsProxy.getAttractionRewards(
-                disneylandParis.getAttractionId(), user.getUserId()))
-                        .thenReturn(40);
-        when(microserviceRewardsProxy.getAttractionRewards(
-                lePantheon.getAttractionId(), user.getUserId())).thenReturn(50);
-        // WHEN
-        List<ClosestAttraction> result = userService
-                .getTheFiveClosestAttractions(user.getUserName(),
-                        user.getVisitedLocations()
-                                .get(user.getVisitedLocations().size() - 1));
-
-        // THEN
-        assertThat(result.size()).isEqualTo(5);
-
-        assertThat(result.get(0).getAttractionName()
-                .contains(vieuxPortDeMarseille.getAttractionName())).isTrue();
-        assertThat(result.get(1).getAttractionName()
-                .contains(basiliqueNotreDameDeFourviere.getAttractionName()))
-                        .isTrue();
         assertThat(result.get(2).getAttractionName()
-                .contains(futuroscope.getAttractionName())).isTrue();
+                .contains(lesInvalides.getAttractionName())).isTrue();
         assertThat(result.get(3).getAttractionName()
-                .contains(disneylandParis.getAttractionName())).isTrue();
-        assertThat(result.get(4).getAttractionName()
                 .contains(lePantheon.getAttractionName())).isTrue();
+        assertThat(result.get(4).getAttractionName()
+                .contains(disneylandParis.getAttractionName())).isTrue();
 
-        assertThat(result.get(0).getAttractionRewardsPoints()).isEqualTo(10);
-        assertThat(result.get(1).getAttractionRewardsPoints()).isEqualTo(20);
-        assertThat(result.get(2).getAttractionRewardsPoints()).isEqualTo(30);
-        assertThat(result.get(3).getAttractionRewardsPoints()).isEqualTo(40);
-        assertThat(result.get(4).getAttractionRewardsPoints()).isEqualTo(50);
+        assertThat(result.get(0).getAttractionRewardsPoints()).isEqualTo(100);
+        assertThat(result.get(1).getAttractionRewardsPoints()).isEqualTo(200);
+        assertThat(result.get(2).getAttractionRewardsPoints()).isEqualTo(300);
+        assertThat(result.get(3).getAttractionRewardsPoints()).isEqualTo(400);
+        assertThat(result.get(4).getAttractionRewardsPoints()).isEqualTo(500);
+
+        assertThat(result.get(0).getDistanceInMiles()).isEqualTo(0.10);
+        assertThat(result.get(1).getDistanceInMiles()).isEqualTo(1.65);
+        assertThat(result.get(2).getDistanceInMiles()).isEqualTo(2.33);
+        assertThat(result.get(3).getDistanceInMiles()).isEqualTo(4.87);
+        assertThat(result.get(4).getDistanceInMiles()).isEqualTo(21.18);
+
+        assertThat(result.get(0).getUserLocation()).isEqualTo(userLocation);
+        assertThat(result.get(1).getUserLocation()).isEqualTo(userLocation);
+        assertThat(result.get(2).getUserLocation()).isEqualTo(userLocation);
+        assertThat(result.get(3).getUserLocation()).isEqualTo(userLocation);
+        assertThat(result.get(4).getUserLocation()).isEqualTo(userLocation);
     }
 
     @Test
     @Tag("getTheFiveClosestAttractions")
-    @DisplayName("Get The Five Closest Attractions - Error - No visited location")
-    public void givenUserwithoutVisitedLocation_whenGetTheFiveClosestAttraction_thenReturnEmptyList() {
+    @DisplayName("Get The Five Closest Attractions - Error - Invalid username entry")
+    public void givenInvalidUsername_whenGetTheFiveClosestAttraction_thenReturnEmptyList() {
         // GIVEN
         user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
-        when(microserviceGpsProxy.getAllAttractions())
+
+        when(microserviceGpsProxy.getClosestAttractions(user.getUserName()))
                 .thenReturn(attractionsList);
 
         // WHEN
         List<ClosestAttraction> result = userService
-                .getTheFiveClosestAttractions(user.getUserName(), null);
+                .getTheFiveClosestAttractions("UNKNOW");
 
         // THEN
         assertThat(result.size()).isEqualTo(0);
@@ -230,20 +151,21 @@ public class UserServiceTest {
 
     @Test
     @Tag("getTheFiveClosestAttractions")
-    @DisplayName("Get The Five Closest Attractions - Error - Null attractions")
+    @DisplayName("Get The Five Closest Attractions - Error - Empty list attractions")
     public void givenNoAttractions_whenGetTheFiveClosestAttraction_thenReturnEmptyList() {
         // GIVEN
         user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
         Location tourEiffelLocation = new Location(48.858331, 2.294481);
         user.addToVisitedLocations(new VisitedLocation(user.getUserId(),
                 tourEiffelLocation, new Date()));
-        when(microserviceGpsProxy.getAllAttractions()).thenReturn(null);
+
+        attractionsList.clear();
+        when(microserviceGpsProxy.getClosestAttractions(user.getUserName()))
+                .thenReturn(attractionsList);
 
         // WHEN
         List<ClosestAttraction> result = userService
-                .getTheFiveClosestAttractions(user.getUserName(),
-                        user.getVisitedLocations()
-                                .get(user.getVisitedLocations().size() - 1));
+                .getTheFiveClosestAttractions(user.getUserName());
 
         // THEN
         assertThat(result.size()).isEqualTo(0);

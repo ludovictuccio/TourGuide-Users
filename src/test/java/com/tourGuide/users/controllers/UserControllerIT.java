@@ -69,6 +69,34 @@ public class UserControllerIT {
     }
 
     @Test
+    @Tag("getUser")
+    @DisplayName("Get user - Ok")
+    public void givenUser_whenGetWhithHisUsername_thenReturnOk()
+            throws Exception {
+
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get(URI_GET_USER)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param(PARAM_USERNAME, USER_TEST_1))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    @Tag("getUser")
+    @DisplayName("Get user - Error 400")
+    public void givenUnknowUsername_whenGetUser_thenReturnNotfound()
+            throws Exception {
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get(URI_GET_USER)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param(PARAM_USERNAME, "UNKNOW"))
+                .andExpect(status().isBadRequest())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
     @Tag("GetTheFiveClosestAttractions")
     @DisplayName("Get The Five Closest Attractions- OK")
     public void givenUserWithVisitedLocations_whenGetTheFiveClosestAttractions_thenReturnOk()
@@ -276,33 +304,6 @@ public class UserControllerIT {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk()).andReturn();
-    }
-
-    @Test
-    @Tag("getUser")
-    @DisplayName("Get user - Ok")
-    public void givenUser_whenGetWhithHisUsername_thenReturnOk()
-            throws Exception {
-        this.mockMvc
-                .perform(MockMvcRequestBuilders.get(URI_GET_USER)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("userName", "internalUser1"))
-                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isOk()).andReturn();
-    }
-
-    @Test
-    @Tag("getUser")
-    @DisplayName("Get user - Error 400")
-    public void givenUnknowUsername_whenGetUser_thenReturnNotfound()
-            throws Exception {
-        this.mockMvc
-                .perform(MockMvcRequestBuilders.get(URI_GET_USER)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("userName", "jon"))
-                .andExpect(status().isBadRequest())
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isBadRequest()).andReturn();
     }
 
 }

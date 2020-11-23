@@ -5,11 +5,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tripPricer.Provider;
 
+@AllArgsConstructor
 @NoArgsConstructor
 public class User {
 
@@ -88,9 +90,5 @@ public class User {
     public void setUserPreferences(UserPreferences userPreferences) {
         this.userPreferences = userPreferences;
     }
-
-//    public VisitedLocation getLastVisitedLocation() {
-//        return visitedLocations.get(visitedLocations.size() - 1);
-//    }
 
 }

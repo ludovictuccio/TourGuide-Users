@@ -1,6 +1,5 @@
 package com.tourGuide.users.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -14,11 +13,9 @@ import com.tourGuide.users.domain.ClosestAttraction;
 import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.domain.VisitedLocation;
-import com.tourGuide.users.domain.dto.AttractionDto;
+import com.tourGuide.users.domain.dto.UserDto;
 import com.tourGuide.users.proxies.MicroserviceGpsProxy;
-import com.tourGuide.users.proxies.MicroserviceRewardsProxy;
 import com.tourGuide.users.repository.InternalUserRepository;
-import com.tourGuide.users.util.DistanceCalculator;
 import com.tourGuide.users.web.exceptions.InvalidLocationException;
 
 @Service
@@ -35,11 +32,8 @@ public class UserService implements IUserService {
     @Autowired
     private MicroserviceGpsProxy microserviceGpsProxy;
 
-    @Autowired
-    private MicroserviceRewardsProxy microserviceRewardsProxy;
-
-    @Autowired
-    private DistanceCalculator distanceCalculator;
+//    @Autowired
+//    private MicroserviceRewardsProxy microserviceRewardsProxy;
 
     /**
      * Method service used to retrieve the last user visited location.
@@ -108,8 +102,17 @@ public class UserService implements IUserService {
      *
      * @return user
      */
-    public User getUser(final String userName) {
+    public User getUser(String userName) {
         return internalUserRepository.internalUserMap.get(userName);
+    }
+
+    public UserDto getUserDto(String userName) {
+        User user = getUser(userName);
+        UserDto userDto = new UserDto(user.getUserId(),
+                user.getVisitedLocations()
+                        .get(user.getVisitedLocations().size() - 1)
+                        .getLocation());
+        return userDto;
     }
 
     /**
@@ -140,53 +143,12 @@ public class UserService implements IUserService {
     }
 
     /**
-     * Method used to return the five closest attractions since his last visited
-     * location.
-     *
-     * @param userName
-     * @param visitedLocation the last user's visited location
-     * @return a ClosestAttraction list, the five closest attractions
+     * This method call GPS microservice to return the five user's closest
+     * attractions.
      */
     public List<ClosestAttraction> getTheFiveClosestAttractions(
-            final String userName, final VisitedLocation visitedLocation) {
-
-        User user = internalUserRepository.internalUserMap.get(userName);
-
-        List<AttractionDto> attractionsList = microserviceGpsProxy
-                .getAllAttractions();
-        List<ClosestAttraction> theFiveClosestAttractions = new ArrayList<>();
-
-        if (visitedLocation == null || attractionsList == null) {
-            return theFiveClosestAttractions;
-        }
-
-        attractionsList.stream()
-                .sorted((attraction1, attraction2) -> Double.compare(
-                        distanceCalculator.getDistanceInMiles(
-                                visitedLocation.location,
-                                attraction1.getLocation()),
-                        distanceCalculator.getDistanceInMiles(
-                                visitedLocation.location,
-                                attraction2.getLocation())))
-                .limit(5).forEach(attraction -> {
-
-                    int attractionRewardsPoints = microserviceRewardsProxy
-                            .getAttractionRewards(attraction.getAttractionId(),
-                                    user.getUserId());
-
-                    ClosestAttraction closestAttraction = new ClosestAttraction(
-                            attraction.getAttractionName(),
-                            attraction.getLocation(),
-                            visitedLocation.getLocation(),
-                            distanceCalculator.getDistanceInMiles(
-                                    attraction.getLocation(),
-                                    visitedLocation.getLocation()),
-                            attractionRewardsPoints);
-
-                    theFiveClosestAttractions.add(closestAttraction);
-                });
-
-        return theFiveClosestAttractions;
+            String userName) {
+        return microserviceGpsProxy.getClosestAttractions(userName);
     }
 
 //    public List<Attraction> getNearByAttractions(

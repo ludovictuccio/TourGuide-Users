@@ -6,12 +6,15 @@ import com.tourGuide.users.domain.ClosestAttraction;
 import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.domain.VisitedLocation;
+import com.tourGuide.users.domain.dto.UserDto;
 
 public interface IUserService {
 
     boolean addUser(final User user);
 
-    User getUser(final String userName);
+    User getUser(String userName);
+
+    UserDto getUserDto(String userName);
 
     List<String> getAllUsernames();
 
@@ -24,7 +27,6 @@ public interface IUserService {
 
     List<VisitedLocation> getAllUsersLocations();
 
-    List<ClosestAttraction> getTheFiveClosestAttractions(String userName,
-            VisitedLocation visitedLocation);
+    List<ClosestAttraction> getTheFiveClosestAttractions(String userName);
 
 }

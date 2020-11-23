@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,11 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jsoniter.output.JsonStream;
 import com.tourGuide.users.domain.ClosestAttraction;
+import com.tourGuide.users.domain.Location;
 import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.domain.VisitedLocation;
+import com.tourGuide.users.domain.dto.UserDto;
 import com.tourGuide.users.services.IUserService;
 import com.tourGuide.users.web.exceptions.InvalidLocationException;
 import com.tourGuide.users.web.exceptions.UserInputException;
@@ -39,14 +41,14 @@ public class UserController {
      * @return user location or error 400
      */
     @GetMapping("/getLocation")
-    public String getLocation(@RequestParam final String userName) {
+    public Location getLocation(@RequestParam final String userName) {
         User user = userService.getUser(userName);
         if (user == null) {
             throw new UserInputException(
                     "User not found with userName: " + userName);
         } else {
             VisitedLocation visitedLocation = userService.getUserLocation(user);
-            return JsonStream.serialize(visitedLocation.location);
+            return visitedLocation.location;
         }
     }
 
@@ -95,13 +97,30 @@ public class UserController {
      * @return user
      */
     @GetMapping("/getUser")
-    public User getUser(@RequestParam final String userName) {
+    public User getUser(String userName) {
         User user = userService.getUser(userName);
         if (user == null) {
             throw new UserInputException(
                     "User not found with userName: " + userName);
         }
         return user;
+    }
+
+    /**
+     * Controller method used to return a user dto with user UUID & the last
+     * location.
+     *
+     * @param userName
+     * @return userDto
+     */
+    @GetMapping("/getUserDto/{userName}")
+    public UserDto getUserDto(@PathVariable("userName") String userName) {
+        UserDto userDto = userService.getUserDto(userName);
+        if (userDto == null) {
+            throw new UserInputException(
+                    "User not found with userName: " + userName);
+        }
+        return userDto;
     }
 
     /**
@@ -132,23 +151,20 @@ public class UserController {
      * @return the 5 user's closest attractions
      */
     @GetMapping("/getTheFiveClosestAttractions")
+    // @ResponseStatus(HttpStatus.OK)
     public List<ClosestAttraction> getTheFiveClosestAttractions(
-            @RequestParam final String userName) {
+            @RequestParam String userName) {
         User user = userService.getUser(userName);
 
         if (user == null) {
             throw new UserInputException(
                     "User not found with userName: " + userName);
         }
-
         if (user.getVisitedLocations().size() == 0) {
             throw new InvalidLocationException(
-                    "User without visited location. Please try in few minutes.");
+                    "User without visited location. Please try in few minutes (less than 5 min).");
         }
-
-        return userService.getTheFiveClosestAttractions(userName,
-                user.getVisitedLocations()
-                        .get(user.getVisitedLocations().size() - 1));
+        return userService.getTheFiveClosestAttractions(userName);
     }
 
 //    @RequestMapping("/getTripDeals")
