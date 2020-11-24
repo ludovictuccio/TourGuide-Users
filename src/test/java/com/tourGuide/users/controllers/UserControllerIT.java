@@ -21,9 +21,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.tourGuide.users.domain.User;
-import com.tourGuide.users.helper.InternalTestHelper;
 import com.tourGuide.users.proxies.MicroserviceGpsProxy;
 import com.tourGuide.users.proxies.MicroserviceRewardsProxy;
+import com.tourGuide.users.repository.InternalTestHelper;
 import com.tourGuide.users.repository.InternalUserRepository;
 import com.tourGuide.users.services.UserService;
 

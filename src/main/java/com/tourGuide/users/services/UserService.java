@@ -4,25 +4,22 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tourGuide.users.domain.ClosestAttraction;
+import com.tourGuide.users.domain.Location;
 import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.domain.VisitedLocation;
 import com.tourGuide.users.domain.dto.UserDto;
+import com.tourGuide.users.domain.dto.VisitedLocationDto;
 import com.tourGuide.users.proxies.MicroserviceGpsProxy;
 import com.tourGuide.users.repository.InternalUserRepository;
 import com.tourGuide.users.web.exceptions.InvalidLocationException;
 
 @Service
 public class UserService implements IUserService {
-
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(UserService.class);
 
     // private final TripPricer tripPricer = new TripPricer();
 
@@ -31,9 +28,6 @@ public class UserService implements IUserService {
 
     @Autowired
     private MicroserviceGpsProxy microserviceGpsProxy;
-
-//    @Autowired
-//    private MicroserviceRewardsProxy microserviceRewardsProxy;
 
     /**
      * Method service used to retrieve the last user visited location.
@@ -151,19 +145,27 @@ public class UserService implements IUserService {
         return microserviceGpsProxy.getClosestAttractions(userName);
     }
 
-//    public List<Attraction> getNearByAttractions(
-//            VisitedLocation visitedLocation) {
-//        List<Attraction> nearbyAttractions = new ArrayList<>();
-//
-//        for (Attraction attraction : gpsUtil.getAttractions()) {
-//            if (rewardsService.isWithinAttractionProximity(attraction,
-//                    visitedLocation.location)) {
-//                nearbyAttractions.add(attraction);
-//            }
-//        }
-//
-//        return nearbyAttractions;
-//    }
+    /**
+     * Method used to track user's location, calling GPS microservice.
+     *
+     * @param user
+     * @return visitedLocation
+     */
+    public VisitedLocation trackUserLocation(User user) {
+
+        VisitedLocationDto visitedLocationDto = microserviceGpsProxy
+                .getUserInstantLocation(user.getUserName());
+
+        VisitedLocation visitedLocation = new VisitedLocation(
+                visitedLocationDto.getUserId(),
+                new Location(visitedLocationDto.getLatitude(),
+                        visitedLocationDto.getLongitude()),
+                visitedLocationDto.getTimeVisited());
+
+        user.addToVisitedLocations(visitedLocation);
+        // rewardsService.calculateRewards(user);
+        return visitedLocation;
+    }
 
 //    public List<Provider> getTripDeals(User user) {
 //        int cumulatativeRewardPoints = user.getUserRewards().stream()

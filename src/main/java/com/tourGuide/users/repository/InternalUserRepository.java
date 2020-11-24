@@ -18,7 +18,6 @@ import org.springframework.stereotype.Repository;
 import com.tourGuide.users.domain.Location;
 import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.VisitedLocation;
-import com.tourGuide.users.helper.InternalTestHelper;
 
 @Repository
 public class InternalUserRepository {

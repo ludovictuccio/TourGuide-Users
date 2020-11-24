@@ -23,6 +23,7 @@ import com.tourGuide.users.domain.Location;
 import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.domain.VisitedLocation;
+import com.tourGuide.users.domain.dto.VisitedLocationDto;
 import com.tourGuide.users.helper.InternalTestHelper;
 import com.tourGuide.users.proxies.MicroserviceGpsProxy;
 import com.tourGuide.users.repository.InternalUserRepository;
@@ -78,6 +79,41 @@ public class UserServiceTest {
         attractionsList.add(lesInvalides);
         attractionsList.add(lePantheon);
         attractionsList.add(disneylandParis);
+    }
+
+    @Test
+    @Tag("trackUserLocation")
+    @DisplayName("Track User Location - OK")
+    public void givenValidUser_whenTrackUserLocation_thenReturnVisitedLocation()
+            throws InterruptedException {
+        // GIVEN
+        // tracker.run();
+        User user = new User(UUID.randomUUID(), "username", "029988776655",
+                "email@gmail.fr");
+
+        VisitedLocationDto visitedLocationDto = new VisitedLocationDto(
+                user.getUserId(), 48.858331, 2.294481, new Date());
+
+        when(microserviceGpsProxy.getUserInstantLocation(user.getUserName()))
+                .thenReturn(visitedLocationDto);
+
+        // WHEN
+        VisitedLocation result = userService.trackUserLocation(user);
+
+        // THEN
+        assertThat(result.userId).isEqualTo(user.getUserId());
+        assertThat(result.location.latitude).isEqualTo(48.858331);
+        assertThat(result.location.longitude).isEqualTo(2.294481);
+        assertThat(result.timeVisited)
+                .isEqualTo(visitedLocationDto.timeVisited);
+
+//        assertThat(user.getVisitedLocations().size()).isEqualTo(1);
+//
+//        Thread.sleep(350000);
+//        tracker.stopTracking();
+//
+//        assertThat(user.getVisitedLocations().size()).isEqualTo(2);
+
     }
 
     @Test

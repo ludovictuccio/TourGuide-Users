@@ -29,4 +29,6 @@ public interface IUserService {
 
     List<ClosestAttraction> getTheFiveClosestAttractions(String userName);
 
+    VisitedLocation trackUserLocation(User user);
+
 }
