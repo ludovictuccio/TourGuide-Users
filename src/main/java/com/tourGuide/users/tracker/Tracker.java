@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.tourGuide.users.domain.User;
-import com.tourGuide.users.services.IUserService;
 import com.tourGuide.users.services.UserService;
 
 @Component
@@ -21,20 +20,18 @@ public class Tracker extends Thread {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Tracker.class);
 
-    private final IUserService userService;
+    private final UserService userService;
 
     /**
      * Used to update user's history visited location, all the 5 minutes.
      */
     private static final long TRACKING_POLLING_INTERVAL = TimeUnit.MINUTES
-            .toSeconds(5)
-    // TimeUnit.SECONDS.toSeconds(5)
-    ;
+            .toSeconds(5);
 
     private final ExecutorService executorService = Executors
             .newSingleThreadExecutor();
 
-    private boolean stop = false;
+    private boolean isStopTracking = false;
 
     public Tracker(final UserService usersService) {
         this.userService = usersService;
@@ -45,7 +42,7 @@ public class Tracker extends Thread {
      * Assures to shut down the Tracker thread
      */
     public void stopTracking() {
-        stop = true;
+        isStopTracking = true;
         executorService.shutdownNow();
     }
 
@@ -55,11 +52,10 @@ public class Tracker extends Thread {
      */
     @Override
     public void run() {
-
         StopWatch stopWatch = new StopWatch();
 
         while (true) {
-            if (Thread.currentThread().isInterrupted() || stop) {
+            if (Thread.currentThread().isInterrupted() || isStopTracking) {
                 LOGGER.debug("Tracker stopping");
                 break;
             }
@@ -68,7 +64,14 @@ public class Tracker extends Thread {
             LOGGER.debug("Begin Tracker. Tracking " + users.size() + " users.");
 
             stopWatch.start();
-            users.forEach(u -> userService.trackUserLocation(u));
+            // users.forEach(u -> userService.trackUserLocation(u));
+
+            try {
+                userService.trackAllUsersLocation(users);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+
             stopWatch.stop();
 
             LOGGER.debug("Tracker Time Elapsed: "

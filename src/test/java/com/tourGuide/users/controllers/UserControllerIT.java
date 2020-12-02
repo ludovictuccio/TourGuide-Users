@@ -1,7 +1,11 @@
 package com.tourGuide.users.controllers;
 
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -21,11 +25,16 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.tourGuide.users.domain.User;
+import com.tourGuide.users.domain.UserReward;
+import com.tourGuide.users.domain.VisitedLocation;
+import com.tourGuide.users.domain.dto.UserRewardsDto;
 import com.tourGuide.users.proxies.MicroserviceGpsProxy;
 import com.tourGuide.users.proxies.MicroserviceRewardsProxy;
 import com.tourGuide.users.repository.InternalTestHelper;
 import com.tourGuide.users.repository.InternalUserRepository;
-import com.tourGuide.users.services.UserService;
+import com.tourGuide.users.services.ITripPricerService;
+import com.tourGuide.users.services.IUserService;
+import com.tourGuide.users.tracker.Tracker;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -39,10 +48,16 @@ public class UserControllerIT {
     private WebApplicationContext wac;
 
     @Autowired
-    public UserService userService;
+    public IUserService userService;
+
+    @Autowired
+    public ITripPricerService tripPricerService;
 
     @Autowired
     private InternalUserRepository internalUserRepository;
+
+    @MockBean
+    private Tracker tracker;
 
     @MockBean
     private MicroserviceGpsProxy microserviceGpsProxy;
@@ -51,12 +66,15 @@ public class UserControllerIT {
     private MicroserviceRewardsProxy microserviceRewardsProxy;
 
     private static final String URI_POST_ADD_USER = "/user";
+    private static final String URI_UPDATE_PREFERENCES = "/user/updatePreferences";
     private static final String URI_GET_LOCATION = "/user/getLocation";
     private static final String URI_GET_ALL_LOCATION = "/user/getAllUsersLocations";
     private static final String URI_GET_ALL_USERNAMES = "/user/getAllUsernames";
     private static final String URI_GET_USER = "/user/getUser";
     private static final String URI_GET_FIVE_CLOSEST_ATTRACTIONS = "/user/getTheFiveClosestAttractions";
-    private static final String URI_UPDATE_PREFERENCES = "/user/updatePreferences";
+    private static final String URI_GET_REWARDS = "/user/getRewards";
+    private static final String URI_GET_ALL_USER_REWARDS = "/user/getAllUserRewardsPoints";
+    private static final String URI_GET_TRIP_DEALS = "/user/getTripDeals";
 
     private static final String USER_TEST_1 = "internalUser1";
 
@@ -69,11 +87,137 @@ public class UserControllerIT {
     }
 
     @Test
+    @Tag("getTripDeals")
+    @DisplayName("Get TripDeals - Ok")
+    public void givenUser_whenGetTripDeals_thenReturnOk() throws Exception {
+        User user = new User(UUID.randomUUID(), "internalUser1", "000",
+                "jon@tourGuide.com");
+        internalUserRepository.internalUserMap.put("internalUser1", user);
+
+        List<VisitedLocation> allUsersVisitedLocations = new ArrayList<>();
+        List<UserReward> allUsersRewards = new ArrayList<>();
+        UserRewardsDto userRewardsDto = new UserRewardsDto(user.getUserId(),
+                "internalUser1", allUsersVisitedLocations, allUsersRewards);
+
+        when(microserviceRewardsProxy.calculateRewards("internalUser1"))
+                .thenReturn(userRewardsDto);
+
+        this.mockMvc
+                .perform(get(URI_GET_TRIP_DEALS)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param(PARAM_USERNAME, USER_TEST_1))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    @Tag("getTripDeals")
+    @DisplayName("Get TripDEals - Error - User not found")
+    public void givenUnknowUsername_whenGetTripDeals_thenReturnBadRequest()
+            throws Exception {
+        User user = new User(UUID.randomUUID(), "internalUser1", "000",
+                "jon@tourGuide.com");
+        internalUserRepository.internalUserMap.put("internalUser1", user);
+
+        List<VisitedLocation> allUsersVisitedLocations = new ArrayList<>();
+        List<UserReward> allUsersRewards = new ArrayList<>();
+        UserRewardsDto userRewardsDto = new UserRewardsDto(user.getUserId(),
+                "internalUser1", allUsersVisitedLocations, allUsersRewards);
+
+        when(microserviceRewardsProxy.calculateRewards("internalUser1"))
+                .thenReturn(userRewardsDto);
+
+        this.mockMvc
+                .perform(get(URI_GET_TRIP_DEALS)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param(PARAM_USERNAME, "unknow"))
+                .andExpect(status().isBadRequest())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    @Tag("getAllUserRewardsPoints")
+    @DisplayName("Get All User Rewards Points - Ok")
+    public void givenUser_whenGetAllRewardsPoints_thenReturnOk()
+            throws Exception {
+        User user = new User(UUID.randomUUID(), "internalUser1", "000",
+                "jon@tourGuide.com");
+        internalUserRepository.internalUserMap.put("internalUser1", user);
+
+        List<VisitedLocation> allUsersVisitedLocations = new ArrayList<>();
+        List<UserReward> allUsersRewards = new ArrayList<>();
+        UserRewardsDto userRewardsDto = new UserRewardsDto(user.getUserId(),
+                "internalUser1", allUsersVisitedLocations, allUsersRewards);
+
+        when(microserviceRewardsProxy.calculateRewards("internalUser1"))
+                .thenReturn(userRewardsDto);
+
+        this.mockMvc
+                .perform(get(URI_GET_ALL_USER_REWARDS)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param(PARAM_USERNAME, USER_TEST_1))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    @Tag("getAllUserRewardsPoints")
+    @DisplayName("Get All User Rewards Points - Error - User not found")
+    public void givenUnknowUsername_whenGetAllRewardsPoints_thenReturnBadRequest()
+            throws Exception {
+        this.mockMvc
+                .perform(get(URI_GET_ALL_USER_REWARDS)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param(PARAM_USERNAME, "unknow"))
+                .andExpect(status().isBadRequest())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    @Tag("getRewards")
+    @DisplayName("Get Rewards - Ok")
+    public void givenUser_whenGetRewards_thenReturnOk() throws Exception {
+        User user = new User(UUID.randomUUID(), "internalUser1", "000",
+                "jon@tourGuide.com");
+        internalUserRepository.internalUserMap.put("internalUser1", user);
+
+        List<VisitedLocation> allUsersVisitedLocations = new ArrayList<>();
+        List<UserReward> allUsersRewards = new ArrayList<>();
+        UserRewardsDto userRewardsDto = new UserRewardsDto(user.getUserId(),
+                "internalUser1", allUsersVisitedLocations, allUsersRewards);
+
+        when(microserviceRewardsProxy.calculateRewards("internalUser1"))
+                .thenReturn(userRewardsDto);
+
+        this.mockMvc
+                .perform(get(URI_GET_REWARDS)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param(PARAM_USERNAME, USER_TEST_1))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    @Tag("getRewards")
+    @DisplayName("Get Rewards - Error - User not found")
+    public void givenUnknowUser_whenGetRewards_thenReturnNotFound()
+            throws Exception {
+        this.mockMvc
+                .perform(get(URI_GET_REWARDS)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param(PARAM_USERNAME, "unknow"))
+                .andExpect(status().isBadRequest())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
     @Tag("getUser")
     @DisplayName("Get user - Ok")
     public void givenUser_whenGetWhithHisUsername_thenReturnOk()
             throws Exception {
-
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get(URI_GET_USER)
                         .contentType(MediaType.APPLICATION_JSON)

@@ -19,6 +19,7 @@ import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.VisitedLocation;
 import com.tourGuide.users.domain.dto.VisitedLocationDto;
 import com.tourGuide.users.proxies.MicroserviceGpsProxy;
+import com.tourGuide.users.proxies.MicroserviceRewardsProxy;
 import com.tourGuide.users.services.UserService;
 import com.tourGuide.users.tracker.Tracker;
 
@@ -28,11 +29,14 @@ public class TrackerTest {
     @Autowired
     public UserService userService;
 
-    @Autowired
+    @MockBean
     public Tracker tracker;
 
     @MockBean
     private MicroserviceGpsProxy microserviceGpsProxy;
+
+    @MockBean
+    private MicroserviceRewardsProxy microserviceRewardsProxy;
 
     private static final String USER_TEST = "test";
 

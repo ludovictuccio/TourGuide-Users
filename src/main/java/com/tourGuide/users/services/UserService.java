@@ -1,7 +1,13 @@
 package com.tourGuide.users.services;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,21 +19,42 @@ import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.domain.VisitedLocation;
 import com.tourGuide.users.domain.dto.UserDto;
+import com.tourGuide.users.domain.dto.UserRewardsDto;
 import com.tourGuide.users.domain.dto.VisitedLocationDto;
 import com.tourGuide.users.proxies.MicroserviceGpsProxy;
+import com.tourGuide.users.proxies.MicroserviceRewardsProxy;
 import com.tourGuide.users.repository.InternalUserRepository;
 import com.tourGuide.users.web.exceptions.InvalidLocationException;
 
 @Service
 public class UserService implements IUserService {
 
-    // private final TripPricer tripPricer = new TripPricer();
-
     @Autowired
     private InternalUserRepository internalUserRepository;
 
     @Autowired
     private MicroserviceGpsProxy microserviceGpsProxy;
+
+    @Autowired
+    private MicroserviceRewardsProxy microserviceRewardsProxy;
+
+    /**
+     * Used to initialize users tests. Set to false if no test mode.
+     */
+    boolean isTestMode = true;
+
+    public UserService(InternalUserRepository userRepo,
+            MicroserviceGpsProxy gpsProxy,
+            MicroserviceRewardsProxy rewardsProxy) {
+        super();
+        this.internalUserRepository = userRepo;
+        this.microserviceGpsProxy = gpsProxy;
+        this.microserviceRewardsProxy = rewardsProxy;
+
+        if (isTestMode) {
+            internalUserRepository.initializeInternalUsers();
+        }
+    }
 
     /**
      * Method service used to retrieve the last user visited location.
@@ -49,15 +76,23 @@ public class UserService implements IUserService {
     /**
      * Method service used to retrieve all the last users visited locations.
      *
-     * @param an user list
-     * @return allUsersLocations, a VisitedLocation list
+     * @return a Map<String, Location> with: userId / user last location
      */
-    public List<VisitedLocation> getAllUsersLocations() {
+    public Map<String, Location> getAllUsersLocations() {
 
-        return internalUserRepository.internalUserMap.values().stream()
-                .map(u -> u.getVisitedLocations()
-                        .get(u.getVisitedLocations().size() - 1))
-                .collect(Collectors.toList());
+        // create a map with: userId / user last location
+        Map<String, Location> allUsersLocation = new HashMap<>();
+
+        getAllUsersWithVisitedLocations()
+                .forEach(u -> allUsersLocation.put(u.getUserId().toString(),
+                        getLastVisitedLocation(u).location));
+
+        return allUsersLocation;
+    }
+
+    public VisitedLocation getLastVisitedLocation(User user) {
+        return user.getVisitedLocations()
+                .get(user.getVisitedLocations().size() - 1);
     }
 
     /**
@@ -94,19 +129,41 @@ public class UserService implements IUserService {
     /**
      * Method service used to get an user with his userName.
      *
+     * @param userName
      * @return user
      */
     public User getUser(String userName) {
         return internalUserRepository.internalUserMap.get(userName);
     }
 
-    public UserDto getUserDto(String userName) {
+    /**
+     * Method service used to get an user dto with his userName.
+     *
+     * @param userName
+     * @return userDto
+     */
+    public UserDto getUserDto(final String userName) {
         User user = getUser(userName);
         UserDto userDto = new UserDto(user.getUserId(),
                 user.getVisitedLocations()
                         .get(user.getVisitedLocations().size() - 1)
                         .getLocation());
         return userDto;
+    }
+
+    /**
+     * Method service used to get an userRewardsDto with his userName (to get
+     * user UUId, userName, all VisitedLocations and rewards).
+     *
+     * @param userName
+     * @return userRewardsDto
+     */
+    public UserRewardsDto getUserRewardsDto(final String userName) {
+        User user = getUser(userName);
+        UserRewardsDto userRewardsDto = new UserRewardsDto(user.getUserId(),
+                user.getUserName(), user.getVisitedLocations(),
+                user.getUserRewards());
+        return userRewardsDto;
     }
 
     /**
@@ -117,6 +174,23 @@ public class UserService implements IUserService {
     public List<User> getAllUsers() {
         return internalUserRepository.internalUserMap.values().stream()
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Method service used to retrieve all users with existing VisitedLocation
+     * in history.
+     *
+     * @return all users with existing VisitedLocation
+     */
+    public List<User> getAllUsersWithVisitedLocations() {
+        List<User> usersWithExistingLocations = new ArrayList<>();
+
+        for (User user : getAllUsers()) {
+            if (!user.getVisitedLocations().isEmpty()) {
+                usersWithExistingLocations.add(user);
+            }
+        }
+        return usersWithExistingLocations;
     }
 
     /**
@@ -133,6 +207,10 @@ public class UserService implements IUserService {
             return isUpdated;
         }
         user.setUserPreferences(userPreferences);
+
+        // Update user rewards
+        microserviceRewardsProxy.calculateRewards(user.getUserName());
+
         return isUpdated;
     }
 
@@ -141,42 +219,49 @@ public class UserService implements IUserService {
      * attractions.
      */
     public List<ClosestAttraction> getTheFiveClosestAttractions(
-            String userName) {
+            final String userName) {
         return microserviceGpsProxy.getClosestAttractions(userName);
     }
 
     /**
-     * Method used to track user's location, calling GPS microservice.
+     * Method used to track user's location, calling GPS microservice. The
+     * location will be add to user's visited location history, and user's
+     * rewards points will be updated.
      *
      * @param user
      * @return visitedLocation
      */
-    public VisitedLocation trackUserLocation(User user) {
+    public VisitedLocation trackUserLocation(final User user) {
 
+        // call gps microservice to retrieve location
         VisitedLocationDto visitedLocationDto = microserviceGpsProxy
                 .getUserInstantLocation(user.getUserName());
 
+        // add location to user history
         VisitedLocation visitedLocation = new VisitedLocation(
                 visitedLocationDto.getUserId(),
                 new Location(visitedLocationDto.getLatitude(),
                         visitedLocationDto.getLongitude()),
                 visitedLocationDto.getTimeVisited());
-
         user.addToVisitedLocations(visitedLocation);
-        // rewardsService.calculateRewards(user);
+
         return visitedLocation;
     }
 
-//    public List<Provider> getTripDeals(User user) {
-//        int cumulatativeRewardPoints = user.getUserRewards().stream()
-//                .mapToInt(i -> i.getRewardPoints()).sum();
-//        List<Provider> providers = tripPricer.getPrice(tripPricerApiKey,
-//                user.getUserId(), user.getUserPreferences().getNumberOfAdults(),
-//                user.getUserPreferences().getNumberOfChildren(),
-//                user.getUserPreferences().getTripDuration(),
-//                cumulatativeRewardPoints);
-//        user.setTripDeals(providers);
-//        return providers;
-//    }
+    public void trackAllUsersLocation(final List<User> allUsersList)
+            throws InterruptedException {
+
+        ExecutorService executorService = Executors.newFixedThreadPool(1000);
+
+        for (User user : allUsersList) {
+            Runnable runnable = () -> {
+                trackUserLocation(user);
+            };
+            executorService.execute(runnable);
+        }
+        executorService.shutdown();
+        executorService.awaitTermination(20, TimeUnit.MINUTES);
+        return;
+    }
 
 }

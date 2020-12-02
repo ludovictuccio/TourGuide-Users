@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -24,10 +25,14 @@ import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.domain.VisitedLocation;
 import com.tourGuide.users.domain.dto.VisitedLocationDto;
-import com.tourGuide.users.helper.InternalTestHelper;
 import com.tourGuide.users.proxies.MicroserviceGpsProxy;
+import com.tourGuide.users.proxies.MicroserviceRewardsProxy;
+import com.tourGuide.users.repository.InternalTestHelper;
 import com.tourGuide.users.repository.InternalUserRepository;
+import com.tourGuide.users.tracker.Tracker;
 import com.tourGuide.users.web.exceptions.InvalidLocationException;
+
+import tripPricer.TripPricer;
 
 @SpringBootTest
 public class UserServiceTest {
@@ -41,8 +46,19 @@ public class UserServiceTest {
     @MockBean
     private MicroserviceGpsProxy microserviceGpsProxy;
 
+    @MockBean
+    private MicroserviceRewardsProxy microserviceRewardsProxy;
+
+    @MockBean
+    private TripPricer tripPricer;
+
+    @MockBean
+    private Tracker tracker;
+
     private User user;
     private User user2;
+    private User user3;
+    private User user4;
 
     private List<ClosestAttraction> attractionsList;
 
@@ -87,7 +103,6 @@ public class UserServiceTest {
     public void givenValidUser_whenTrackUserLocation_thenReturnVisitedLocation()
             throws InterruptedException {
         // GIVEN
-        // tracker.run();
         User user = new User(UUID.randomUUID(), "username", "029988776655",
                 "email@gmail.fr");
 
@@ -106,14 +121,6 @@ public class UserServiceTest {
         assertThat(result.location.longitude).isEqualTo(2.294481);
         assertThat(result.timeVisited)
                 .isEqualTo(visitedLocationDto.timeVisited);
-
-//        assertThat(user.getVisitedLocations().size()).isEqualTo(1);
-//
-//        Thread.sleep(350000);
-//        tracker.stopTracking();
-//
-//        assertThat(user.getVisitedLocations().size()).isEqualTo(2);
-
     }
 
     @Test
@@ -461,24 +468,72 @@ public class UserServiceTest {
                 new VisitedLocation(user.getUserId(), location, new Date()));
 
         // WHEN
-        List<VisitedLocation> result = userService.getAllUsersLocations();
+        Map<String, Location> result = userService.getAllUsersLocations();
 
         // THEN
         assertThat(result).isNotNull();
         assertThat(result.size()).isEqualTo(2);
     }
 
-//    @Test
-//    @DisplayName("Get Trip Deals")
-//    public void getTripDeals() {
-//        // GIVEN
-//
-//        // WHEN
-//        List<Provider> providers = userService.getTripDeals(user);
-//        userService.tracker.stopTracking();
-//
-//        // THEN
-//        assertThat(providers.size()).isEqualTo(10);
-//    }
+    @Test
+    @Tag("getAllUsers")
+    @DisplayName("Get All Users - Ok - 2 users")
+    public void givenTwoUsers_whenGetAllUsers_thenReturnListWithSizeOfTwo() {
+        // GIVEN
+        user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+        user2 = new User(UUID.randomUUID(), "jon2", "000",
+                "jon2@tourGuide.com");
+        userService.addUser(user);
+        userService.addUser(user2);
+
+        // WHEN
+        List<User> allUsers = userService.getAllUsers();
+
+        // THEN
+        assertThat(allUsers.size()).isEqualTo(2);
+    }
+
+    @Test
+    @Tag("getAllUsers")
+    @DisplayName("Get All Users - Ok - 0 users")
+    public void givenZeroUsers_whenGetAllUsers_thenReturnEmptyList() {
+        // GIVEN
+
+        // WHEN
+        List<User> allUsers = userService.getAllUsers();
+
+        // THEN
+        assertThat(allUsers.size()).isEqualTo(0);
+    }
+
+    @Test
+    @Tag("getAllUsersWithVisitedLocations")
+    @DisplayName("Get All Users With VisitedLocations - Ok - 4 users, 2 users with VisitedLocation")
+    public void givenFourUsersAndTwoWithVisitedLocations_whenGet_thenReturnTwoListSize() {
+        // GIVEN
+        user = new User(UUID.randomUUID(), "jon1", "111", "jon1@tourGuide.com");
+        user2 = new User(UUID.randomUUID(), "jon2", "222",
+                "jon2@tourGuide.com");
+        user3 = new User(UUID.randomUUID(), "jon3", "333",
+                "jon3@tourGuide.com");
+        user4 = new User(UUID.randomUUID(), "jon4", "444",
+                "jon4@tourGuide.com");
+        userService.addUser(user);
+        userService.addUser(user2);
+        userService.addUser(user3);
+        userService.addUser(user4);
+
+        user3.addToVisitedLocations(new VisitedLocation(user3.getUserId(),
+                new Location(), new Date()));
+        user4.addToVisitedLocations(new VisitedLocation(user4.getUserId(),
+                new Location(), new Date()));
+
+        // WHEN
+        List<User> allUsers = userService.getAllUsersWithVisitedLocations();
+
+        // THEN
+        assertThat(userService.getAllUsers().size()).isEqualTo(4);
+        assertThat(allUsers.size()).isEqualTo(2);
+    }
 
 }

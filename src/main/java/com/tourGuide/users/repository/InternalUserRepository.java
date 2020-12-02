@@ -9,8 +9,6 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -30,7 +28,6 @@ public class InternalUserRepository {
      * Methods Below: For Internal Testing
      * 
      **********************************************************************************/
-    static final String tripPricerApiKey = "test-server-api-key";
 
     // Database connection will be used for external users, but for testing
     // purposes internal users are provided and stored in memory
@@ -40,7 +37,6 @@ public class InternalUserRepository {
      * Method used to create users tests. Must set InternalTestHelper to modify
      * users test number.
      */
-    @PostConstruct
     public void initializeInternalUsers() {
         LOGGER.info("TestMode enabled");
         LOGGER.debug("Initializing users");

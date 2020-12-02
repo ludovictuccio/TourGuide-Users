@@ -1,12 +1,15 @@
-package com.tourGuide.users.helper;
+package com.tourGuide.users.repository;
 
 public class InternalTestHelper {
 
-    // Set this default up to 100,000 for testing
-    private static int internalUserNumber = 100;
+    public InternalTestHelper() {
+    }
 
-    public static void setInternalUserNumber(final int internalUserNumber) {
-        InternalTestHelper.internalUserNumber = internalUserNumber;
+    // Set this default up to 100,000 for testing
+    private static int internalUserNumber = 100000;
+
+    public static void setInternalUserNumber(final int internalUserNumb) {
+        InternalTestHelper.internalUserNumber = internalUserNumb;
     }
 
     public static int getInternalUserNumber() {

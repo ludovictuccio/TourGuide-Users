@@ -1,25 +1,28 @@
 package com.tourGuide.users.domain;
 
-//import gpsUtil.location.Attraction;
-//import gpsUtil.location.VisitedLocation;
+import com.tourGuide.users.domain.dto.AttractionDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-//
-//@AllArgsConstructor
-//public class UserReward {
-//
-//    public final VisitedLocation visitedLocation;
-//
-//    public final Attraction attraction;
-//
-//    @Getter
-//    @Setter
-//    private int rewardPoints;
-//
-//    public UserReward(VisitedLocation visitedLocation, Attraction attraction) {
-//        this.visitedLocation = visitedLocation;
-//        this.attraction = attraction;
-//    }
-//
-//}
+
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserReward {
+
+    public VisitedLocation visitedLocation;
+
+    public AttractionDto attraction;
+
+    @Getter
+    @Setter
+    private int rewardPoints;
+
+    public UserReward(VisitedLocation visitedLocation,
+            AttractionDto attraction) {
+        this.visitedLocation = visitedLocation;
+        this.attraction = attraction;
+    }
+
+}
