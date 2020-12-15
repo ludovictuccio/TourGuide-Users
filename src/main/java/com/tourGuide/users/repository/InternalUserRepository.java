@@ -11,6 +11,7 @@ import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.tourGuide.users.domain.Location;
@@ -22,6 +23,9 @@ public class InternalUserRepository {
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(InternalUserRepository.class);
+
+    @Autowired
+    private InternalTestHelper internalTestHelper;
 
     /**********************************************************************************
      * 
@@ -40,7 +44,7 @@ public class InternalUserRepository {
     public void initializeInternalUsers() {
         LOGGER.info("TestMode enabled");
         LOGGER.debug("Initializing users");
-        IntStream.range(0, InternalTestHelper.getInternalUserNumber())
+        IntStream.range(0, internalTestHelper.getInternalUserNumber())
                 .forEach(i -> {
                     String userName = "internalUser" + i;
                     String phone = "000";
@@ -48,10 +52,9 @@ public class InternalUserRepository {
                     User user = new User(UUID.randomUUID(), userName, phone,
                             email);
                     generateUserLocationHistory(user);
-
                     internalUserMap.put(userName, user);
                 });
-        LOGGER.debug("Created " + InternalTestHelper.getInternalUserNumber()
+        LOGGER.debug("Created " + internalTestHelper.getInternalUserNumber()
                 + " internal test users.");
         LOGGER.debug("Finished initializing users");
     }

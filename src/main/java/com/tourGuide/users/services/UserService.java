@@ -5,29 +5,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.tourGuide.users.domain.ClosestAttraction;
 import com.tourGuide.users.domain.Location;
 import com.tourGuide.users.domain.User;
-import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.domain.VisitedLocation;
 import com.tourGuide.users.domain.dto.UserDto;
 import com.tourGuide.users.domain.dto.UserRewardsDto;
-import com.tourGuide.users.domain.dto.VisitedLocationDto;
 import com.tourGuide.users.proxies.MicroserviceGpsProxy;
 import com.tourGuide.users.proxies.MicroserviceRewardsProxy;
 import com.tourGuide.users.repository.InternalUserRepository;
+import com.tourGuide.users.tracker.Tracker;
 import com.tourGuide.users.web.exceptions.InvalidLocationException;
 
 @Service
 public class UserService implements IUserService {
+
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(UserService.class);
 
     @Autowired
     private InternalUserRepository internalUserRepository;
@@ -38,22 +44,54 @@ public class UserService implements IUserService {
     @Autowired
     private MicroserviceRewardsProxy microserviceRewardsProxy;
 
+    @Autowired
+    public Tracker tracker;
+
+    private ExecutorService executorService = Executors
+            .newFixedThreadPool(1000);
+
     /**
-     * Used to initialize users tests. Set to false if no test mode.
+     * Used to initialize users tests to generate. Set to false if no test mode.
      */
-    boolean isTestMode = true;
+    public boolean isTestMode = true;
+
+    /**
+     * Used to stop tracking while performance IT. Set to true if performance IT
+     * mode.
+     */
+    public boolean isPerformanceTestMode = false;
 
     public UserService(InternalUserRepository userRepo,
             MicroserviceGpsProxy gpsProxy,
             MicroserviceRewardsProxy rewardsProxy) {
-        super();
         this.internalUserRepository = userRepo;
         this.microserviceGpsProxy = gpsProxy;
         this.microserviceRewardsProxy = rewardsProxy;
 
-        if (isTestMode) {
+        if (isPerformanceTestMode) {
+            LOGGER.debug("Performance IT mode ON.");
             internalUserRepository.initializeInternalUsers();
+        } else if (isTestMode) {
+            LOGGER.debug("Test mode ON.");
+            internalUserRepository.initializeInternalUsers();
+            this.tracker = new Tracker(this);
+            tracker.startTracking();
+        } else {
+            LOGGER.debug("Tests mode OFF.");
+            this.tracker = new Tracker(this);
+            tracker.startTracking();
         }
+    }
+
+    /**
+     * Method used to get the last user's VisitedLocation.
+     *
+     * @param user
+     * @return the last user's VisitedLocation
+     */
+    public VisitedLocation getLastVisitedLocation(final User user) {
+        return user.getVisitedLocations()
+                .get(user.getVisitedLocations().size() - 1);
     }
 
     /**
@@ -88,11 +126,6 @@ public class UserService implements IUserService {
                         getLastVisitedLocation(u).location));
 
         return allUsersLocation;
-    }
-
-    public VisitedLocation getLastVisitedLocation(User user) {
-        return user.getVisitedLocations()
-                .get(user.getVisitedLocations().size() - 1);
     }
 
     /**
@@ -137,6 +170,19 @@ public class UserService implements IUserService {
     }
 
     /**
+     * Method to retrieve user by his UUID.
+     *
+     * @param userId
+     * @return user
+     */
+    public User getUserByUuid(UUID userId) {
+        List<User> users = internalUserRepository.internalUserMap.values()
+                .stream().filter(u -> u.getUserId().equals(userId))
+                .collect(Collectors.toList());
+        return users.get(0);
+    }
+
+    /**
      * Method service used to get an user dto with his userName.
      *
      * @param userName
@@ -145,9 +191,7 @@ public class UserService implements IUserService {
     public UserDto getUserDto(final String userName) {
         User user = getUser(userName);
         UserDto userDto = new UserDto(user.getUserId(),
-                user.getVisitedLocations()
-                        .get(user.getVisitedLocations().size() - 1)
-                        .getLocation());
+                getLastVisitedLocation(user).getLocation());
         return userDto;
     }
 
@@ -158,11 +202,10 @@ public class UserService implements IUserService {
      * @param userName
      * @return userRewardsDto
      */
-    public UserRewardsDto getUserRewardsDto(final String userName) {
-        User user = getUser(userName);
+    public UserRewardsDto getUserRewardsDto(final UUID userId) {
+        User user = getUserByUuid(userId);
         UserRewardsDto userRewardsDto = new UserRewardsDto(user.getUserId(),
-                user.getUserName(), user.getVisitedLocations(),
-                user.getUserRewards());
+                user.getVisitedLocations(), user.getUserRewards());
         return userRewardsDto;
     }
 
@@ -198,21 +241,22 @@ public class UserService implements IUserService {
      *
      * @return boolean isUpdated
      */
-    public boolean updateUserPreferences(final String userName,
-            final UserPreferences userPreferences) {
-        boolean isUpdated = true;
-        User user = this.internalUserRepository.internalUserMap.get(userName);
-        if (user == null) {
-            isUpdated = false;
-            return isUpdated;
-        }
-        user.setUserPreferences(userPreferences);
-
-        // Update user rewards
-        microserviceRewardsProxy.calculateRewards(user.getUserName());
-
-        return isUpdated;
-    }
+//    public boolean updateUserPreferences(final String userName,
+//            final UserPreferences userPreferences) {
+//        boolean isUpdated = true;
+//        User user = this.internalUserRepository.internalUserMap.get(userName);
+//        if (user == null) {
+//            isUpdated = false;
+//            return isUpdated;
+//        }
+//        user.setUserPreferences(userPreferences);
+//
+//        // Update user rewards
+//        microserviceRewardsProxy.calculateRewards(user.getVisitedLocations(),
+//                user.getUserId());
+//
+//        return isUpdated;
+//    }
 
     /**
      * This method call GPS microservice to return the five user's closest
@@ -229,39 +273,40 @@ public class UserService implements IUserService {
      * rewards points will be updated.
      *
      * @param user
-     * @return visitedLocation
+     * @throws ExecutionException
+     * @throws InterruptedException
      */
-    public VisitedLocation trackUserLocation(final User user) {
-
-        // call gps microservice to retrieve location
-        VisitedLocationDto visitedLocationDto = microserviceGpsProxy
-                .getUserInstantLocation(user.getUserName());
-
-        // add location to user history
-        VisitedLocation visitedLocation = new VisitedLocation(
-                visitedLocationDto.getUserId(),
-                new Location(visitedLocationDto.getLatitude(),
-                        visitedLocationDto.getLongitude()),
-                visitedLocationDto.getTimeVisited());
-        user.addToVisitedLocations(visitedLocation);
-
-        return visitedLocation;
+    @Async
+    public CompletableFuture<?> trackUserLocation(final User user) {
+        return CompletableFuture.supplyAsync(() -> {
+            return microserviceGpsProxy
+                    .getUserInstantLocation(user.getUserId());
+        }, executorService).thenAccept(visitedLocationDto -> {
+            user.addToVisitedLocations(
+                    new VisitedLocation(visitedLocationDto.getUserId(),
+                            new Location(visitedLocationDto.getLatitude(),
+                                    visitedLocationDto.getLongitude()),
+                            visitedLocationDto.getTimeVisited()));
+        }).thenRunAsync(() -> trackUserRewards(user));
     }
 
-    public void trackAllUsersLocation(final List<User> allUsersList)
-            throws InterruptedException {
+    /**
+     * Method used to update user rewards.
+     *
+     * @param user
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
+    @Async
+    public CompletableFuture<?> trackUserRewards(final User user) {
+        user.getUserRewards().clear();
 
-        ExecutorService executorService = Executors.newFixedThreadPool(1000);
-
-        for (User user : allUsersList) {
-            Runnable runnable = () -> {
-                trackUserLocation(user);
-            };
-            executorService.execute(runnable);
-        }
-        executorService.shutdown();
-        executorService.awaitTermination(20, TimeUnit.MINUTES);
-        return;
+        return CompletableFuture.supplyAsync(() -> {
+            return microserviceRewardsProxy
+                    .calculateRewards(getUserRewardsDto(user.getUserId()));
+        }, executorService).thenAccept(u -> {
+            u.stream().forEach(reward -> user.addUserReward(reward));
+        });
     }
 
 }

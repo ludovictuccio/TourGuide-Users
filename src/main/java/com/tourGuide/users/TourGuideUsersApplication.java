@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 
+import com.tourGuide.users.repository.InternalTestHelper;
+
 import tripPricer.TripPricer;
 
 @EnableFeignClients
@@ -21,6 +23,11 @@ public class TourGuideUsersApplication {
     @Bean
     public TripPricer getTripPricer() {
         return new TripPricer();
+    }
+
+    @Bean
+    public InternalTestHelper getInternalTestHelper() {
+        return new InternalTestHelper();
     }
 
 }

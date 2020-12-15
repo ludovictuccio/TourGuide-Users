@@ -33,52 +33,53 @@ public class Tracker extends Thread {
 
     private boolean isStopTracking = false;
 
-    public Tracker(final UserService usersService) {
-        this.userService = usersService;
+    public Tracker(UserService userService) {
+        this.userService = userService;
+    }
+
+    public void startTracking() {
+        isStopTracking = false;
         executorService.submit(this);
     }
 
-    /**
-     * Assures to shut down the Tracker thread
-     */
     public void stopTracking() {
+        LOGGER.info("Tracker stopped.");
         isStopTracking = true;
         executorService.shutdownNow();
     }
 
     /**
-     * Method used to track user location, and add it to user's visited location
-     * history all the 5 minutes.
+     * Method used to track user location, add it to user's visited location
+     * history, and update user Rewards all the 5 minutes.
      */
     @Override
     public void run() {
         StopWatch stopWatch = new StopWatch();
-
         while (true) {
             if (Thread.currentThread().isInterrupted() || isStopTracking) {
                 LOGGER.debug("Tracker stopping");
                 break;
+            } else {
+                List<User> users = userService.getAllUsers();
+                LOGGER.debug(
+                        "Begin Tracker. Tracking " + users.size() + " users.");
+
+                stopWatch.start();
+                users.forEach(u -> {
+                    userService.trackUserLocation(u);
+                    try {
+                        Thread.sleep(2);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
+                stopWatch.stop();
+                LOGGER.debug("TRACKING END for " + users.size()
+                        + " users - Tracker Time Elapsed: "
+                        + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime())
+                        + " seconds.");
+                stopWatch.reset();
             }
-
-            List<User> users = userService.getAllUsers();
-            LOGGER.debug("Begin Tracker. Tracking " + users.size() + " users.");
-
-            stopWatch.start();
-            // users.forEach(u -> userService.trackUserLocation(u));
-
-            try {
-                userService.trackAllUsersLocation(users);
-            } catch (InterruptedException e1) {
-                e1.printStackTrace();
-            }
-
-            stopWatch.stop();
-
-            LOGGER.debug("Tracker Time Elapsed: "
-                    + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime())
-                    + " seconds.");
-            stopWatch.reset();
-
             try {
                 LOGGER.debug("Tracker sleeping");
                 TimeUnit.SECONDS.sleep(TRACKING_POLLING_INTERVAL);
@@ -100,7 +101,14 @@ public class Tracker extends Thread {
         users.add(user);
 
         stopWatch.start();
-        users.forEach(u -> userService.trackUserLocation(u));
+        users.forEach(u -> {
+            userService.trackUserLocation(u);
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
         stopWatch.stop();
 
         LOGGER.debug("Tracker Time Elapsed: "

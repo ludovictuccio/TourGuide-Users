@@ -18,19 +18,14 @@ public class UserRewardsDto {
     @Setter
     private UUID userId;
 
-    @Getter
-    private String userName;
-
     private List<VisitedLocation> visitedLocations = new ArrayList<>();
 
     private List<UserReward> userRewards = new ArrayList<>();
 
-    public UserRewardsDto(UUID userId, String userName,
-            List<VisitedLocation> visitedLocations,
+    public UserRewardsDto(UUID userId, List<VisitedLocation> visitedLocations,
             List<UserReward> userRewards) {
         super();
         this.userId = userId;
-        this.userName = userName;
         this.visitedLocations = visitedLocations;
         this.userRewards = userRewards;
     }

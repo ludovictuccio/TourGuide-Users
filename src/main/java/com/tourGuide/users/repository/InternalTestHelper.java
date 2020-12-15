@@ -1,18 +1,20 @@
 package com.tourGuide.users.repository;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public class InternalTestHelper {
 
     public InternalTestHelper() {
     }
 
-    // Set this default up to 100,000 for testing
-    private static int internalUserNumber = 100000;
+    @Value("${application.number.users}")
+    private int internalUserNumber;
 
-    public static void setInternalUserNumber(final int internalUserNumb) {
-        InternalTestHelper.internalUserNumber = internalUserNumb;
+    public void setInternalUserNumber(final int internalUserNumb) {
+        this.internalUserNumber = internalUserNumb;
     }
 
-    public static int getInternalUserNumber() {
+    public int getInternalUserNumber() {
         return internalUserNumber;
     }
 }
