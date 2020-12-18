@@ -27,6 +27,8 @@ import com.tourGuide.users.services.IUserService;
 import com.tourGuide.users.web.exceptions.InvalidLocationException;
 import com.tourGuide.users.web.exceptions.UserInputException;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -43,11 +45,12 @@ public class UserController {
     }
 
     /**
-     * Controller method use to return the last saved user location.
+     * Controller method used to return the last saved user location.
      *
      * @param userName
      * @return user location or error 400
      */
+    @ApiOperation(value = "GET location", notes = "Need param userName - Return 200 OK or 400 bad request. Method used to return the last saved user location", response = Location.class)
     @GetMapping("/getLocation")
     public Location getLocation(@RequestParam final String userName) {
         User user = retrieveUser(userName);
@@ -57,11 +60,12 @@ public class UserController {
     }
 
     /**
-     * Controller method use to return all the last users locations saved (the
+     * Controller method used to return all the last users locations saved (the
      * last visited location saved in the history).
      *
      * @return all users locations
      */
+    @ApiOperation(value = "GET all locations", notes = "Return 200 OK - Method used to return all the last users locations saved (the last visited location saved in the history)")
     @GetMapping("/getAllUsersLocations")
     public Map<String, Location> getAllUsersLocations() {
         return userService.getAllUsersLocations();
@@ -75,6 +79,7 @@ public class UserController {
      * @throws ExecutionException
      * @throws InterruptedException
      */
+    @ApiOperation(value = "POST add new User", notes = "Need body user - Location will be tracked - Return 200 OK or 400 bad request.", response = String.class)
     @PostMapping
     public String addUser(@RequestBody final User user)
             throws InterruptedException, ExecutionException {
@@ -93,6 +98,7 @@ public class UserController {
      * @param userName
      * @return user
      */
+    @ApiOperation(value = "GET User", notes = "Need param userName - Return 200 OK or 400 bad request.", response = User.class)
     @GetMapping("/getUser")
     public User getUser(String userName) {
         User user = retrieveUser(userName);
@@ -107,6 +113,7 @@ public class UserController {
      * @param userName
      * @return userDto
      */
+    @ApiOperation(value = "GET UserDto", notes = "Need PathVariable userName - Method used to return a user dto with user UUID & the last location, used with gps microservice.", response = UserDto.class)
     @GetMapping("/getUserDto/{userName}")
     public UserDto getUserDto(@PathVariable("userName") String userName) {
         UserDto userDto = userService.getUserDto(userName);
@@ -124,6 +131,7 @@ public class UserController {
      * @param userPreferences
      * @return String
      */
+    @ApiOperation(value = "PUT Update user preferences", notes = "Need param userName & body UserPreferences - Return 200 OK or 400 bad request - Method used to update user preferences with userName.", response = String.class)
     @PutMapping("/updatePreferences")
     public String updateUserPreferences(@RequestParam final String userName,
             @RequestBody final UserPreferences userPreferences) {
@@ -142,6 +150,7 @@ public class UserController {
      * @param userName
      * @return the 5 user's closest attractions
      */
+    @ApiOperation(value = "GET the five closest attractions", notes = "Need param userName - Return 200 OK or 400 bad request - Method used to get the five user's closest attractions.", response = ClosestAttraction.class)
     @GetMapping("/getTheFiveClosestAttractions")
     public List<ClosestAttraction> getTheFiveClosestAttractions(
             @RequestParam String userName) {
@@ -160,6 +169,7 @@ public class UserController {
      * @param userName
      * @return user's trip deals
      */
+    @ApiOperation(value = "GET Trip Deals", notes = "Need param userName - Return 200 OK or 400 bad request - Method used to get user's trip deals.", response = ProviderDto.class)
     @GetMapping("/getTripDeals")
     public List<ProviderDto> getTripDeals(@RequestParam final String userName) {
         checkExistingUser(userName);
@@ -172,6 +182,7 @@ public class UserController {
      * @param userName
      * @return user's rewards
      */
+    @ApiOperation(value = "GET user rewards", notes = "Need param userName - Return 200 OK or 400 bad request - Method used to get user's rewards.", response = ProviderDto.class)
     @GetMapping("/getRewards")
     public List<UserReward> getRewards(@RequestParam final String userName) {
         checkExistingUser(userName);
@@ -185,6 +196,7 @@ public class UserController {
      * @param userName
      * @return integer user's rewards points
      */
+    @ApiOperation(value = "GET All user rewards points", notes = "Need param userName - Return 200 OK or 400 bad request - Method used to get user's rewards points.", response = Integer.class)
     @GetMapping("/getAllUserRewardsPoints")
     public int getAllUserRewardsPoints(@RequestParam final String userName) {
         checkExistingUser(userName);
@@ -203,6 +215,7 @@ public class UserController {
         }
     }
 
+    @ApiOperation(value = "GET TEST add users rewards", notes = "Add visitedlocations for internalUser1 to add 4 rewards")
     @GetMapping("/testAddUserRewardsPoints")
     public void testAddUserRewardsPoints() {
         tripPricerService.testAddUserRewardsPoints();
