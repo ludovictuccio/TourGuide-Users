@@ -22,7 +22,6 @@ import com.tourGuide.users.domain.UserReward;
 import com.tourGuide.users.domain.VisitedLocation;
 import com.tourGuide.users.domain.dto.AttractionDto;
 import com.tourGuide.users.domain.dto.ProviderDto;
-import com.tourGuide.users.domain.dto.UserRewardsDto;
 import com.tourGuide.users.proxies.MicroserviceRewardsProxy;
 
 import tripPricer.Provider;
@@ -54,19 +53,12 @@ public class TripPricerServiceTest {
                 "email@gmail.fr");
         user.setUserPreferences(new UserPreferences(2, 1, 2, 1));
 
-        List<VisitedLocation> allUsersVisitedLocations = new ArrayList<>();
-
-        List<UserReward> allUsersRewards = new ArrayList<>();
-
-        UserRewardsDto userRewardsDto = new UserRewardsDto(user.getUserId(),
-                user.getUserName(), allUsersVisitedLocations, allUsersRewards);
-
         List<Provider> providers = new ArrayList<>();
-        providers.add(new Provider(UUID.randomUUID(), "TripDeal 1", 0));
-        providers.add(new Provider(UUID.randomUUID(), "TripDeal 2", 0));
-        providers.add(new Provider(UUID.randomUUID(), "TripDeal 3", 0));
-        providers.add(new Provider(UUID.randomUUID(), "TripDeal 4", 0));
-        providers.add(new Provider(UUID.randomUUID(), "TripDeal 5", 0));
+        providers.add(new Provider(UUID.randomUUID(), "TripDeal 1", 1));
+        providers.add(new Provider(UUID.randomUUID(), "TripDeal 2", 2));
+        providers.add(new Provider(UUID.randomUUID(), "TripDeal 3", 3));
+        providers.add(new Provider(UUID.randomUUID(), "TripDeal 4", 4));
+        providers.add(new Provider(UUID.randomUUID(), "TripDeal 5", 5));
 
         when(tripPricer.getPrice(TRIP_PRICER_API_KEY, user.getUserId(),
                 user.getUserPreferences().getNumberOfAdults(),
@@ -76,15 +68,17 @@ public class TripPricerServiceTest {
 
         when(userService.getUser(user.getUserName())).thenReturn(user);
 
-        when(microserviceRewardsProxy.calculateRewards(user.getUserName()))
-                .thenReturn(userRewardsDto);
-
         // WHEN
         List<ProviderDto> result = tripPricerService
                 .getTripDeals(user.getUserName());
 
         // THEN
         assertThat(result.size()).isEqualTo(5);
+        assertThat(result.get(0).getPrice()).isEqualTo(1);
+        assertThat(result.get(1).getPrice()).isEqualTo(2);
+        assertThat(result.get(2).getPrice()).isEqualTo(3);
+        assertThat(result.get(3).getPrice()).isEqualTo(4);
+        assertThat(result.get(4).getPrice()).isEqualTo(5);
     }
 
     @Test
@@ -112,19 +106,14 @@ public class TripPricerServiceTest {
         List<UserReward> allUsersRewards = new ArrayList<>();
         UserReward userReward = new UserReward(visitedLocation, attractionDto);
         UserReward userReward2 = new UserReward(visitedLocation, attractionDto);
+        userReward.setRewardPoints(100);
+        userReward2.setRewardPoints(80);
         allUsersRewards.add(userReward);
         allUsersRewards.add(userReward2);
 
-        UserRewardsDto userRewardsDto = new UserRewardsDto(user.getUserId(),
-                user.getUserName(), allUsersVisitedLocations, allUsersRewards);
-
-        userReward.setRewardPoints(100);
-        user.addUserReward(userReward);
-        userReward2.setRewardPoints(80);
-        user.addUserReward(userReward2);
-
-        when(microserviceRewardsProxy.calculateRewards(user.getUserName()))
-                .thenReturn(userRewardsDto);
+        when(microserviceRewardsProxy.calculateRewards(
+                userService.getUserRewardsDto(user.getUserId())))
+                        .thenReturn(allUsersRewards);
 
         // WHEN
         int result = tripPricerService.getAllUserRewardsPoints(user);
@@ -142,14 +131,11 @@ public class TripPricerServiceTest {
         User user = new User(UUID.randomUUID(), "username", "029988776655",
                 "email@gmail.fr");
 
-        List<VisitedLocation> allUsersVisitedLocations = new ArrayList<>();
         List<UserReward> allUsersRewards = new ArrayList<>();
 
-        UserRewardsDto userRewardsDto = new UserRewardsDto(user.getUserId(),
-                user.getUserName(), allUsersVisitedLocations, allUsersRewards);
-
-        when(microserviceRewardsProxy.calculateRewards(user.getUserName()))
-                .thenReturn(userRewardsDto);
+        when(microserviceRewardsProxy.calculateRewards(
+                userService.getUserRewardsDto(user.getUserId())))
+                        .thenReturn(allUsersRewards);
 
         // WHEN
         int result = tripPricerService.getAllUserRewardsPoints(user);
@@ -160,15 +146,13 @@ public class TripPricerServiceTest {
     }
 
     @Test
-    @Tag("getUserRewards")
-    @DisplayName("Get User Rewards - OK - 1 rewards")
+    @Tag("getInstantUserRewards")
+    @DisplayName("Get Instant User Rewards - OK - 1 rewards")
     public void givenUserReward_whenGet_thenReturnCorrectValues() {
         // GIVEN
         User user = new User(UUID.randomUUID(), "username", "029988776655",
                 "email@gmail.fr");
-
         Location location1 = new Location(33.817595, -117.922008);
-
         AttractionDto attractionDto = new AttractionDto("Disneyland", location1,
                 "Anaheim", "CA", UUID.randomUUID());
 
@@ -180,18 +164,14 @@ public class TripPricerServiceTest {
         List<UserReward> allUsersRewards = new ArrayList<>();
         UserReward userReward = new UserReward(visitedLocation, attractionDto);
         allUsersRewards.add(userReward);
-
-        UserRewardsDto userRewardsDto = new UserRewardsDto(user.getUserId(),
-                user.getUserName(), allUsersVisitedLocations, allUsersRewards);
-
-        when(microserviceRewardsProxy.calculateRewards(user.getUserName()))
-                .thenReturn(userRewardsDto);
-
         userReward.setRewardPoints(100);
-        user.addUserReward(userReward);
+
+        when(microserviceRewardsProxy.calculateRewards(
+                userService.getUserRewardsDto(user.getUserId())))
+                        .thenReturn(allUsersRewards);
 
         // WHEN
-        List<UserReward> result = tripPricerService.getUserRewards(user);
+        List<UserReward> result = tripPricerService.getInstantUserRewards(user);
 
         // THEN
         assertThat(result.size()).isEqualTo(1);
@@ -199,20 +179,27 @@ public class TripPricerServiceTest {
     }
 
     @Test
-    @Tag("getUserRewards")
-    @DisplayName("Get User Rewards - OK - 0 rewards")
+    @Tag("getInstantUserRewards")
+    @DisplayName("Get Instant User Rewards - OK - 0 rewards")
     public void givenNoUserReward_whenGet_thenReturnEmptyList() {
         // GIVEN
         User user = new User(UUID.randomUUID(), "username", "029988776655",
                 "email@gmail.fr");
-        UserRewardsDto userRewardsDto = new UserRewardsDto(user.getUserId(),
-                user.getUserName(), new ArrayList<VisitedLocation>(),
-                new ArrayList<UserReward>());
-        when(microserviceRewardsProxy.calculateRewards(user.getUserName()))
-                .thenReturn(userRewardsDto);
+        Location location1 = new Location(33.817595, -117.922008);
+
+        List<VisitedLocation> allUsersVisitedLocations = new ArrayList<>();
+        VisitedLocation visitedLocation = new VisitedLocation(user.getUserId(),
+                location1, new Date());
+        allUsersVisitedLocations.add(visitedLocation);
+
+        List<UserReward> allUsersRewards = new ArrayList<>();
+
+        when(microserviceRewardsProxy.calculateRewards(
+                userService.getUserRewardsDto(user.getUserId())))
+                        .thenReturn(allUsersRewards);
 
         // WHEN
-        List<UserReward> result = tripPricerService.getUserRewards(user);
+        List<UserReward> result = tripPricerService.getInstantUserRewards(user);
 
         // THEN
         assertThat(result.size()).isEqualTo(0);

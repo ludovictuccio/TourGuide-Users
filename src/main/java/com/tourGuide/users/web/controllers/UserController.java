@@ -2,12 +2,13 @@ package com.tourGuide.users.web.controllers;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tourGuide.users.domain.ClosestAttraction;
 import com.tourGuide.users.domain.Location;
 import com.tourGuide.users.domain.User;
+import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.domain.UserReward;
 import com.tourGuide.users.domain.VisitedLocation;
 import com.tourGuide.users.domain.dto.ProviderDto;
 import com.tourGuide.users.domain.dto.UserDto;
-import com.tourGuide.users.domain.dto.UserRewardsDto;
 import com.tourGuide.users.services.ITripPricerService;
 import com.tourGuide.users.services.IUserService;
 import com.tourGuide.users.web.exceptions.InvalidLocationException;
@@ -71,26 +72,19 @@ public class UserController {
      *
      * @param user
      * @return String or error 400
+     * @throws ExecutionException
+     * @throws InterruptedException
      */
     @PostMapping
-    public String addUser(@RequestBody final User user) {
+    public String addUser(@RequestBody final User user)
+            throws InterruptedException, ExecutionException {
         boolean isAdded = userService.addUser(user);
         if (!isAdded) {
             throw new UserInputException("NOT ADDED. User with userName: "
                     + user.getUserName().toUpperCase() + " already exists");
         }
+        userService.trackUserLocation(user);
         return "User added";
-    }
-
-    /**
-     * Controller method used to get all usernames.
-     *
-     * @return all usernames
-     */
-    @GetMapping("/getAllUsernames")
-    public List<String> getAllUsernames() {
-        List<String> allUsers = userService.getAllUsernames();
-        return allUsers;
     }
 
     /**
@@ -108,7 +102,7 @@ public class UserController {
 
     /**
      * Controller method used to return a user dto with user UUID & the last
-     * location.
+     * location. Method used with gps microservice.
      *
      * @param userName
      * @return userDto
@@ -124,42 +118,23 @@ public class UserController {
     }
 
     /**
-     * Controller method used to return a user dto with user UUID & the last
-     * location.
-     *
-     * @param userName
-     * @return userDto
-     */
-    @GetMapping("/getUserRewardsDto/{userId}")
-    public UserRewardsDto getUserRewardsDto(
-            @PathVariable("userId") UUID userId) {
-        UserRewardsDto userRewardsDto = userService.getUserRewardsDto(userId);
-        if (userRewardsDto == null) {
-            throw new UserInputException("User not found with UUID: " + userId);
-        }
-        return userRewardsDto;
-    }
-
-    /**
      * Method controller used to update user preferences with userName.
      * 
      * @param userName
      * @param userPreferences
      * @return String
      */
-//    @PutMapping("/updatePreferences")
-//    public String updateUserPreferences(@RequestParam final String userName,
-//            @RequestBody final UserPreferences userPreferences) {
-//
-//        boolean isUpdated = userService.updateUserPreferences(userName,
-//                userPreferences);
-//
-//        if (!isUpdated) {
-//            throw new UserInputException(
-//                    "User not found with userName: " + userName);
-//        }
-//        return "User preferences updated for user: " + userName;
-//    }
+    @PutMapping("/updatePreferences")
+    public String updateUserPreferences(@RequestParam final String userName,
+            @RequestBody final UserPreferences userPreferences) {
+        boolean isUpdated = userService.updateUserPreferences(userName,
+                userPreferences);
+        if (!isUpdated) {
+            throw new UserInputException(
+                    "User not found with userName: " + userName);
+        }
+        return "User preferences updated for user: " + userName;
+    }
 
     /**
      * Method controller used to get the five user's closest attractions.

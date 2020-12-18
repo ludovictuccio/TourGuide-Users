@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import com.tourGuide.users.domain.ClosestAttraction;
 import com.tourGuide.users.domain.Location;
 import com.tourGuide.users.domain.User;
+import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.domain.VisitedLocation;
 import com.tourGuide.users.domain.dto.UserDto;
 import com.tourGuide.users.domain.dto.UserRewardsDto;
@@ -61,6 +63,11 @@ public class UserService implements IUserService {
      */
     public boolean isPerformanceTestMode = false;
 
+    /**
+     * @param userRepo
+     * @param gpsProxy
+     * @param rewardsProxy
+     */
     public UserService(InternalUserRepository userRepo,
             MicroserviceGpsProxy gpsProxy,
             MicroserviceRewardsProxy rewardsProxy) {
@@ -95,13 +102,9 @@ public class UserService implements IUserService {
     }
 
     /**
-     * Method service used to retrieve the last user visited location.
-     *
-     * @param user
-     * @return the last visited location or error 400
+     * {@inheritDoc}
      */
     public VisitedLocation getUserLocation(final User user) {
-
         List<VisitedLocation> allVisitedLocations = user.getVisitedLocations();
 
         if (allVisitedLocations.size() == 0) {
@@ -112,9 +115,7 @@ public class UserService implements IUserService {
     }
 
     /**
-     * Method service used to retrieve all the last users visited locations.
-     *
-     * @return a Map<String, Location> with: userId / user last location
+     * {@inheritDoc}
      */
     public Map<String, Location> getAllUsersLocations() {
 
@@ -124,15 +125,11 @@ public class UserService implements IUserService {
         getAllUsersWithVisitedLocations()
                 .forEach(u -> allUsersLocation.put(u.getUserId().toString(),
                         getLastVisitedLocation(u).location));
-
         return allUsersLocation;
     }
 
     /**
-     * Method service used to add a new user, if userName not already exists and
-     * not empty.
-     *
-     * @param user
+     * {@inheritDoc}
      */
     public boolean addUser(final User user) {
         boolean isAdded = false;
@@ -150,23 +147,21 @@ public class UserService implements IUserService {
     }
 
     /**
-     * Method service used to return all userNames list.
-     *
-     * @return all userNames list
+     * {@inheritDoc}
      */
-    public List<String> getAllUsernames() {
-        return internalUserRepository.internalUserMap.values().stream()
-                .map(u -> u.getUserName()).collect(Collectors.toList());
+    public User getUser(final String userName) {
+        return internalUserRepository.internalUserMap.get(userName);
     }
 
     /**
-     * Method service used to get an user with his userName.
-     *
-     * @param userName
-     * @return user
+     * {@inheritDoc}
      */
-    public User getUser(String userName) {
-        return internalUserRepository.internalUserMap.get(userName);
+    public UserDto getUserDto(final String userName)
+            throws NullPointerException {
+        User user = getUser(userName);
+        UserDto userDto = new UserDto(user.getUserId(),
+                getLastVisitedLocation(user).getLocation());
+        return userDto;
     }
 
     /**
@@ -175,44 +170,31 @@ public class UserService implements IUserService {
      * @param userId
      * @return user
      */
-    public User getUserByUuid(UUID userId) {
-        List<User> users = internalUserRepository.internalUserMap.values()
-                .stream().filter(u -> u.getUserId().equals(userId))
-                .collect(Collectors.toList());
-        return users.get(0);
+    public Optional<User> getUserByUuid(final UUID userId)
+            throws NullPointerException {
+        Optional<User> user = Optional.of(internalUserRepository.internalUserMap
+                .values().stream().filter(u -> u.getUserId().equals(userId))
+                .findAny().orElse(null));
+        return user;
     }
 
     /**
-     * Method service used to get an user dto with his userName.
-     *
-     * @param userName
-     * @return userDto
+     * {@inheritDoc}
      */
-    public UserDto getUserDto(final String userName) {
-        User user = getUser(userName);
-        UserDto userDto = new UserDto(user.getUserId(),
-                getLastVisitedLocation(user).getLocation());
-        return userDto;
-    }
-
-    /**
-     * Method service used to get an userRewardsDto with his userName (to get
-     * user UUId, userName, all VisitedLocations and rewards).
-     *
-     * @param userName
-     * @return userRewardsDto
-     */
-    public UserRewardsDto getUserRewardsDto(final UUID userId) {
-        User user = getUserByUuid(userId);
-        UserRewardsDto userRewardsDto = new UserRewardsDto(user.getUserId(),
-                user.getVisitedLocations(), user.getUserRewards());
+    public UserRewardsDto getUserRewardsDto(final UUID userId)
+            throws NullPointerException {
+        Optional<User> user = getUserByUuid(userId);
+        if (user.equals(null)) {
+            return null;
+        }
+        UserRewardsDto userRewardsDto = new UserRewardsDto(
+                user.get().getUserId(), user.get().getVisitedLocations(),
+                user.get().getUserRewards());
         return userRewardsDto;
     }
 
     /**
-     * Method service used for Tracker to retrieve all users.
-     *
-     * @return all users
+     * {@inheritDoc}
      */
     public List<User> getAllUsers() {
         return internalUserRepository.internalUserMap.values().stream()
@@ -220,10 +202,7 @@ public class UserService implements IUserService {
     }
 
     /**
-     * Method service used to retrieve all users with existing VisitedLocation
-     * in history.
-     *
-     * @return all users with existing VisitedLocation
+     * {@inheritDoc}
      */
     public List<User> getAllUsersWithVisitedLocations() {
         List<User> usersWithExistingLocations = new ArrayList<>();
@@ -237,30 +216,22 @@ public class UserService implements IUserService {
     }
 
     /**
-     * Method service used to update user preferences with userName.
-     *
-     * @return boolean isUpdated
+     * {@inheritDoc}
      */
-//    public boolean updateUserPreferences(final String userName,
-//            final UserPreferences userPreferences) {
-//        boolean isUpdated = true;
-//        User user = this.internalUserRepository.internalUserMap.get(userName);
-//        if (user == null) {
-//            isUpdated = false;
-//            return isUpdated;
-//        }
-//        user.setUserPreferences(userPreferences);
-//
-//        // Update user rewards
-//        microserviceRewardsProxy.calculateRewards(user.getVisitedLocations(),
-//                user.getUserId());
-//
-//        return isUpdated;
-//    }
+    public boolean updateUserPreferences(final String userName,
+            final UserPreferences userPreferences) {
+        boolean isUpdated = true;
+        User user = this.internalUserRepository.internalUserMap.get(userName);
+        if (user == null) {
+            isUpdated = false;
+            return isUpdated;
+        }
+        user.setUserPreferences(userPreferences);
+        return isUpdated;
+    }
 
     /**
-     * This method call GPS microservice to return the five user's closest
-     * attractions.
+     * {@inheritDoc}
      */
     public List<ClosestAttraction> getTheFiveClosestAttractions(
             final String userName) {
@@ -268,13 +239,7 @@ public class UserService implements IUserService {
     }
 
     /**
-     * Method used to track user's location, calling GPS microservice. The
-     * location will be add to user's visited location history, and user's
-     * rewards points will be updated.
-     *
-     * @param user
-     * @throws ExecutionException
-     * @throws InterruptedException
+     * {@inheritDoc}
      */
     @Async
     public CompletableFuture<?> trackUserLocation(final User user) {

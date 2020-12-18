@@ -57,12 +57,12 @@ public class TrackerTest {
                 .isEqualTo(3);
 
         // WHEN
-        when(microserviceGpsProxy.getUserInstantLocation(USER_TEST))
+        when(microserviceGpsProxy.getUserInstantLocation(user.getUserId()))
                 .thenReturn(new VisitedLocationDto(user.getUserId(), -45.36665d,
                         2.365545d, new Date()));
         userService.trackUserLocation(user);
-        tracker.runForTest();
-        tracker.stopTracking();
+
+        Thread.sleep(200);// to wait response
 
         // THEN
         assertThat(userService.getUser(USER_TEST).getVisitedLocations().size())

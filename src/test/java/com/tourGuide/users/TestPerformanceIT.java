@@ -22,8 +22,8 @@ import com.tourGuide.users.proxies.MicroserviceGpsProxy;
 import com.tourGuide.users.services.UserService;
 
 @SpringBootTest
-//@TestPropertySource(locations = "classpath:application-test-10_000-users.properties")
-@TestPropertySource(locations = "classpath:application-test-100_000-users.properties")
+@TestPropertySource(locations = "classpath:application-test-10_000-users.properties")
+//@TestPropertySource(locations = "classpath:application-test-100_000-users.properties")
 public class TestPerformanceIT {
 
     @Autowired
@@ -47,6 +47,9 @@ public class TestPerformanceIT {
      * disable the running tracker in the background)
      * 
      * - Launch GPS and Rewards microservices
+     * 
+     * If you want change the number of users to test, change the value in the
+     * correct application file properties, defined with @TestPropertySource.
      * 
      */
 
@@ -99,7 +102,6 @@ public class TestPerformanceIT {
             });
         }
         System.out.println("Rewards added: " + rewardsAttributionCounter);
-
         stopWatch.stop();
         System.out.println("All asynchronous methods completed.");
         System.out.println(
@@ -116,9 +118,7 @@ public class TestPerformanceIT {
             assertThat(u.getUserRewards().size()).isGreaterThan(0);
             assertThat(u.getUserRewards().size()).isLessThan(3);
 
-            // 2, or more if the app tracker track in parallel
-            assertThat(u.getVisitedLocations().size())
-                    .isGreaterThanOrEqualTo(2);
+            assertThat(u.getVisitedLocations().size()).isEqualTo(2);
         });
     }
 
@@ -170,11 +170,9 @@ public class TestPerformanceIT {
 
         assertTrue(TimeUnit.MINUTES.toSeconds(20) >= TimeUnit.MILLISECONDS
                 .toSeconds(stopWatch.getTime()));
-
         allUsers.forEach(u -> {
             assertThat(u.getUserRewards().size()).isEqualTo(1);
         });
-
     }
 
 }

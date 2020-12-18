@@ -12,7 +12,6 @@ import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.UserReward;
 import com.tourGuide.users.domain.VisitedLocation;
 import com.tourGuide.users.domain.dto.ProviderDto;
-import com.tourGuide.users.domain.dto.UserRewardsDto;
 import com.tourGuide.users.proxies.MicroserviceRewardsProxy;
 
 import tripPricer.Provider;
@@ -33,10 +32,7 @@ public class TripPricerService implements ITripPricerService {
     private static final String TRIP_PRICER_API_KEY = "test-server-api-key";
 
     /**
-     * Method used to get offers from tripPricer.
-     *
-     * @param userName
-     * @return ProviderDto list
+     * {@inheritDoc}
      */
     public List<ProviderDto> getTripDeals(final String userName) {
 
@@ -59,37 +55,29 @@ public class TripPricerService implements ITripPricerService {
     }
 
     /**
-     * Method used to get all user's rewards points.
-     *
-     * @param user
-     * @return an integer, all user's rewards points
+     * {@inheritDoc}
      */
     public int getAllUserRewardsPoints(final User user) {
-        getUserRewards(user);
-
+        getInstantUserRewards(user);
         return user.getUserRewards().stream().mapToInt(i -> i.getRewardPoints())
                 .sum();
     }
 
     /**
-     * Method used to get all user rewards list.
-     *
-     * @param user
-     * @return user Rewards list
+     * {@inheritDoc}
      */
-    public List<UserReward> getUserRewards(final User user) {
-
-        UserRewardsDto userRewardsDto = microserviceRewardsProxy
-                .calculateRewards(user.getUserName());
-
+    public List<UserReward> getInstantUserRewards(final User user) {
+        List<UserReward> allUserRewards = microserviceRewardsProxy
+                .calculateRewards(
+                        userService.getUserRewardsDto(user.getUserId()));
         user.getUserRewards().clear();
-
-        for (UserReward rewards : userRewardsDto.getUserRewards()) {
-            user.addUserReward(rewards);
-        }
+        allUserRewards.stream().forEach(reward -> user.addUserReward(reward));
         return user.getUserRewards();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void testAddUserRewardsPoints() {
         // add to internalUser1 visited locations for existing attraction from
         // gpsUtil
@@ -100,19 +88,25 @@ public class TripPricerService implements ITripPricerService {
         Location existingAttraction3 = new Location(35.141689, -115.510399);
         Location existingAttraction4 = new Location(33.881866, -115.90065);
 
+        // Attraction 1
         user.addToVisitedLocations(new VisitedLocation(user.getUserId(),
                 existingAttraction1, new Date()));
         user.addToVisitedLocations(new VisitedLocation(user.getUserId(),
                 existingAttraction1, new Date()));
+
+        // Attraction 2
         user.addToVisitedLocations(new VisitedLocation(user.getUserId(),
                 existingAttraction2, new Date()));
-        user.addToVisitedLocations(new VisitedLocation(user.getUserId(),
-                existingAttraction4, new Date()));
+
+        // Attraction 3
         user.addToVisitedLocations(new VisitedLocation(user.getUserId(),
                 existingAttraction3, new Date()));
+
+        // Attraction 4
         user.addToVisitedLocations(new VisitedLocation(user.getUserId(),
                 existingAttraction4, new Date()));
-        // added 4 user rewards
+        user.addToVisitedLocations(new VisitedLocation(user.getUserId(),
+                existingAttraction4, new Date()));
     }
 
 }
