@@ -103,8 +103,11 @@ public class UserService implements IUserService {
 
     /**
      * {@inheritDoc}
+     * 
+     * @throws InvalidLocationException
      */
-    public VisitedLocation getUserLocation(final User user) {
+    public VisitedLocation getUserLocation(final User user)
+            throws InvalidLocationException {
         List<VisitedLocation> allVisitedLocations = user.getVisitedLocations();
 
         if (allVisitedLocations.size() == 0) {
@@ -158,9 +161,9 @@ public class UserService implements IUserService {
      */
     public UserDto getUserDto(final String userName)
             throws NullPointerException {
-        User user = getUser(userName);
-        UserDto userDto = new UserDto(user.getUserId(),
-                getLastVisitedLocation(user).getLocation());
+        Optional<User> user = Optional.of(getUser(userName));
+        UserDto userDto = new UserDto(user.get().getUserId(),
+                getLastVisitedLocation(user.get()).getLocation());
         return userDto;
     }
 
@@ -184,9 +187,6 @@ public class UserService implements IUserService {
     public UserRewardsDto getUserRewardsDto(final UUID userId)
             throws NullPointerException {
         Optional<User> user = getUserByUuid(userId);
-        if (user.equals(null)) {
-            return null;
-        }
         UserRewardsDto userRewardsDto = new UserRewardsDto(
                 user.get().getUserId(), user.get().getVisitedLocations(),
                 user.get().getUserRewards());

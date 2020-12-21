@@ -19,25 +19,29 @@ import com.tourGuide.users.domain.User;
 import com.tourGuide.users.domain.VisitedLocation;
 import com.tourGuide.users.domain.dto.AttractionDto;
 import com.tourGuide.users.proxies.MicroserviceGpsProxy;
+import com.tourGuide.users.proxies.MicroserviceRewardsProxy;
 import com.tourGuide.users.services.UserService;
 
-@SpringBootTest
-@TestPropertySource(locations = "classpath:application-test-10_000-users.properties")
+@TestPropertySource(locations = "classpath:application-test-100-users.properties")
+//@TestPropertySource(locations = "classpath:application-test-10_000-users.properties")
 //@TestPropertySource(locations = "classpath:application-test-100_000-users.properties")
+@SpringBootTest
 public class TestPerformanceIT {
+
+    @Autowired
+    private MicroserviceRewardsProxy microserviceRewardsProxy;
 
     @Autowired
     public MicroserviceGpsProxy microserviceGpsProxy;
 
     @Autowired
-    private UserService userService;
+    public UserService userService;
 
     static {
         Locale.setDefault(Locale.US);
     }
 
-    private static int visitedLocationsCounter = 0;
-    private static int rewardsAttributionCounter = 0;
+    int visitedLocationsCounter, rewardsAttributionCounter;
 
     /*
      * 
@@ -56,6 +60,8 @@ public class TestPerformanceIT {
     @Test
     @DisplayName("TRACK LOCATIONS & REWARDS - Tracker simulation with 100,000 users")
     public void trackerHighVolumeTest() throws InterruptedException {
+        visitedLocationsCounter = 0;
+        rewardsAttributionCounter = 0;
         AttractionDto attraction = microserviceGpsProxy.getAllAttractions()
                 .get(0);
         List<User> allUsers = userService.getAllUsers();
@@ -102,6 +108,7 @@ public class TestPerformanceIT {
             });
         }
         System.out.println("Rewards added: " + rewardsAttributionCounter);
+
         stopWatch.stop();
         System.out.println("All asynchronous methods completed.");
         System.out.println(
@@ -125,6 +132,8 @@ public class TestPerformanceIT {
     @Test
     @DisplayName("GET REWARDS - Users should be incremented up to 100,000, and test finishes within 20 minutes")
     public void highVolumeGetRewards() {
+        visitedLocationsCounter = 0;
+        rewardsAttributionCounter = 0;
         AttractionDto attraction = microserviceGpsProxy.getAllAttractions()
                 .get(0);
         List<User> allUsers = userService.getAllUsers();

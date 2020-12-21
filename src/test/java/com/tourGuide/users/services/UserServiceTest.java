@@ -71,7 +71,7 @@ public class UserServiceTest {
     private ClosestAttraction lePantheon;
     private ClosestAttraction disneylandParis;
 
-    private static Location userLocation;
+    private Location userLocation;
 
     @BeforeEach
     public void setUpPerTest() {
@@ -100,32 +100,10 @@ public class UserServiceTest {
     }
 
     @Test
-    @Tag("getLastVisitedLocation")
-    @DisplayName("Get Last VisitedLocation - Ok")
-    public void givenUser_whenGetLastLocation_thenReturnLastVisitedLocation() {
-        // GIVEN
-        user = new User(UUID.randomUUID(), "jon1", "111", "jon1@tourGuide.com");
-        userService.addUser(user);
-
-        Date date = new Date(2020, 01, 01);
-        Date date2 = new Date(2020, 02, 02);
-
-        user.addToVisitedLocations(
-                new VisitedLocation(user.getUserId(), new Location(), date));
-        user.addToVisitedLocations(
-                new VisitedLocation(user.getUserId(), new Location(), date2));
-
-        // WHEN
-        VisitedLocation result = userService.getLastVisitedLocation(user);
-
-        // THEN
-        assertThat(result.getTimeVisited()).isEqualTo(date2);
-    }
-
-    @Test
     @Tag("getUserLocation")
     @DisplayName("User Location - Ok")
-    public void givenUser_whenGetLocation_thenReturnOk() {
+    public void givenUser_whenGetLocation_thenReturnOk()
+            throws InvalidLocationException {
         // GIVEN
         user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
 
@@ -652,6 +630,31 @@ public class UserServiceTest {
 
         // THEN
         assertThat(user.getVisitedLocations().size()).isEqualTo(1);
+    }
+
+    @Test
+    @Tag("getLastVisitedLocation")
+    @DisplayName("Get Last VisitedLocation - Ok")
+    public void givenUser_whenGetLastLocation_thenReturnLastVisitedLocation() {
+        // GIVEN
+        user = new User(UUID.randomUUID(), "jon1", "111", "jon1@tourGuide.com");
+        userService.addUser(user);
+
+        @SuppressWarnings("deprecation")
+        Date date = new Date(2020, 01, 01);
+        @SuppressWarnings("deprecation")
+        Date date2 = new Date(2020, 02, 02);
+
+        user.addToVisitedLocations(
+                new VisitedLocation(user.getUserId(), new Location(), date));
+        user.addToVisitedLocations(
+                new VisitedLocation(user.getUserId(), new Location(), date2));
+
+        // WHEN
+        VisitedLocation result = userService.getLastVisitedLocation(user);
+
+        // THEN
+        assertThat(result.getTimeVisited()).isEqualTo(date2);
     }
 
 }

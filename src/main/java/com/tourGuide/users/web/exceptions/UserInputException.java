@@ -1,6 +1,6 @@
 package com.tourGuide.users.web.exceptions;
 
-public class UserInputException extends RuntimeException {
+public class UserInputException extends Exception {
 
     private static final long serialVersionUID = 1L;
 

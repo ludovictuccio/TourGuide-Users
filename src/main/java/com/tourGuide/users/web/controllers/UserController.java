@@ -49,10 +49,13 @@ public class UserController {
      *
      * @param userName
      * @return user location or error 400
+     * @throws UserInputException
+     * @throws InvalidLocationException
      */
     @ApiOperation(value = "GET location", notes = "Need param userName - Return 200 OK or 400 bad request. Method used to return the last saved user location", response = Location.class)
     @GetMapping("/getLocation")
-    public Location getLocation(@RequestParam final String userName) {
+    public Location getLocation(@RequestParam final String userName)
+            throws UserInputException, InvalidLocationException {
         User user = retrieveUser(userName);
         checkExistingUser(userName);
         VisitedLocation visitedLocation = userService.getUserLocation(user);
@@ -78,11 +81,13 @@ public class UserController {
      * @return String or error 400
      * @throws ExecutionException
      * @throws InterruptedException
+     * @throws UserInputException
      */
     @ApiOperation(value = "POST add new User", notes = "Need body user - Location will be tracked - Return 200 OK or 400 bad request.", response = String.class)
     @PostMapping
     public String addUser(@RequestBody final User user)
-            throws InterruptedException, ExecutionException {
+            throws InterruptedException, ExecutionException,
+            UserInputException {
         boolean isAdded = userService.addUser(user);
         if (!isAdded) {
             throw new UserInputException("NOT ADDED. User with userName: "
@@ -97,10 +102,11 @@ public class UserController {
      *
      * @param userName
      * @return user
+     * @throws UserInputException
      */
     @ApiOperation(value = "GET User", notes = "Need param userName - Return 200 OK or 400 bad request.", response = User.class)
     @GetMapping("/getUser")
-    public User getUser(String userName) {
+    public User getUser(String userName) throws UserInputException {
         User user = retrieveUser(userName);
         checkExistingUser(userName);
         return user;
@@ -112,10 +118,12 @@ public class UserController {
      *
      * @param userName
      * @return userDto
+     * @throws UserInputException
      */
     @ApiOperation(value = "GET UserDto", notes = "Need PathVariable userName - Method used to return a user dto with user UUID & the last location, used with gps microservice.", response = UserDto.class)
     @GetMapping("/getUserDto/{userName}")
-    public UserDto getUserDto(@PathVariable("userName") String userName) {
+    public UserDto getUserDto(@PathVariable("userName") String userName)
+            throws UserInputException {
         UserDto userDto = userService.getUserDto(userName);
         if (userDto == null) {
             throw new UserInputException(
@@ -130,11 +138,13 @@ public class UserController {
      * @param userName
      * @param userPreferences
      * @return String
+     * @throws UserInputException
      */
     @ApiOperation(value = "PUT Update user preferences", notes = "Need param userName & body UserPreferences - Return 200 OK or 400 bad request - Method used to update user preferences with userName.", response = String.class)
     @PutMapping("/updatePreferences")
     public String updateUserPreferences(@RequestParam final String userName,
-            @RequestBody final UserPreferences userPreferences) {
+            @RequestBody final UserPreferences userPreferences)
+            throws UserInputException {
         boolean isUpdated = userService.updateUserPreferences(userName,
                 userPreferences);
         if (!isUpdated) {
@@ -149,11 +159,14 @@ public class UserController {
      *
      * @param userName
      * @return the 5 user's closest attractions
+     * @throws UserInputException
+     * @throws InvalidLocationException
      */
     @ApiOperation(value = "GET the five closest attractions", notes = "Need param userName - Return 200 OK or 400 bad request - Method used to get the five user's closest attractions.", response = ClosestAttraction.class)
     @GetMapping("/getTheFiveClosestAttractions")
     public List<ClosestAttraction> getTheFiveClosestAttractions(
-            @RequestParam String userName) {
+            @RequestParam String userName)
+            throws UserInputException, InvalidLocationException {
         User user = retrieveUser(userName);
         checkExistingUser(userName);
         if (user.getVisitedLocations().size() == 0) {
@@ -168,10 +181,12 @@ public class UserController {
      *
      * @param userName
      * @return user's trip deals
+     * @throws UserInputException
      */
     @ApiOperation(value = "GET Trip Deals", notes = "Need param userName - Return 200 OK or 400 bad request - Method used to get user's trip deals.", response = ProviderDto.class)
     @GetMapping("/getTripDeals")
-    public List<ProviderDto> getTripDeals(@RequestParam final String userName) {
+    public List<ProviderDto> getTripDeals(@RequestParam final String userName)
+            throws UserInputException {
         checkExistingUser(userName);
         return tripPricerService.getTripDeals(userName);
     }
@@ -181,10 +196,12 @@ public class UserController {
      *
      * @param userName
      * @return user's rewards
+     * @throws UserInputException
      */
     @ApiOperation(value = "GET user rewards", notes = "Need param userName - Return 200 OK or 400 bad request - Method used to get user's rewards.", response = ProviderDto.class)
     @GetMapping("/getRewards")
-    public List<UserReward> getRewards(@RequestParam final String userName) {
+    public List<UserReward> getRewards(@RequestParam final String userName)
+            throws UserInputException {
         checkExistingUser(userName);
         tripPricerService.getInstantUserRewards(getUser(userName));
         return getUser(userName).getUserRewards();
@@ -195,10 +212,12 @@ public class UserController {
      *
      * @param userName
      * @return integer user's rewards points
+     * @throws UserInputException
      */
     @ApiOperation(value = "GET All user rewards points", notes = "Need param userName - Return 200 OK or 400 bad request - Method used to get user's rewards points.", response = Integer.class)
     @GetMapping("/getAllUserRewardsPoints")
-    public int getAllUserRewardsPoints(@RequestParam final String userName) {
+    public int getAllUserRewardsPoints(@RequestParam final String userName)
+            throws UserInputException {
         checkExistingUser(userName);
         return tripPricerService.getAllUserRewardsPoints(getUser(userName));
     }
@@ -207,7 +226,8 @@ public class UserController {
         return userService.getUser(userName);
     }
 
-    public void checkExistingUser(final String userName) {
+    public void checkExistingUser(final String userName)
+            throws UserInputException {
         User user = retrieveUser(userName);
         if (user == null) {
             throw new UserInputException(

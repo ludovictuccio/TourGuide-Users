@@ -69,16 +69,23 @@ public class InternalUserRepository {
         });
     }
 
+    private static final Random RANDOM = new Random();
+
+    public static double randomLocationGenerator(double rightLimit,
+            double leftLimit) {
+        return RANDOM.nextDouble() * (rightLimit - leftLimit);
+    }
+
     private static double generateRandomLongitude() {
         double leftLimit = -180;
         double rightLimit = 180;
-        return leftLimit + new Random().nextDouble() * (rightLimit - leftLimit);
+        return leftLimit + randomLocationGenerator(rightLimit, leftLimit);
     }
 
     private static double generateRandomLatitude() {
         double leftLimit = -85.05112878;
         double rightLimit = 85.05112878;
-        return leftLimit + new Random().nextDouble() * (rightLimit - leftLimit);
+        return leftLimit + randomLocationGenerator(rightLimit, leftLimit);
     }
 
     private static Date getRandomTime() {

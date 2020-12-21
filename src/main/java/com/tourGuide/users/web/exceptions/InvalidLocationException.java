@@ -1,6 +1,6 @@
 package com.tourGuide.users.web.exceptions;
 
-public class InvalidLocationException extends RuntimeException {
+public class InvalidLocationException extends Exception {
 
     private static final long serialVersionUID = 1L;
 

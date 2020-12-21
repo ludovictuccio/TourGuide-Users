@@ -11,18 +11,16 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserReward {
 
+    @Getter
+    @Setter
     public VisitedLocation visitedLocation;
 
+    @Getter
+    @Setter
     public AttractionDto attraction;
 
     @Getter
     @Setter
     private int rewardPoints;
-
-    public UserReward(VisitedLocation visitedLocation,
-            AttractionDto attraction) {
-        this.visitedLocation = visitedLocation;
-        this.attraction = attraction;
-    }
 
 }

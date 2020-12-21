@@ -58,6 +58,7 @@ public class UserControllerIT {
     @MockBean
     private MicroserviceRewardsProxy microserviceRewardsProxy;
 
+    private static final String URI_INDEX = "/user/";
     private static final String URI_POST_ADD_USER = "/user";
     private static final String URI_UPDATE_PREFERENCES = "/user/updatePreferences";
     private static final String URI_GET_LOCATION = "/user/getLocation";
@@ -77,6 +78,16 @@ public class UserControllerIT {
     @BeforeEach
     public void setUpPerTest() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
+
+    @Test
+    @Tag("indexHomePageTest")
+    @DisplayName("indexHomePageTest - Ok")
+    public void indexHomePageTest() throws Exception {
+        this.mockMvc
+                .perform(get(URI_INDEX).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk()).andReturn();
     }
 
     @Test

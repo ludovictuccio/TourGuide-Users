@@ -88,24 +88,17 @@ public class TripPricerServiceTest {
         // GIVEN
         User user = new User(UUID.randomUUID(), "username", "029988776655",
                 "email@gmail.fr");
-
         Location location1 = new Location(33.817595, -117.922008);
-        Location location2 = new Location(43.582767, -110.821999);
-
         AttractionDto attractionDto = new AttractionDto("Disneyland", location1,
                 "Anaheim", "CA", UUID.randomUUID());
-
-        List<VisitedLocation> allUsersVisitedLocations = new ArrayList<>();
         VisitedLocation visitedLocation = new VisitedLocation(user.getUserId(),
                 location1, new Date());
-        VisitedLocation visitedLocation2 = new VisitedLocation(user.getUserId(),
-                location2, new Date());
-        allUsersVisitedLocations.add(visitedLocation);
-        allUsersVisitedLocations.add(visitedLocation2);
 
         List<UserReward> allUsersRewards = new ArrayList<>();
-        UserReward userReward = new UserReward(visitedLocation, attractionDto);
-        UserReward userReward2 = new UserReward(visitedLocation, attractionDto);
+        UserReward userReward = new UserReward(visitedLocation, attractionDto,
+                100);
+        UserReward userReward2 = new UserReward(visitedLocation, attractionDto,
+                100);
         userReward.setRewardPoints(100);
         userReward2.setRewardPoints(80);
         allUsersRewards.add(userReward);
@@ -156,13 +149,12 @@ public class TripPricerServiceTest {
         AttractionDto attractionDto = new AttractionDto("Disneyland", location1,
                 "Anaheim", "CA", UUID.randomUUID());
 
-        List<VisitedLocation> allUsersVisitedLocations = new ArrayList<>();
         VisitedLocation visitedLocation = new VisitedLocation(user.getUserId(),
                 location1, new Date());
-        allUsersVisitedLocations.add(visitedLocation);
 
         List<UserReward> allUsersRewards = new ArrayList<>();
-        UserReward userReward = new UserReward(visitedLocation, attractionDto);
+        UserReward userReward = new UserReward(visitedLocation, attractionDto,
+                100);
         allUsersRewards.add(userReward);
         userReward.setRewardPoints(100);
 
@@ -185,12 +177,6 @@ public class TripPricerServiceTest {
         // GIVEN
         User user = new User(UUID.randomUUID(), "username", "029988776655",
                 "email@gmail.fr");
-        Location location1 = new Location(33.817595, -117.922008);
-
-        List<VisitedLocation> allUsersVisitedLocations = new ArrayList<>();
-        VisitedLocation visitedLocation = new VisitedLocation(user.getUserId(),
-                location1, new Date());
-        allUsersVisitedLocations.add(visitedLocation);
 
         List<UserReward> allUsersRewards = new ArrayList<>();
 

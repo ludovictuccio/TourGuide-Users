@@ -1,8 +1,6 @@
 package com.tourGuide.users.tracker;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -40,12 +38,6 @@ public class Tracker extends Thread {
     public void startTracking() {
         isStopTracking = false;
         executorService.submit(this);
-    }
-
-    public void stopTracking() {
-        LOGGER.info("Tracker stopped.");
-        isStopTracking = true;
-        executorService.shutdownNow();
     }
 
     /**
@@ -86,40 +78,6 @@ public class Tracker extends Thread {
             } catch (InterruptedException e) {
                 break;
             }
-        }
-    }
-
-    /**
-     * Method used for test, with track all 2 seconds
-     */
-    public void runForTest() {
-        StopWatch stopWatch = new StopWatch();
-
-        List<User> users = new ArrayList<>();
-        User user = new User(UUID.randomUUID(), "test", "0299887744",
-                "email@gmail.com");
-        users.add(user);
-
-        stopWatch.start();
-        users.forEach(u -> {
-            userService.trackUserLocation(u);
-            try {
-                Thread.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        stopWatch.stop();
-
-        LOGGER.debug("Tracker Time Elapsed: "
-                + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime())
-                + " seconds.");
-        stopWatch.reset();
-
-        try {
-            LOGGER.debug("Tracker sleeping");
-            TimeUnit.SECONDS.sleep(TimeUnit.SECONDS.toSeconds(2));
-        } catch (InterruptedException e) {
         }
     }
 

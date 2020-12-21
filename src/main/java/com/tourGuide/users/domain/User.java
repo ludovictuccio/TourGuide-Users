@@ -5,13 +5,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tripPricer.Provider;
 
-@AllArgsConstructor
 @NoArgsConstructor
 public class User {
 
@@ -30,8 +28,6 @@ public class User {
     @Setter
     private String emailAddress;
 
-    @Getter
-    @Setter
     private Date latestLocationTimestamp;
 
     @Getter
@@ -60,6 +56,7 @@ public class User {
 
     public void addToVisitedLocations(VisitedLocation visitedLocation) {
         visitedLocations.add(visitedLocation);
+        setLatestLocationTimestamp(visitedLocation.getTimeVisited());
     }
 
     public List<VisitedLocation> getVisitedLocations() {
@@ -84,6 +81,14 @@ public class User {
 
     public void setUserPreferences(UserPreferences userPreferences) {
         this.userPreferences = userPreferences;
+    }
+
+    public void setLatestLocationTimestamp(Date latestLocationTimeStamp) {
+        latestLocationTimestamp = (Date) latestLocationTimeStamp.clone();
+    }
+
+    public Date getLatestLocationTimestamp() {
+        return (Date) latestLocationTimestamp.clone();
     }
 
 }

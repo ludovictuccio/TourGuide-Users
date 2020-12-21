@@ -13,6 +13,7 @@ import com.tourGuide.users.domain.UserPreferences;
 import com.tourGuide.users.domain.VisitedLocation;
 import com.tourGuide.users.domain.dto.UserDto;
 import com.tourGuide.users.domain.dto.UserRewardsDto;
+import com.tourGuide.users.web.exceptions.InvalidLocationException;
 
 public interface IUserService {
 
@@ -86,7 +87,8 @@ public interface IUserService {
      * @param user
      * @return the last visited location or error 400
      */
-    VisitedLocation getUserLocation(final User user);
+    VisitedLocation getUserLocation(final User user)
+            throws InvalidLocationException;
 
     /**
      * This method call GPS microservice to return the five user's closest

@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 @ControllerAdvice
-public class BadRequestException {
+public class NotFoundAdvisor {
 
-    @ExceptionHandler({ UserInputException.class })
+    @ExceptionHandler({ InvalidLocationException.class })
     public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST,
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND,
                 ex.getLocalizedMessage(), "error occurred");
         return new ResponseEntity<Object>(apiError, new HttpHeaders(),
                 apiError.getStatus());
     }
+
 }
