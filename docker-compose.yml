@@ -1,0 +1,37 @@
+version: '3'
+services:
+  api-gateway:
+    image: ludotuc45/tourguide-api-gateway:latest
+    container_name: tourguide-api-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - default
+    restart: always
+
+  rewards:
+    image: ludotuc45/tourguide-rewards:latest
+    container_name: tourguide-rewards
+    ports:
+      - "9003:9003"
+    networks:
+      - default
+    restart: always
+
+  gps:
+    image: ludotuc45/tourguide-gps:latest
+    container_name: tourguide-gps
+    ports:
+      - "9002:9002"
+    networks:
+      - default
+    restart: always
+
+  users:
+    image: ludotuc45/tourguide-users:latest
+    container_name: tourguide-users
+    ports:
+      - "9001:9001"
+    networks:
+      - default
+    restart: always
