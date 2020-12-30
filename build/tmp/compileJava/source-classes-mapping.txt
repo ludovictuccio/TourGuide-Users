@@ -1,0 +1,54 @@
+com/tourGuide/users/domain/dto/ProviderDto.java
+ com.tourGuide.users.domain.dto.ProviderDto
+com/tourGuide/users/web/controllers/UserController.java
+ com.tourGuide.users.web.controllers.UserController
+com/tourGuide/users/TourGuideUsersApplication.java
+ com.tourGuide.users.TourGuideUsersApplication
+com/tourGuide/users/domain/Location.java
+ com.tourGuide.users.domain.Location
+com/tourGuide/users/services/IUserService.java
+ com.tourGuide.users.services.IUserService
+com/tourGuide/users/services/ITripPricerService.java
+ com.tourGuide.users.services.ITripPricerService
+com/tourGuide/users/services/UserService.java
+ com.tourGuide.users.services.UserService
+com/tourGuide/users/services/TripPricerService.java
+ com.tourGuide.users.services.TripPricerService
+com/tourGuide/users/proxies/MicroserviceGpsProxy.java
+ com.tourGuide.users.proxies.MicroserviceGpsProxy
+com/tourGuide/users/domain/dto/UserRewardsDto.java
+ com.tourGuide.users.domain.dto.UserRewardsDto
+com/tourGuide/users/web/exceptions/ApiError.java
+ com.tourGuide.users.web.exceptions.ApiError
+com/tourGuide/users/domain/UserReward.java
+ com.tourGuide.users.domain.UserReward
+com/tourGuide/users/web/exceptions/BadRequestAdvisor.java
+ com.tourGuide.users.web.exceptions.BadRequestAdvisor
+com/tourGuide/users/proxies/MicroserviceRewardsProxy.java
+ com.tourGuide.users.proxies.MicroserviceRewardsProxy
+com/tourGuide/users/domain/ClosestAttraction.java
+ com.tourGuide.users.domain.ClosestAttraction
+com/tourGuide/users/web/exceptions/InvalidLocationException.java
+ com.tourGuide.users.web.exceptions.InvalidLocationException
+com/tourGuide/users/domain/dto/UserDto.java
+ com.tourGuide.users.domain.dto.UserDto
+com/tourGuide/users/web/exceptions/NotFoundAdvisor.java
+ com.tourGuide.users.web.exceptions.NotFoundAdvisor
+com/tourGuide/users/tracker/Tracker.java
+ com.tourGuide.users.tracker.Tracker
+com/tourGuide/users/domain/UserPreferences.java
+ com.tourGuide.users.domain.UserPreferences
+com/tourGuide/users/repository/InternalTestHelper.java
+ com.tourGuide.users.repository.InternalTestHelper
+com/tourGuide/users/domain/VisitedLocation.java
+ com.tourGuide.users.domain.VisitedLocation
+com/tourGuide/users/web/exceptions/UserInputException.java
+ com.tourGuide.users.web.exceptions.UserInputException
+com/tourGuide/users/domain/dto/VisitedLocationDto.java
+ com.tourGuide.users.domain.dto.VisitedLocationDto
+com/tourGuide/users/repository/InternalUserRepository.java
+ com.tourGuide.users.repository.InternalUserRepository
+com/tourGuide/users/domain/dto/AttractionDto.java
+ com.tourGuide.users.domain.dto.AttractionDto
+com/tourGuide/users/domain/User.java
+ com.tourGuide.users.domain.User
