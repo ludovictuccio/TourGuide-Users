@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TripPricerService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">users</a> &gt; <a href="index.source.html" class="el_package">com.tourGuide.users.services</a> &gt; <span class="el_source">TripPricerService.java</span></div><h1>TripPricerService.java</h1><pre class="source lang-java linenums">package com.tourGuide.users.services;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.tourGuide.users.domain.Location;
+import com.tourGuide.users.domain.User;
+import com.tourGuide.users.domain.UserReward;
+import com.tourGuide.users.domain.VisitedLocation;
+import com.tourGuide.users.domain.dto.ProviderDto;
+import com.tourGuide.users.proxies.MicroserviceRewardsProxy;
+
+import tripPricer.Provider;
+import tripPricer.TripPricer;
+
+@Service
+<span class="fc" id="L21">public class TripPricerService implements ITripPricerService {</span>
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private MicroserviceRewardsProxy microserviceRewardsProxy;
+
+    @Autowired
+    private TripPricer tripPricer;
+
+    private static final String TRIP_PRICER_API_KEY = &quot;test-server-api-key&quot;;
+
+    /**
+     * {@inheritDoc}
+     */
+    public List&lt;ProviderDto&gt; getTripDeals(final String userName) {
+
+<span class="fc" id="L39">        User user = userService.getUser(userName);</span>
+
+<span class="fc" id="L41">        int cumulatativeRewardPoints = getAllUserRewardsPoints(user);</span>
+
+<span class="fc" id="L43">        List&lt;Provider&gt; providers = tripPricer.getPrice(TRIP_PRICER_API_KEY,</span>
+<span class="fc" id="L44">                user.getUserId(), user.getUserPreferences().getNumberOfAdults(),</span>
+<span class="fc" id="L45">                user.getUserPreferences().getNumberOfChildren(),</span>
+<span class="fc" id="L46">                user.getUserPreferences().getTripDuration(),</span>
+                cumulatativeRewardPoints);
+<span class="fc" id="L48">        user.setTripDeals(providers);</span>
+
+<span class="fc" id="L50">        List&lt;ProviderDto&gt; providerDtoList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L51">        providers.forEach(p -&gt; {</span>
+<span class="fc" id="L52">            providerDtoList.add(new ProviderDto(p.name, p.price, p.tripId));</span>
+<span class="fc" id="L53">        });</span>
+<span class="fc" id="L54">        return providerDtoList;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getAllUserRewardsPoints(final User user) {
+<span class="fc" id="L61">        getInstantUserRewards(user);</span>
+<span class="fc" id="L62">        return user.getUserRewards().stream().mapToInt(i -&gt; i.getRewardPoints())</span>
+<span class="fc" id="L63">                .sum();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List&lt;UserReward&gt; getInstantUserRewards(final User user) {
+<span class="fc" id="L70">        List&lt;UserReward&gt; allUserRewards = microserviceRewardsProxy</span>
+<span class="fc" id="L71">                .calculateRewards(</span>
+<span class="fc" id="L72">                        userService.getUserRewardsDto(user.getUserId()));</span>
+<span class="fc" id="L73">        user.getUserRewards().clear();</span>
+<span class="fc" id="L74">        allUserRewards.stream().forEach(reward -&gt; user.addUserReward(reward));</span>
+<span class="fc" id="L75">        return user.getUserRewards();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void testAddUserRewardsPoints() {
+        // add to internalUser1 visited locations for existing attraction from
+        // gpsUtil
+<span class="fc" id="L84">        User user = userService.getUser(&quot;internalUser1&quot;);</span>
+
+<span class="fc" id="L86">        Location existingAttraction1 = new Location(33.817595, -117.922008);</span>
+<span class="fc" id="L87">        Location existingAttraction2 = new Location(43.582767, -110.821999);</span>
+<span class="fc" id="L88">        Location existingAttraction3 = new Location(35.141689, -115.510399);</span>
+<span class="fc" id="L89">        Location existingAttraction4 = new Location(33.881866, -115.90065);</span>
+
+        // Attraction 1
+<span class="fc" id="L92">        user.addToVisitedLocations(new VisitedLocation(user.getUserId(),</span>
+                existingAttraction1, new Date()));
+<span class="fc" id="L94">        user.addToVisitedLocations(new VisitedLocation(user.getUserId(),</span>
+                existingAttraction1, new Date()));
+
+        // Attraction 2
+<span class="fc" id="L98">        user.addToVisitedLocations(new VisitedLocation(user.getUserId(),</span>
+                existingAttraction2, new Date()));
+
+        // Attraction 3
+<span class="fc" id="L102">        user.addToVisitedLocations(new VisitedLocation(user.getUserId(),</span>
+                existingAttraction3, new Date()));
+
+        // Attraction 4
+<span class="fc" id="L106">        user.addToVisitedLocations(new VisitedLocation(user.getUserId(),</span>
+                existingAttraction4, new Date()));
+<span class="fc" id="L108">        user.addToVisitedLocations(new VisitedLocation(user.getUserId(),</span>
+                existingAttraction4, new Date()));
+<span class="fc" id="L110">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

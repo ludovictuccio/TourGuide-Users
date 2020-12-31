@@ -38,7 +38,6 @@ The microservice used for calculate the rewards, that contains RewardsCentral.ja
 
 ---
 
-
 ## Installing
 
 1. Install **Java**: https://www.oracle.com/java/technologies/javase-downloads.html <br/>
@@ -54,9 +53,11 @@ https://marketplace.eclipse.org/content/gradle-ide-pack
 You must execute an external JAR.
 
 
-## API documentation
+## To run microservice:
 
-- **Swagger 3:** http://localhost:9001/swagger-ui/index.html#/
+- **With your IDE**: refer to **application.properties** to set valid proxies url
+
+- **With Docker**: the jar hosted on GitHub is for a Docker deployment ("localhost" changed with the image Docker)
 
 
 ## For Docker deploiement:
@@ -68,9 +69,15 @@ https://docs.docker.com/docker-for-windows/ or https://docs.docker.com/docker-fo
 - `docker build -t tourguide-users .`
 - `docker run -d -p 9001:9001 tourguide-users`
 
-3. (**Optional** - For a Docker-Compose deploiement) <br/>
-If you want to deploy all TourGuide microservices, use the **docker-compose.yml** on the package root, running:
+3. To run all microservices on the same network, with a Docker-Compose deploiement: <br/>
+If you want to deploy all TourGuide microservices, use the **docker-compose.yml** on the package root, after each Dockerfile deployment for the 4 microservices, running:
+- `docker network create tourguide-net`
 - `docker-compose up -d`
+
+
+## API documentation
+
+- **Swagger 3:** http://localhost:9001/swagger-ui/index.html#/
 
 
 ## Endpoints

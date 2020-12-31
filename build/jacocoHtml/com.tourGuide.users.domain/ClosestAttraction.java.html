@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClosestAttraction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">users</a> &gt; <a href="index.source.html" class="el_package">com.tourGuide.users.domain</a> &gt; <span class="el_source">ClosestAttraction.java</span></div><h1>ClosestAttraction.java</h1><pre class="source lang-java linenums">package com.tourGuide.users.domain;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+<span class="nc" id="L8">@NoArgsConstructor</span>
+<span class="fc" id="L9">@AllArgsConstructor</span>
+public class ClosestAttraction {
+
+<span class="fc" id="L12">    @Getter</span>
+<span class="nc" id="L13">    @Setter</span>
+    public String attractionName;
+
+<span class="nc" id="L16">    @Getter</span>
+<span class="nc" id="L17">    @Setter</span>
+    public Location attractionLocation;
+
+<span class="fc" id="L20">    @Getter</span>
+<span class="nc" id="L21">    @Setter</span>
+    public Location userLocation;
+
+<span class="nc" id="L24">    @Setter</span>
+    public double distanceInMiles;
+
+<span class="fc" id="L27">    @Getter</span>
+<span class="nc" id="L28">    @Setter</span>
+    public int attractionRewardsPoints;
+
+    /**
+     * @return a double with 3 digits precision
+     */
+    public double getDistanceInMiles() {
+<span class="fc" id="L35">        return Math.round(distanceInMiles * 1000.0) / 1000.0;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

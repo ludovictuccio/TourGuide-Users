@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">users</a> &gt; <a href="index.source.html" class="el_package">com.tourGuide.users.web.controllers</a> &gt; <span class="el_source">UserController.java</span></div><h1>UserController.java</h1><pre class="source lang-java linenums">package com.tourGuide.users.web.controllers;
+
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.tourGuide.users.domain.ClosestAttraction;
+import com.tourGuide.users.domain.Location;
+import com.tourGuide.users.domain.User;
+import com.tourGuide.users.domain.UserPreferences;
+import com.tourGuide.users.domain.UserReward;
+import com.tourGuide.users.domain.VisitedLocation;
+import com.tourGuide.users.domain.dto.ProviderDto;
+import com.tourGuide.users.domain.dto.UserDto;
+import com.tourGuide.users.services.ITripPricerService;
+import com.tourGuide.users.services.IUserService;
+import com.tourGuide.users.web.exceptions.InvalidLocationException;
+import com.tourGuide.users.web.exceptions.UserInputException;
+
+import io.swagger.annotations.ApiOperation;
+
+@RestController
+@RequestMapping(&quot;/user&quot;)
+<span class="fc" id="L34">public class UserController {</span>
+
+    @Autowired
+    public IUserService userService;
+
+    @Autowired
+    public ITripPricerService tripPricerService;
+
+    @GetMapping(&quot;/&quot;)
+    public String index() {
+<span class="fc" id="L44">        return &quot;Greetings from TourGuide!&quot;;</span>
+    }
+
+    /**
+     * Controller method used to return the last saved user location.
+     *
+     * @param userName
+     * @return user location or error 400
+     * @throws UserInputException
+     * @throws InvalidLocationException
+     */
+    @ApiOperation(value = &quot;GET location&quot;, notes = &quot;Need param userName - Return 200 OK or 400 bad request. Method used to return the last saved user location&quot;, response = Location.class)
+    @GetMapping(&quot;/getLocation&quot;)
+    public Location getLocation(@RequestParam final String userName)
+            throws UserInputException, InvalidLocationException {
+<span class="fc" id="L59">        User user = retrieveUser(userName);</span>
+<span class="fc" id="L60">        checkExistingUser(userName);</span>
+<span class="fc" id="L61">        VisitedLocation visitedLocation = userService.getUserLocation(user);</span>
+<span class="fc" id="L62">        return visitedLocation.location;</span>
+    }
+
+    /**
+     * Controller method used to return all the last users locations saved (the
+     * last visited location saved in the history).
+     *
+     * @return all users locations
+     */
+    @ApiOperation(value = &quot;GET all locations&quot;, notes = &quot;Return 200 OK - Method used to return all the last users locations saved (the last visited location saved in the history)&quot;)
+    @GetMapping(&quot;/getAllUsersLocations&quot;)
+    public Map&lt;String, Location&gt; getAllUsersLocations() {
+<span class="fc" id="L74">        return userService.getAllUsersLocations();</span>
+    }
+
+    /**
+     * Controller method used to add a new user.
+     *
+     * @param user
+     * @return String or error 400
+     * @throws ExecutionException
+     * @throws InterruptedException
+     * @throws UserInputException
+     */
+    @ApiOperation(value = &quot;POST add new User&quot;, notes = &quot;Need body user - Location will be tracked - Return 200 OK or 400 bad request.&quot;, response = String.class)
+    @PostMapping
+    public String addUser(@RequestBody final User user)
+            throws InterruptedException, ExecutionException,
+            UserInputException {
+<span class="fc" id="L91">        boolean isAdded = userService.addUser(user);</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (!isAdded) {</span>
+<span class="fc" id="L93">            throw new UserInputException(&quot;NOT ADDED. User with userName: &quot;</span>
+<span class="fc" id="L94">                    + user.getUserName().toUpperCase() + &quot; already exists&quot;);</span>
+        }
+<span class="fc" id="L96">        userService.trackUserLocation(user);</span>
+<span class="fc" id="L97">        return &quot;User added&quot;;</span>
+    }
+
+    /**
+     * Controller method used to get an user with his userName.
+     *
+     * @param userName
+     * @return user
+     * @throws UserInputException
+     */
+    @ApiOperation(value = &quot;GET User&quot;, notes = &quot;Need param userName - Return 200 OK or 400 bad request.&quot;, response = User.class)
+    @GetMapping(&quot;/getUser&quot;)
+    public User getUser(String userName) throws UserInputException {
+<span class="fc" id="L110">        User user = retrieveUser(userName);</span>
+<span class="fc" id="L111">        checkExistingUser(userName);</span>
+<span class="fc" id="L112">        return user;</span>
+    }
+
+    /**
+     * Controller method used to return a user dto with user UUID &amp; the last
+     * location. Method used with gps microservice.
+     *
+     * @param userName
+     * @return userDto
+     * @throws UserInputException
+     */
+    @ApiOperation(value = &quot;GET UserDto&quot;, notes = &quot;Need PathVariable userName - Method used to return a user dto with user UUID &amp; the last location, used with gps microservice.&quot;, response = UserDto.class)
+    @GetMapping(&quot;/getUserDto/{userName}&quot;)
+    public UserDto getUserDto(@PathVariable(&quot;userName&quot;) String userName)
+            throws UserInputException {
+<span class="fc" id="L127">        UserDto userDto = userService.getUserDto(userName);</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        if (userDto == null) {</span>
+<span class="nc" id="L129">            throw new UserInputException(</span>
+                    &quot;User not found with userName: &quot; + userName);
+        }
+<span class="fc" id="L132">        return userDto;</span>
+    }
+
+    /**
+     * Method controller used to update user preferences with userName.
+     * 
+     * @param userName
+     * @param userPreferences
+     * @return String
+     * @throws UserInputException
+     */
+    @ApiOperation(value = &quot;PUT Update user preferences&quot;, notes = &quot;Need param userName &amp; body UserPreferences - Return 200 OK or 400 bad request - Method used to update user preferences with userName.&quot;, response = String.class)
+    @PutMapping(&quot;/updatePreferences&quot;)
+    public String updateUserPreferences(@RequestParam final String userName,
+            @RequestBody final UserPreferences userPreferences)
+            throws UserInputException {
+<span class="fc" id="L148">        boolean isUpdated = userService.updateUserPreferences(userName,</span>
+                userPreferences);
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        if (!isUpdated) {</span>
+<span class="fc" id="L151">            throw new UserInputException(</span>
+                    &quot;User not found with userName: &quot; + userName);
+        }
+<span class="fc" id="L154">        return &quot;User preferences updated for user: &quot; + userName;</span>
+    }
+
+    /**
+     * Method controller used to get the five user's closest attractions.
+     *
+     * @param userName
+     * @return the 5 user's closest attractions
+     * @throws UserInputException
+     * @throws InvalidLocationException
+     */
+    @ApiOperation(value = &quot;GET the five closest attractions&quot;, notes = &quot;Need param userName - Return 200 OK or 400 bad request - Method used to get the five user's closest attractions.&quot;, response = ClosestAttraction.class)
+    @GetMapping(&quot;/getTheFiveClosestAttractions&quot;)
+    public List&lt;ClosestAttraction&gt; getTheFiveClosestAttractions(
+            @RequestParam String userName)
+            throws UserInputException, InvalidLocationException {
+<span class="fc" id="L170">        User user = retrieveUser(userName);</span>
+<span class="fc" id="L171">        checkExistingUser(userName);</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">        if (user.getVisitedLocations().size() == 0) {</span>
+<span class="nc" id="L173">            throw new InvalidLocationException(</span>
+                    &quot;User without visited location. Please try in few minutes (less than 5 min).&quot;);
+        }
+<span class="fc" id="L176">        return userService.getTheFiveClosestAttractions(userName);</span>
+    }
+
+    /**
+     * Method controller used to get user's trip deals.
+     *
+     * @param userName
+     * @return user's trip deals
+     * @throws UserInputException
+     */
+    @ApiOperation(value = &quot;GET Trip Deals&quot;, notes = &quot;Need param userName - Return 200 OK or 400 bad request - Method used to get user's trip deals.&quot;, response = ProviderDto.class)
+    @GetMapping(&quot;/getTripDeals&quot;)
+    public List&lt;ProviderDto&gt; getTripDeals(@RequestParam final String userName)
+            throws UserInputException {
+<span class="fc" id="L190">        checkExistingUser(userName);</span>
+<span class="fc" id="L191">        return tripPricerService.getTripDeals(userName);</span>
+    }
+
+    /**
+     * Method controller used to get user's rewards.
+     *
+     * @param userName
+     * @return user's rewards
+     * @throws UserInputException
+     */
+    @ApiOperation(value = &quot;GET user rewards&quot;, notes = &quot;Need param userName - Return 200 OK or 400 bad request - Method used to get user's rewards.&quot;, response = ProviderDto.class)
+    @GetMapping(&quot;/getRewards&quot;)
+    public List&lt;UserReward&gt; getRewards(@RequestParam final String userName)
+            throws UserInputException {
+<span class="fc" id="L205">        checkExistingUser(userName);</span>
+<span class="fc" id="L206">        tripPricerService.getInstantUserRewards(getUser(userName));</span>
+<span class="fc" id="L207">        return getUser(userName).getUserRewards();</span>
+    }
+
+    /**
+     * Method controller used to get user's rewards points
+     *
+     * @param userName
+     * @return integer user's rewards points
+     * @throws UserInputException
+     */
+    @ApiOperation(value = &quot;GET All user rewards points&quot;, notes = &quot;Need param userName - Return 200 OK or 400 bad request - Method used to get user's rewards points.&quot;, response = Integer.class)
+    @GetMapping(&quot;/getAllUserRewardsPoints&quot;)
+    public int getAllUserRewardsPoints(@RequestParam final String userName)
+            throws UserInputException {
+<span class="fc" id="L221">        checkExistingUser(userName);</span>
+<span class="fc" id="L222">        return tripPricerService.getAllUserRewardsPoints(getUser(userName));</span>
+    }
+
+    private User retrieveUser(final String userName) {
+<span class="fc" id="L226">        return userService.getUser(userName);</span>
+    }
+
+    public void checkExistingUser(final String userName)
+            throws UserInputException {
+<span class="fc" id="L231">        User user = retrieveUser(userName);</span>
+<span class="fc bfc" id="L232" title="All 2 branches covered.">        if (user == null) {</span>
+<span class="fc" id="L233">            throw new UserInputException(</span>
+                    &quot;User not found with userName: &quot; + userName);
+        }
+<span class="fc" id="L236">    }</span>
+
+    @ApiOperation(value = &quot;GET TEST add users rewards&quot;, notes = &quot;Add visitedlocations for internalUser1 to add 4 rewards&quot;)
+    @GetMapping(&quot;/testAddUserRewardsPoints&quot;)
+    public void testAddUserRewardsPoints() {
+<span class="fc" id="L241">        tripPricerService.testAddUserRewardsPoints();</span>
+<span class="fc" id="L242">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

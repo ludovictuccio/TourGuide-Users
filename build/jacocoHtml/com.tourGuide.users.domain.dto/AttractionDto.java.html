@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AttractionDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">users</a> &gt; <a href="index.source.html" class="el_package">com.tourGuide.users.domain.dto</a> &gt; <span class="el_source">AttractionDto.java</span></div><h1>AttractionDto.java</h1><pre class="source lang-java linenums">package com.tourGuide.users.domain.dto;
+
+import java.util.UUID;
+
+import com.tourGuide.users.domain.Location;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+<span class="nc" id="L12">@NoArgsConstructor</span>
+<span class="fc" id="L13">@AllArgsConstructor</span>
+public class AttractionDto {
+
+<span class="nc" id="L16">    @Getter</span>
+<span class="nc" id="L17">    @Setter</span>
+    public String attractionName;
+
+<span class="nc" id="L20">    @Getter</span>
+    public Location location;
+
+<span class="nc" id="L23">    @Getter</span>
+<span class="nc" id="L24">    @Setter</span>
+    public String city;
+
+<span class="nc" id="L27">    @Getter</span>
+<span class="nc" id="L28">    @Setter</span>
+    public String state;
+
+<span class="nc" id="L31">    @Getter</span>
+<span class="nc" id="L32">    @Setter</span>
+    public UUID attractionId;
+
+    public void setLocation(double latitude, double longitude) {
+<span class="nc" id="L36">        this.location = new Location(latitude, longitude);</span>
+<span class="nc" id="L37">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

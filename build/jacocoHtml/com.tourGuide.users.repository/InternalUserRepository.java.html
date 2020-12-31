@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InternalUserRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">users</a> &gt; <a href="index.source.html" class="el_package">com.tourGuide.users.repository</a> &gt; <span class="el_source">InternalUserRepository.java</span></div><h1>InternalUserRepository.java</h1><pre class="source lang-java linenums">package com.tourGuide.users.repository;
+
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+import java.util.stream.IntStream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.tourGuide.users.domain.Location;
+import com.tourGuide.users.domain.User;
+import com.tourGuide.users.domain.VisitedLocation;
+
+@Repository
+<span class="fc" id="L22">public class InternalUserRepository {</span>
+
+<span class="fc" id="L24">    private static final Logger LOGGER = LoggerFactory</span>
+<span class="fc" id="L25">            .getLogger(InternalUserRepository.class);</span>
+
+    @Autowired
+    private InternalTestHelper internalTestHelper;
+
+    /**********************************************************************************
+     * 
+     * Methods Below: For Internal Testing
+     * 
+     **********************************************************************************/
+
+    // Database connection will be used for external users, but for testing
+    // purposes internal users are provided and stored in memory
+<span class="fc" id="L38">    public final Map&lt;String, User&gt; internalUserMap = new HashMap&lt;&gt;();</span>
+
+    /**
+     * Method used to create users tests. Must set InternalTestHelper to modify
+     * users test number.
+     */
+    public void initializeInternalUsers() {
+<span class="fc" id="L45">        LOGGER.info(&quot;TestMode enabled&quot;);</span>
+<span class="fc" id="L46">        LOGGER.debug(&quot;Initializing users&quot;);</span>
+<span class="fc" id="L47">        IntStream.range(0, internalTestHelper.getInternalUserNumber())</span>
+<span class="fc" id="L48">                .forEach(i -&gt; {</span>
+<span class="fc" id="L49">                    String userName = &quot;internalUser&quot; + i;</span>
+<span class="fc" id="L50">                    String phone = &quot;000&quot;;</span>
+<span class="fc" id="L51">                    String email = userName + &quot;@tourGuide.com&quot;;</span>
+<span class="fc" id="L52">                    User user = new User(UUID.randomUUID(), userName, phone,</span>
+                            email);
+<span class="fc" id="L54">                    generateUserLocationHistory(user);</span>
+<span class="fc" id="L55">                    internalUserMap.put(userName, user);</span>
+<span class="fc" id="L56">                });</span>
+<span class="fc" id="L57">        LOGGER.debug(&quot;Created &quot; + internalTestHelper.getInternalUserNumber()</span>
+                + &quot; internal test users.&quot;);
+<span class="fc" id="L59">        LOGGER.debug(&quot;Finished initializing users&quot;);</span>
+<span class="fc" id="L60">    }</span>
+
+    public static void generateUserLocationHistory(User user) {
+<span class="fc" id="L63">        IntStream.range(0, 3).forEach(i -&gt; {</span>
+<span class="fc" id="L64">            user.addToVisitedLocations(</span>
+<span class="fc" id="L65">                    new VisitedLocation(user.getUserId(),</span>
+<span class="fc" id="L66">                            new Location(generateRandomLatitude(),</span>
+<span class="fc" id="L67">                                    generateRandomLongitude()),</span>
+<span class="fc" id="L68">                            getRandomTime()));</span>
+<span class="fc" id="L69">        });</span>
+<span class="fc" id="L70">    }</span>
+
+<span class="fc" id="L72">    private static final Random RANDOM = new Random();</span>
+
+    public static double randomLocationGenerator(double rightLimit,
+            double leftLimit) {
+<span class="fc" id="L76">        return RANDOM.nextDouble() * (rightLimit - leftLimit);</span>
+    }
+
+    private static double generateRandomLongitude() {
+<span class="fc" id="L80">        double leftLimit = -180;</span>
+<span class="fc" id="L81">        double rightLimit = 180;</span>
+<span class="fc" id="L82">        return leftLimit + randomLocationGenerator(rightLimit, leftLimit);</span>
+    }
+
+    private static double generateRandomLatitude() {
+<span class="fc" id="L86">        double leftLimit = -85.05112878;</span>
+<span class="fc" id="L87">        double rightLimit = 85.05112878;</span>
+<span class="fc" id="L88">        return leftLimit + randomLocationGenerator(rightLimit, leftLimit);</span>
+    }
+
+    private static Date getRandomTime() {
+<span class="fc" id="L92">        LocalDateTime localDateTime = LocalDateTime.now()</span>
+<span class="fc" id="L93">                .minusDays(new Random().nextInt(30));</span>
+<span class="fc" id="L94">        return Date.from(localDateTime.toInstant(ZoneOffset.UTC));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.tourGuide.users.domain.UserReward;
 import com.tourGuide.users.domain.dto.UserRewardsDto;
 
-@FeignClient(value = "microservice-rewards", url = "localhost:9003/rewards")
+@FeignClient(value = "microservice-rewards", url = "${proxy.rewards}")
 public interface MicroserviceRewardsProxy {
 
     @PostMapping("/calculateRewards")
