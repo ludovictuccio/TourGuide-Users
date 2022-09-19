@@ -1,0 +1,32 @@
+{"properties": [
+  {
+    "name": "application.number.users",
+    "type": "java.lang.String",
+    "description": "A description for 'application.number.users'"
+  },
+  {
+    "name": "isTestMode",
+    "type": "java.lang.String",
+    "description": "A description for 'isTestMode'"
+  },
+  {
+    "name": "proxy.gps",
+    "type": "java.lang.String",
+    "description": "A description for 'proxy.gps'"
+  },
+  {
+    "name": "docker.proxy.gps",
+    "type": "java.lang.String",
+    "description": "A description for 'docker.proxy.gps'"
+  },
+  {
+    "name": "proxy.rewards",
+    "type": "java.lang.String",
+    "description": "A description for 'proxy.rewards'"
+  },
+  {
+    "name": "docker.proxy.rewards",
+    "type": "java.lang.String",
+    "description": "A description for 'docker.proxy.rewards'"
+  }
+]}

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - Class com.tourGuide.users.services.UserServiceTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Class com.tourGuide.users.services.UserServiceTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.tourGuide.users.services.html">com.tourGuide.users.services</a> &gt; UserServiceTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">25</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.277s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Method name</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">Get All Users With VisitedLocations - Ok - 4 users, 2 users with VisitedLocation</td>
+<td class="success">givenFourUsersAndTwoWithVisitedLocations_whenGet_thenReturnTwoListSize()</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Get The Five Closest Attractions - Error - Invalid username entry</td>
+<td class="success">givenInvalidUsername_whenGetTheFiveClosestAttraction_thenReturnEmptyList()</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Update UserPreferences - ERROR - Invalid username</td>
+<td class="success">givenInvalidUsername_whenUpdatePreferences_thenReturnNotUpdated()</td>
+<td class="success">0.010s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Get The Five Closest Attractions - Error - Empty list attractions</td>
+<td class="success">givenNoAttractions_whenGetTheFiveClosestAttraction_thenReturnEmptyList()</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Get User Dto - Error - Invalid username</td>
+<td class="success">givenOneUser_whenGetUserDtoWithInvalidUserName_thenReturnNullPointerException()</td>
+<td class="success">0.009s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Get User Dto- Ok - Valid username</td>
+<td class="success">givenOneUser_whenGetUserDtoWithValidUserName_thenReturnNotNull()</td>
+<td class="success">0.008s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Get UserRewardsDto - Error - Invalid UUID</td>
+<td class="success">givenOneUser_whenGetUserRewardsDtoWithInvalidId_thenReturnNotNull()</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Get UserRewardsDto - Ok - Valid UUID</td>
+<td class="success">givenOneUser_whenGetUserRewardsDtoWithValidId_thenReturnNotNull()</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">getUserByUuid - Error - Invalid UUID</td>
+<td class="success">givenOneUser_whenGetUserWithInvalidId_thenReturnNotNull()</td>
+<td class="success">0.011s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Get User By Uuid - Ok - Valid UUID</td>
+<td class="success">givenOneUser_whenGetUserWithValidId_thenReturnNotNull()</td>
+<td class="success">0.007s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Get User - Error - Invalid username</td>
+<td class="success">givenOneUser_whenGetWithInvalidUserName_thenReturnNull()</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Get User - Ok - Valid username</td>
+<td class="success">givenOneUser_whenGetWithValidUserName_thenReturnNotNull()</td>
+<td class="success">0.009s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">getAllUsers</td>
+<td class="success">givenTwoUser_whenGetAllUser_thenReturnTwo()</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Add User - Ok - Different username</td>
+<td class="success">givenTwoUsers_whenAddNewUserWithDifferentUsername_thenReturnAdded()</td>
+<td class="success">0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Add User - Empty username</td>
+<td class="success">givenTwoUsers_whenAddNewUserWithEmptyUsername_thenReturnNotAdded()</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Add User - Already existing username</td>
+<td class="success">givenTwoUsers_whenAddNewUserWithExistingUsername_thenReturnNotAdded()</td>
+<td class="success">0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">All Users Locations - Ok</td>
+<td class="success">givenTwoUsers_whenGetAllLocations_thenReturnAllLocationsValues()</td>
+<td class="success">0.012s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Get All Users - Ok - 2 users</td>
+<td class="success">givenTwoUsers_whenGetAllUsers_thenReturnListWithSizeOfTwo()</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Get The Five Closest Attractions - Ok - User in Eiffel Tower location</td>
+<td class="success">givenUserInEiffelTowerLocation_whenGetTheFiveClosestAttraction_thenReturnValidAttractions()</td>
+<td class="success">0.008s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">User Location - Error - No last visited location</td>
+<td class="success">givenUserWithoutVisitedLocation_whenGetLocation_thenReturnError400()</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Get Last VisitedLocation - Ok</td>
+<td class="success">givenUser_whenGetLastLocation_thenReturnLastVisitedLocation()</td>
+<td class="success">0.019s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">User Location - Ok</td>
+<td class="success">givenUser_whenGetLocation_thenReturnOk()</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Update UserPreferences - Ok - Valid username</td>
+<td class="success">givenUser_whenUpdatePreferences_thenReturnUpdated()</td>
+<td class="success">0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Track User Location - OK</td>
+<td class="success">givenValidUser_whenTrackUserLocation_thenReturnVisitedLocation()</td>
+<td class="success">0.112s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Get All Users - Ok - 0 users</td>
+<td class="success">givenZeroUsers_whenGetAllUsers_thenReturnEmptyList()</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>2020-12-30 20:56:15.357  INFO 30940 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.tourGuide.users.services.UserServiceTest], using SpringBootContextLoader
+2020-12-30 20:56:15.358  INFO 30940 --- [    Test worker] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [com.tourGuide.users.services.UserServiceTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2020-12-30 20:56:15.358  INFO 30940 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.tourGuide.users.services.UserServiceTest]: UserServiceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2020-12-30 20:56:15.360  INFO 30940 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.tourGuide.users.TourGuideUsersApplication for test class com.tourGuide.users.services.UserServiceTest
+2020-12-30 20:56:15.363  INFO 30940 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2020-12-30 20:56:15.365  INFO 30940 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@555587f8, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@265b6ab, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@5244b554, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@6163ad88, org.springframework.test.context.support.DirtiesContextTestExecutionListener@18f09c1b, org.springframework.test.context.event.EventPublishingTestExecutionListener@370fa140, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@40165ce0, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@3ce5a687, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@2069f544, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@6a2645a8, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@18a5f550, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@965a95d]
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:56:15.427  INFO 30940 --- [    Test worker] c.t.users.services.UserServiceTest       : Starting UserServiceTest using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:56:15.427 DEBUG 30940 --- [    Test worker] c.t.users.services.UserServiceTest       : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:56:15.427  INFO 30940 --- [    Test worker] c.t.users.services.UserServiceTest       : The following profiles are active: dev
+2020-12-30 20:56:16.005  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=47813ee7-02aa-3f29-8a7b-61adf57b8c81
+2020-12-30 20:56:16.068 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:56:16.068  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:56:16.068 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:56:16.070 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:56:16.070 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:56:16.071 DEBUG 30940 --- [ool-50-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:56:16.378 DEBUG 30940 --- [ool-50-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:56:16.378 DEBUG 30940 --- [ool-50-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:56:16.499  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:56:16.810  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:56:17.329  INFO 30940 --- [    Test worker] c.t.users.services.UserServiceTest       : Started UserServiceTest in 1.96 seconds (JVM running for 45.304)
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 6.6.1</a> at 30 déc. 2020 à 20:56:22</p>
+</div>
+</div>
+</body>
+</html>

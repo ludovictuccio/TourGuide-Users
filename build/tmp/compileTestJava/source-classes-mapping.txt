@@ -1,0 +1,12 @@
+com/tourGuide/users/services/UserServiceTest.java
+ com.tourGuide.users.services.UserServiceTest
+com/tourGuide/users/TourGuideUsersApplicationTests.java
+ com.tourGuide.users.TourGuideUsersApplicationTests
+com/tourGuide/users/TestPerformanceIT.java
+ com.tourGuide.users.TestPerformanceIT
+com/tourGuide/users/services/TripPricerServiceTest.java
+ com.tourGuide.users.services.TripPricerServiceTest
+com/tourGuide/users/controllers/UserControllerIT.java
+ com.tourGuide.users.controllers.UserControllerIT
+com/tourGuide/users/TrackerTest.java
+ com.tourGuide.users.TrackerTest

@@ -1,0 +1,1567 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.tourGuide.users.controllers.UserControllerIT" tests="22" skipped="0" failures="0" errors="0" timestamp="2020-12-30T19:55:43" hostname="PC-LUDO-2020" time="30.199">
+  <properties/>
+  <testcase name="Get Rewards - Ok" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.116"/>
+  <testcase name="Update UserPreferences - Error 400 - invalid username" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.112"/>
+  <testcase name="Get All User Rewards Points - Ok" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.016"/>
+  <testcase name="Get Rewards - Error - User not found" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.021"/>
+  <testcase name="Get The Five Closest Attractions- OK" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.013"/>
+  <testcase name="Update UserPreferences - Ok" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.015"/>
+  <testcase name="Get user - Error 400" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.02"/>
+  <testcase name="testAddUserRewardsPoints - Ok" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.011"/>
+  <testcase name="Add User - OK - Valid username" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.034"/>
+  <testcase name="Get user dto - Ok" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.012"/>
+  <testcase name="Get user - Ok" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.035"/>
+  <testcase name="Add User - Error - Already existing username username" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.02"/>
+  <testcase name="Get TripDEals - Error - User not found" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.012"/>
+  <testcase name="Get Location- Error - Unknow username" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.01"/>
+  <testcase name="Get All User Rewards Points - Error - User not found" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.013"/>
+  <testcase name="Get The Five Closest Attractions- Error - Username not found" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.012"/>
+  <testcase name="Get TripDeals - Ok" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.06"/>
+  <testcase name="Get Location- Error - User without visited location" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.012"/>
+  <testcase name="Get Location- OK - Valid username" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.009"/>
+  <testcase name="indexHomePageTest - Ok" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.008"/>
+  <testcase name="Get The Five Closest Attractions- Error - User without visited location" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.012"/>
+  <testcase name="Get All UsersLocation- OK" classname="com.tourGuide.users.controllers.UserControllerIT" time="0.026"/>
+  <system-out><![CDATA[2020-12-30 20:55:41.208  INFO 30940 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.tourGuide.users.controllers.UserControllerIT], using SpringBootContextLoader
+2020-12-30 20:55:41.209  INFO 30940 --- [    Test worker] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [com.tourGuide.users.controllers.UserControllerIT]: no resource found for suffixes {-context.xml, Context.groovy}.
+2020-12-30 20:55:41.209  INFO 30940 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.tourGuide.users.controllers.UserControllerIT]: UserControllerIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2020-12-30 20:55:41.227  INFO 30940 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.tourGuide.users.TourGuideUsersApplication for test class com.tourGuide.users.controllers.UserControllerIT
+2020-12-30 20:55:41.230  INFO 30940 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2020-12-30 20:55:41.232  INFO 30940 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@42dbab27, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@41cfbde9, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@556ba129, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@6c51118c, org.springframework.test.context.support.DirtiesContextTestExecutionListener@734c1db2, org.springframework.test.context.event.EventPublishingTestExecutionListener@4f50c6c7, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@47ba44ed, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@2303f0e7, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@30b1c8b8, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@791e4697, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@6c96f875, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@50aeb9c8]
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:55:41.310  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:55:41.310 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:55:41.310  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:55:41.861  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:55:42.134 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:55:42.134  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:55:42.134 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:55:42.141 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:55:42.141 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:55:42.142 DEBUG 30940 --- [pool-5-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:55:42.464 DEBUG 30940 --- [pool-5-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:55:42.464 DEBUG 30940 --- [pool-5-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:55:42.624  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:55:42.935  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:55:43.214  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:43.215  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:43.216  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:55:43.532  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 2.297 seconds (JVM running for 11.507)
+2020-12-30 20:55:43.542  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:43.542  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:43.543  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/getRewards
+       Parameters = {userName=[internalUser1]}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#getRewards(String)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = []
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:55:43.648  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:55:43.723  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:55:43.723 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:55:43.723  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:55:44.195  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:55:44.244 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:55:44.244  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:55:44.244 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:55:44.249 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:55:44.249 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:55:44.250 DEBUG 30940 --- [pool-7-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:55:44.570 DEBUG 30940 --- [pool-7-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:55:44.570 DEBUG 30940 --- [pool-7-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:55:44.665  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:55:44.920  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:55:45.143  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:45.143  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:45.144  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:55:45.413  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.756 seconds (JVM running for 13.388)
+2020-12-30 20:55:45.422  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:45.422  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:45.423  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+
+MockHttpServletRequest:
+      HTTP Method = PUT
+      Request URI = /user/updatePreferences
+       Parameters = {userName=[unknow]}
+          Headers = [Content-Type:"application/json", Content-Length:"89"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#updateUserPreferences(String, UserPreferences)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = com.tourGuide.users.web.exceptions.UserInputException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 400
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"status":"BAD_REQUEST","message":"User not found with userName: unknow","errors":["error occurred"]}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:55:45.530  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:55:45.606  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:55:45.606 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:55:45.606  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:55:46.061  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:55:46.104 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:55:46.104  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:55:46.104 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:55:46.109 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:55:46.109 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:55:46.110 DEBUG 30940 --- [pool-9-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:55:46.427 DEBUG 30940 --- [pool-9-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:55:46.427 DEBUG 30940 --- [pool-9-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:55:46.479  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:55:46.727  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:55:46.936  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:46.936  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:46.937  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:55:47.151  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.617 seconds (JVM running for 15.127)
+2020-12-30 20:55:47.158  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:47.158  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:47.159  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/getAllUserRewardsPoints
+       Parameters = {userName=[internalUser1]}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#getAllUserRewardsPoints(String)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = 0
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:55:47.171  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:55:47.237  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:55:47.237 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:55:47.238  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:55:47.649  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:55:47.690 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:55:47.690  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:55:47.690 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:55:47.693 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:55:47.693 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:55:47.693 DEBUG 30940 --- [ool-11-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:55:48.019 DEBUG 30940 --- [ool-11-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:55:48.020 DEBUG 30940 --- [ool-11-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:55:48.047  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:55:48.296  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:55:48.496  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:48.496  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:48.497  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:55:48.706  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.531 seconds (JVM running for 16.681)
+2020-12-30 20:55:48.713  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:48.713  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:48.714  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/getRewards
+       Parameters = {userName=[unknow]}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#getRewards(String)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = com.tourGuide.users.web.exceptions.UserInputException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 400
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"status":"BAD_REQUEST","message":"User not found with userName: unknow","errors":["error occurred"]}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:55:48.731  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:55:48.794  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:55:48.794 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:55:48.794  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:55:49.172  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:55:49.212 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:55:49.212  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:55:49.212 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:55:49.214 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:55:49.214 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:55:49.215 DEBUG 30940 --- [ool-13-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:55:49.530 DEBUG 30940 --- [ool-13-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:55:49.530 DEBUG 30940 --- [ool-13-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:55:49.566  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:55:49.792  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:55:49.994  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:49.994  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:49.995  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:55:50.186  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.451 seconds (JVM running for 18.162)
+2020-12-30 20:55:50.194  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:50.194  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:50.195  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/getTheFiveClosestAttractions
+       Parameters = {userName=[internalUser1]}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#getTheFiveClosestAttractions(String)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = []
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:55:50.204  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:55:50.264  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:55:50.265 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:55:50.265  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:55:50.649  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:55:50.694 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:55:50.694  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:55:50.694 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:55:50.696 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:55:50.696 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:55:50.696 DEBUG 30940 --- [ool-15-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:55:51.016 DEBUG 30940 --- [ool-15-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:55:51.017 DEBUG 30940 --- [ool-15-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:55:51.070  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:55:51.305  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:55:51.517  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:51.517  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:51.518  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:55:51.735  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.528 seconds (JVM running for 19.711)
+2020-12-30 20:55:51.741  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:51.742  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:51.742  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+
+MockHttpServletRequest:
+      HTTP Method = PUT
+      Request URI = /user/updatePreferences
+       Parameters = {userName=[internalUser1]}
+          Headers = [Content-Type:"application/json", Content-Length:"89"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#updateUserPreferences(String, UserPreferences)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"text/plain;charset=UTF-8", Content-Length:"48"]
+     Content type = text/plain;charset=UTF-8
+             Body = User preferences updated for user: internalUser1
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:55:51.753  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:55:51.820  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:55:51.820 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:55:51.820  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:55:52.266  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:55:52.309 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:55:52.309  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:55:52.310 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:55:52.312 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:55:52.312 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:55:52.312 DEBUG 30940 --- [ool-17-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:55:52.623 DEBUG 30940 --- [ool-17-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:55:52.623 DEBUG 30940 --- [ool-17-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:55:52.726  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:55:53.156  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:55:53.449  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:53.449  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:53.450  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:55:53.662  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.905 seconds (JVM running for 21.638)
+2020-12-30 20:55:53.671  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:53.671  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:53.672  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/getUser
+       Parameters = {userName=[UNKNOW]}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#getUser(String)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = com.tourGuide.users.web.exceptions.UserInputException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 400
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"status":"BAD_REQUEST","message":"User not found with userName: UNKNOW","errors":["error occurred"]}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:55:53.687  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:55:53.756  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:55:53.756 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:55:53.756  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:55:54.136  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:55:54.175 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:55:54.176  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:55:54.176 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:55:54.177 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:55:54.177 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:55:54.178 DEBUG 30940 --- [ool-19-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:55:54.483  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:55:54.505 DEBUG 30940 --- [ool-19-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:55:54.505 DEBUG 30940 --- [ool-19-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:55:54.688  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:55:54.870  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:54.870  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:54.871  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:55:55.064  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.373 seconds (JVM running for 23.039)
+2020-12-30 20:55:55.070  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:55.070  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:55.071  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/testAddUserRewardsPoints
+       Parameters = {userName=[internalUser1]}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#testAddUserRewardsPoints()
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = []
+     Content type = null
+             Body = 
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:55:55.078  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:55:55.141  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:55:55.141 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:55:55.141  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:55:55.510  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:55:55.548 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:55:55.549  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:55:55.549 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:55:55.550 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:55:55.550 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:55:55.550 DEBUG 30940 --- [ool-21-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:55:55.885 DEBUG 30940 --- [ool-21-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:55:55.885 DEBUG 30940 --- [ool-21-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:55:55.921  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:55:56.124  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:55:56.294  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:56.294  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:56.294  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2020-12-30 20:55:56.478  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.396 seconds (JVM running for 24.453)
+2020-12-30 20:55:56.485  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:56.485  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:56.486  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /user
+       Parameters = {}
+          Headers = [Content-Type:"application/json", Content-Length:"84"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#addUser(User)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"text/plain;charset=UTF-8", Content-Length:"10"]
+     Content type = text/plain;charset=UTF-8
+             Body = User added
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:55:56.516  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:55:56.580  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:55:56.580 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:55:56.580  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:55:56.939  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:55:56.973 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:55:56.973  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:55:56.973 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:55:56.974 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:55:56.974 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:55:56.975 DEBUG 30940 --- [ool-23-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:55:57.279 DEBUG 30940 --- [ool-23-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:55:57.279 DEBUG 30940 --- [ool-23-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:55:57.288  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:55:57.505  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:55:57.672  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:57.672  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:57.673  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:55:57.857  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.338 seconds (JVM running for 25.833)
+2020-12-30 20:55:57.864  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:57.865  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:57.865  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/getUserDto/internalUser1
+       Parameters = {}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#getUserDto(String)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"userId":"315ff52b-accd-44ed-9b17-97b5f3fed79d","lastLocation":{"latitude":56.380908292764985,"longitude":127.0577723516218},"visitedLocations":[]}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:55:57.874  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:55:57.937  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:55:57.938 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:55:57.938  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:55:58.274  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:55:58.310 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:55:58.310  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:55:58.310 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:55:58.311 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:55:58.311 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:55:58.312 DEBUG 30940 --- [ool-25-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:55:58.610  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:55:58.631 DEBUG 30940 --- [ool-25-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:55:58.631 DEBUG 30940 --- [ool-25-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:55:58.818  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:55:59.006  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:59.006  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:59.007  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:55:59.184  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.307 seconds (JVM running for 27.16)
+2020-12-30 20:55:59.193  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:55:59.193  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:55:59.194  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/getUser
+       Parameters = {userName=[internalUser1]}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#getUser(String)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"userId":"9505d4b6-c714-459d-acbb-162f32ca25bf","userName":"internalUser1","phoneNumber":"000","emailAddress":"internalUser1@tourGuide.com","latestLocationTimestamp":"2020-12-25T20:55:58.310+00:00","tripDeals":[],"visitedLocations":[{"userId":"9505d4b6-c714-459d-acbb-162f32ca25bf","location":{"latitude":33.83252110226931,"longitude":155.27190629315118},"timeVisited":"2020-12-23T20:55:58.310+00:00"},{"userId":"9505d4b6-c714-459d-acbb-162f32ca25bf","location":{"latitude":8.203686206730552,"longitude":-159.4852503719075},"timeVisited":"2020-12-22T20:55:58.310+00:00"},{"userId":"9505d4b6-c714-459d-acbb-162f32ca25bf","location":{"latitude":5.778327533328465,"longitude":-143.9031597406202},"timeVisited":"2020-12-25T20:55:58.310+00:00"}],"userRewards":[],"userPreferences":{"lowerPricePoint":{"currency":{"context":{"empty":false,"providerName":"java.util.Currency"},"defaultFractionDigits":2,"currencyCode":"USD","numericCode":840},"number":0,"factory":{"defaultMonetaryContext":{"precision":0,"maxScale":63,"fixedScale":false,"amountType":"org.javamoney.moneta.Money","empty":false,"providerName":null},"amountType":"org.javamoney.moneta.Money","minNumber":null,"maxNumber":null,"maximalMonetaryContext":{"precision":0,"maxScale":-1,"fixedScale":false,"amountType":"org.javamoney.moneta.Money","empty":false,"providerName":null}},"context":{"precision":256,"maxScale":-1,"fixedScale":false,"amountType":"org.javamoney.moneta.Money","empty":false,"providerName":null},"negative":false,"zero":true,"positive":false,"negativeOrZero":true,"positiveOrZero":true,"numberStripped":0},"highPricePoint":{"currency":{"context":{"empty":false,"providerName":"java.util.Currency"},"defaultFractionDigits":2,"currencyCode":"USD","numericCode":840},"number":2147483647,"factory":{"defaultMonetaryContext":{"precision":0,"maxScale":63,"fixedScale":false,"amountType":"org.javamoney.moneta.Money","empty":false,"providerName":null},"amountType":"org.javamoney.moneta.Money","minNumber":null,"maxNumber":null,"maximalMonetaryContext":{"precision":0,"maxScale":-1,"fixedScale":false,"amountType":"org.javamoney.moneta.Money","empty":false,"providerName":null}},"context":{"precision":256,"maxScale":-1,"fixedScale":false,"amountType":"org.javamoney.moneta.Money","empty":false,"providerName":null},"negative":false,"zero":false,"positive":true,"negativeOrZero":false,"positiveOrZero":true,"numberStripped":2147483647},"attractionProximity":2147483647,"tripDuration":1,"ticketQuantity":1,"numberOfAdults":1,"numberOfChildren":0}}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:55:59.225  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:55:59.291  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:55:59.291 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:55:59.291  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:55:59.649  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:55:59.685 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:55:59.685  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:55:59.685 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:55:59.686 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:55:59.686 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:55:59.687 DEBUG 30940 --- [ool-27-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:55:59.999 DEBUG 30940 --- [ool-27-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:55:59.999 DEBUG 30940 --- [ool-27-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:56:00.006  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:56:00.218  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:56:00.397  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:00.397  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:00.397  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2020-12-30 20:56:00.566  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.338 seconds (JVM running for 28.542)
+2020-12-30 20:56:00.573  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:00.573  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:00.574  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /user
+       Parameters = {}
+          Headers = [Content-Type:"application/json", Content-Length:"88"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#addUser(User)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"text/plain;charset=UTF-8", Content-Length:"10"]
+     Content type = text/plain;charset=UTF-8
+             Body = User added
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /user
+       Parameters = {}
+          Headers = [Content-Type:"application/json", Content-Length:"88"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#addUser(User)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = com.tourGuide.users.web.exceptions.UserInputException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 400
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"status":"BAD_REQUEST","message":"NOT ADDED. User with userName: USERNAMETEST already exists","errors":["error occurred"]}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:56:00.590  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:56:00.648  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:56:00.649 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:56:00.649  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:56:00.981  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:56:01.015 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:56:01.015  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:56:01.015 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:56:01.016 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:56:01.016 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:56:01.017 DEBUG 30940 --- [ool-29-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:56:01.309  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:56:01.341 DEBUG 30940 --- [ool-29-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:56:01.341 DEBUG 30940 --- [ool-29-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:56:01.506  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:56:01.678  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:01.678  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:01.679  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:56:01.852  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.258 seconds (JVM running for 29.827)
+2020-12-30 20:56:01.859  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:01.859  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:01.859  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/getTripDeals
+       Parameters = {userName=[unknow]}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#getTripDeals(String)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = com.tourGuide.users.web.exceptions.UserInputException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 400
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"status":"BAD_REQUEST","message":"User not found with userName: unknow","errors":["error occurred"]}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:56:01.868  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:56:01.929  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:56:01.930 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:56:01.930  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:56:02.287  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:56:02.328 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:56:02.328  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:56:02.328 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:56:02.329 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:56:02.330 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:56:02.330 DEBUG 30940 --- [ool-31-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:56:02.645 DEBUG 30940 --- [ool-31-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:56:02.645 DEBUG 30940 --- [ool-31-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:56:02.660  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:56:02.874  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:56:03.068  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:03.068  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:03.069  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:56:03.236  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.364 seconds (JVM running for 31.211)
+2020-12-30 20:56:03.241  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:03.241  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:03.242  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/getLocation
+       Parameters = {userName=[unknow]}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#getLocation(String)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = com.tourGuide.users.web.exceptions.UserInputException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 400
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"status":"BAD_REQUEST","message":"User not found with userName: unknow","errors":["error occurred"]}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:56:03.249  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:56:03.305  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:56:03.306 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:56:03.306  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:56:03.640  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:56:03.677 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:56:03.677  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:56:03.677 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:56:03.678 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:56:03.678 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:56:03.679 DEBUG 30940 --- [ool-33-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:56:03.997 DEBUG 30940 --- [ool-33-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:56:03.997 DEBUG 30940 --- [ool-33-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:56:04.004  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:56:04.228  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:56:04.406  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:04.406  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:04.406  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2020-12-30 20:56:04.582  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.328 seconds (JVM running for 32.557)
+2020-12-30 20:56:04.590  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:04.590  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:04.591  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/getAllUserRewardsPoints
+       Parameters = {userName=[unknow]}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#getAllUserRewardsPoints(String)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = com.tourGuide.users.web.exceptions.UserInputException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 400
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"status":"BAD_REQUEST","message":"User not found with userName: unknow","errors":["error occurred"]}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:56:04.600  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:56:04.662  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:56:04.662 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:56:04.662  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:56:05.010  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:56:05.045 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:56:05.045  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:56:05.045 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:56:05.046 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:56:05.047 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:56:05.047 DEBUG 30940 --- [ool-35-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:56:05.342  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:56:05.378 DEBUG 30940 --- [ool-35-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:56:05.379 DEBUG 30940 --- [ool-35-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:56:05.532  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:56:05.697  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:05.697  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:05.698  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:56:05.857  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.253 seconds (JVM running for 33.833)
+2020-12-30 20:56:05.864  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:05.864  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:05.865  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/getTheFiveClosestAttractions
+       Parameters = {userName=[unknow]}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#getTheFiveClosestAttractions(String)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = com.tourGuide.users.web.exceptions.UserInputException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 400
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"status":"BAD_REQUEST","message":"User not found with userName: unknow","errors":["error occurred"]}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:56:05.873  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:56:05.927  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:56:05.927 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:56:05.927  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:56:06.257  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:56:06.292 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:56:06.292  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:56:06.292 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:56:06.294 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:56:06.294 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:56:06.295 DEBUG 30940 --- [ool-37-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:56:06.584  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:56:06.621 DEBUG 30940 --- [ool-37-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:56:06.621 DEBUG 30940 --- [ool-37-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:56:06.805  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:56:06.971  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:06.971  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:06.971  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2020-12-30 20:56:07.147  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.271 seconds (JVM running for 35.123)
+2020-12-30 20:56:07.154  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:07.154  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:07.155  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/getTripDeals
+       Parameters = {userName=[internalUser1]}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#getTripDeals(String)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = [{"name":"United Partners Vacations","price":255.99,"tripId":"1d2535ea-c43e-4e5e-8592-3e841d42465f"},{"name":"Live Free","price":481.99,"tripId":"1d2535ea-c43e-4e5e-8592-3e841d42465f"},{"name":"Sunny Days","price":667.99,"tripId":"1d2535ea-c43e-4e5e-8592-3e841d42465f"},{"name":"Holiday Travels","price":303.99,"tripId":"1d2535ea-c43e-4e5e-8592-3e841d42465f"},{"name":"Enterprize Ventures Limited","price":431.99,"tripId":"1d2535ea-c43e-4e5e-8592-3e841d42465f"}]
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:56:07.210  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:56:07.269  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:56:07.269 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:56:07.269  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:56:07.667  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:56:07.702 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:56:07.702  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:56:07.702 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:56:07.703 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:56:07.703 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:56:07.703 DEBUG 30940 --- [ool-39-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:56:08.000  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:56:08.031 DEBUG 30940 --- [ool-39-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:56:08.031 DEBUG 30940 --- [ool-39-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:56:08.202  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:56:08.378  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:08.378  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:08.378  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2020-12-30 20:56:08.528  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.315 seconds (JVM running for 36.504)
+2020-12-30 20:56:08.534  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:08.535  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:08.535  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/getLocation
+       Parameters = {userName=[Usertest]}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#getLocation(String)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = com.tourGuide.users.web.exceptions.InvalidLocationException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 404
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"status":"NOT_FOUND","message":"Not location available. Please wait less than 5 minutes.","errors":["error occurred"]}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:56:08.543  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:56:08.597  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:56:08.597 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:56:08.597  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:56:08.976  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:56:09.012 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:56:09.012  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:56:09.012 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:56:09.013 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:56:09.013 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:56:09.013 DEBUG 30940 --- [ool-41-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:56:09.341  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:56:09.374 DEBUG 30940 --- [ool-41-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:56:09.390 DEBUG 30940 --- [ool-41-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:56:09.551  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:56:09.722  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:09.722  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:09.723  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:56:09.880  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.334 seconds (JVM running for 37.856)
+2020-12-30 20:56:09.887  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:09.887  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:09.888  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/getLocation
+       Parameters = {userName=[internalUser1]}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#getLocation(String)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"latitude":-53.051910897589096,"longitude":-21.79822304751417}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:56:09.894  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:56:09.946  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:56:09.946 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:56:09.946  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:56:10.294  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:56:10.330 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:56:10.330  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:56:10.330 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:56:10.331 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:56:10.331 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:56:10.331 DEBUG 30940 --- [ool-43-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:56:10.619  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:56:10.653 DEBUG 30940 --- [ool-43-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:56:10.653 DEBUG 30940 --- [ool-43-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:56:10.828  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:56:11.013  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:11.013  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:11.014  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:56:11.187  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.289 seconds (JVM running for 39.162)
+2020-12-30 20:56:11.191  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:11.192  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:11.192  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/
+       Parameters = {}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#index()
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"text/plain;charset=UTF-8", Content-Length:"25"]
+     Content type = text/plain;charset=UTF-8
+             Body = Greetings from TourGuide!
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:56:11.197  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:56:11.249  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:56:11.249 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:56:11.249  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:56:11.594  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:56:11.629 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:56:11.629  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:56:11.629 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:56:11.629 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:56:11.629 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:56:11.630 DEBUG 30940 --- [ool-45-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:56:11.926  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:56:11.948 DEBUG 30940 --- [ool-45-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:56:11.948 DEBUG 30940 --- [ool-45-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:56:12.123  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:56:12.302  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:12.302  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:12.303  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:56:12.470  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.27 seconds (JVM running for 40.446)
+2020-12-30 20:56:12.477  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:12.477  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:12.477  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/getTheFiveClosestAttractions
+       Parameters = {userName=[unknow]}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#getTheFiveClosestAttractions(String)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = com.tourGuide.users.web.exceptions.UserInputException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 400
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"status":"BAD_REQUEST","message":"User not found with userName: unknow","errors":["error occurred"]}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:56:12.485  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v2.4.0-SNAPSHOT)
+
+2020-12-30 20:56:12.542  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Starting UserControllerIT using Java 14.0.2 on PC-LUDO-2020 with PID 30940 (started by Ludo in C:\Users\Ludo\Documents\Eclipse\workspace\TourGuide\TourGuide-Users)
+2020-12-30 20:56:12.542 DEBUG 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Running with Spring Boot v2.4.0-SNAPSHOT, Spring v5.3.1
+2020-12-30 20:56:12.542  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : The following profiles are active: dev
+2020-12-30 20:56:12.861  INFO 30940 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=362d3e48-3edc-3332-9935-4404380205be
+2020-12-30 20:56:12.893 DEBUG 30940 --- [    Test worker] c.tourGuide.users.services.UserService   : Test mode ON.
+2020-12-30 20:56:12.893  INFO 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : TestMode enabled
+2020-12-30 20:56:12.893 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Initializing users
+2020-12-30 20:56:12.894 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Created 100 internal test users.
+2020-12-30 20:56:12.894 DEBUG 30940 --- [    Test worker] c.t.u.repository.InternalUserRepository  : Finished initializing users
+2020-12-30 20:56:12.894 DEBUG 30940 --- [ool-47-thread-1] com.tourGuide.users.tracker.Tracker      : Begin Tracker. Tracking 100 users.
+2020-12-30 20:56:13.194  INFO 30940 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-12-30 20:56:13.237 DEBUG 30940 --- [ool-47-thread-1] com.tourGuide.users.tracker.Tracker      : TRACKING END for 100 users - Tracker Time Elapsed: 0 seconds.
+2020-12-30 20:56:13.237 DEBUG 30940 --- [ool-47-thread-1] com.tourGuide.users.tracker.Tracker      : Tracker sleeping
+2020-12-30 20:56:13.393  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-30 20:56:13.558  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:13.558  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:13.559  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2020-12-30 20:56:13.708  INFO 30940 --- [    Test worker] c.t.users.controllers.UserControllerIT   : Started UserControllerIT in 1.219 seconds (JVM running for 41.683)
+2020-12-30 20:56:13.713  INFO 30940 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-12-30 20:56:13.713  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-12-30 20:56:13.714  INFO 30940 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /user/getAllUsersLocations
+       Parameters = {}
+          Headers = [Content-Type:"application/json"]
+             Body = <no character encoding set>
+    Session Attrs = {}
+
+Handler:
+             Type = com.tourGuide.users.web.controllers.UserController
+           Method = com.tourGuide.users.web.controllers.UserController#getAllUsersLocations()
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"f8aec3a9-0585-42b3-951e-ca58ff285949":{"latitude":-49.24020752510165,"longitude":-128.1463899863281},"b71b8eb7-4493-4f48-a1c7-d044ffd5fc20":{"latitude":-28.337832309554898,"longitude":147.50519658803773},"816211c3-89c9-41d2-b5f8-52706fd8341f":{"latitude":75.59831043413587,"longitude":-55.65034472477028},"3139a962-a732-4189-bf7f-43f9a08dfd75":{"latitude":-18.620851231984517,"longitude":-113.87119313211453},"216b3764-12f6-41fb-9702-d40562b6d28b":{"latitude":-15.034614995228111,"longitude":-93.06392531226157},"12bd2b33-598e-44b0-8bd1-ebe1dc210500":{"latitude":-0.1980725458887349,"longitude":161.72606399210167},"5c6e09cd-3787-40dd-96eb-a513f3dcebe5":{"latitude":-24.96208442717832,"longitude":-158.9355985863359},"d0c25ca9-120a-43fa-8e90-fc557d6ef829":{"latitude":-30.80453056533681,"longitude":-56.368045574750425},"33e6cf6f-431d-4ce9-8fc3-4a5b56809cb6":{"latitude":80.07769394713111,"longitude":176.69686977658728},"b25a5c20-8a88-4808-b5e0-80951c7f694d":{"latitude":61.524709631519926,"longitude":107.49112179669675},"90b77304-ade8-44a9-8d46-1425b4303187":{"latitude":-36.271479732912425,"longitude":-173.09087232538602},"bd966f63-3160-4534-bed5-eca17c242dc9":{"latitude":-44.65964289206585,"longitude":113.07241049089413},"4b4eb821-f481-4a9a-947a-93d2a3a057e0":{"latitude":-37.36879448217031,"longitude":-76.09438372811658},"8e59fea7-e942-4460-abde-9c2f09200900":{"latitude":58.94852268916517,"longitude":111.54533435823953},"db0fb8cc-d66c-4e98-a1b7-780da8df4618":{"latitude":-38.62619170247975,"longitude":-104.98420742508726},"ed99746a-3089-460b-a677-64cbeb751521":{"latitude":-45.33836435002474,"longitude":-14.27114144369014},"15317f68-2fbb-4b91-9c76-3da0f0b495ff":{"latitude":11.633229338782712,"longitude":27.816559281961162},"13ec347c-5078-4820-aac0-eee9bb8c257f":{"latitude":38.52219913960117,"longitude":-160.2339318292848},"cb07da76-d489-48b8-82f4-854881e6b182":{"latitude":13.77543453430556,"longitude":-58.8149289578228},"225d8434-690f-4e13-89d1-bc6f4033da16":{"latitude":83.68945890426397,"longitude":63.10943534539604},"6c1d6481-229c-49ec-95d4-16f32dd6e39e":{"latitude":38.81940385301162,"longitude":114.29072241651426},"a5e4759b-6154-407c-8ddf-3bc8e988f8ff":{"latitude":-58.05341387712831,"longitude":-135.8728815595952},"dcd1c3ef-0e41-4e11-b224-e0c3ebcc1900":{"latitude":64.45745064408618,"longitude":10.94319083092526},"f8eb38a2-998a-4c64-91d9-84e66c965878":{"latitude":-78.05737308863469,"longitude":130.90689261154887},"0ffc750a-0a70-4d1e-901c-24f91239875d":{"latitude":77.55442798457392,"longitude":109.77468968208154},"ccd29d9f-21c7-4a5d-980f-4bbd384781ad":{"latitude":-41.24472519911347,"longitude":168.04527693265544},"bd6fa41a-7e77-4af0-bee7-ee18c2da7922":{"latitude":-61.022740438551835,"longitude":-79.86448996156066},"4db4d22a-85f8-4ede-bbd6-f41318bb2656":{"latitude":-75.60876156043871,"longitude":-179.67442877403678},"2a4ade6d-4b23-49f2-8904-0dd846a287a6":{"latitude":54.0202656710309,"longitude":-141.87776977750406},"58c92230-d79a-4ae0-a8ab-73de1d7edfbc":{"latitude":-11.606752378308784,"longitude":-25.618469821420575},"e3baaab1-bb7e-4320-88a2-2db5e3a0214f":{"latitude":56.990634176597155,"longitude":-84.04657760932874},"c0064ff0-fe67-4bdf-b3a1-643cba0f5a71":{"latitude":9.361110436111545,"longitude":36.13226605210963},"19b523b9-c4cb-420b-9894-554215d18a66":{"latitude":-73.53613892297803,"longitude":-28.77167324648883},"8a98bfd3-c423-44f8-8cba-19f21f7e9abf":{"latitude":-49.75223542547337,"longitude":-155.41321822232945},"74edfec3-20e2-481a-a7e5-acc5b5430c57":{"latitude":-63.91375680159649,"longitude":-39.198285011106066},"d55163de-46cc-4a16-bbf6-129181670992":{"latitude":-42.68369765525777,"longitude":-150.46156576252008},"7614866a-db96-4621-b0bf-7b57d013d522":{"latitude":-37.62461661475981,"longitude":-11.043428194458983},"59348ded-c557-4385-bd17-72354f215ae7":{"latitude":42.74979891620292,"longitude":137.6299618736271},"ef0ba84e-27c7-46b8-8474-1775d3e8dfd1":{"latitude":-3.921674573905719,"longitude":-35.07719091772458},"a027f7d5-8b52-46f0-a06c-4ac712a82ad2":{"latitude":66.53725718309309,"longitude":170.559988811418},"2bb82725-c261-472c-b298-78ab2afe1f73":{"latitude":-73.73393732331859,"longitude":-7.715659579587168},"f7de26af-296e-4d08-a3e0-592620c40847":{"latitude":-47.077084992923204,"longitude":88.29544220525435},"37e71235-2bb4-42f4-b2fc-a43497a107e5":{"latitude":-69.82625982145423,"longitude":166.9875657203155},"1fc57613-c81b-44a6-85ef-ecc72ccd123d":{"latitude":19.253817251882907,"longitude":-89.89165610221428},"510418df-806a-4c4d-a13d-b10de0abf892":{"latitude":43.558113873997485,"longitude":-32.44496635830532},"ce9cc9e7-4092-4ab3-8621-c25a6d86c1a3":{"latitude":15.081705570700095,"longitude":-3.8456355736119576},"06bf6ad1-3582-4cbd-8ea0-3697ad533f22":{"latitude":19.206127822146684,"longitude":-140.18620594231052},"6555b310-e027-4ef3-b2b6-dc0ca7b4c055":{"latitude":47.74664798247707,"longitude":43.06043777481139},"870c01e2-80fc-4a15-8041-0f6aa21a693e":{"latitude":71.49980728218833,"longitude":138.03400812034357},"e038a972-a6a7-4fe9-8f9b-799c297180fc":{"latitude":22.64074549527139,"longitude":27.0425627161805},"ac22d24f-e10e-4410-8eeb-75b33af191fa":{"latitude":-79.27569585601347,"longitude":160.35310811434306},"afc2631b-426f-4363-8131-43036e7a5717":{"latitude":-35.074778198508355,"longitude":-0.6203729158590647},"40b28b71-ba2a-4d74-810d-716c78e4bb33":{"latitude":-3.3419936440198796,"longitude":89.88254934867035},"1d0586be-fb46-4fe5-8b80-3777b32f51d0":{"latitude":52.826963057432835,"longitude":-100.98511629461217},"00139bf7-18e5-4f63-bbda-1cc62782dbb7":{"latitude":84.1398320202961,"longitude":-57.36214066672008},"31f7f9ad-9d85-4b08-a4ec-f984335d513e":{"latitude":-28.607830074216338,"longitude":-132.6515008322107},"b47d5ff2-10ed-419b-a618-0f5af26945ab":{"latitude":82.084376626465,"longitude":52.20887394518496},"5591f6fc-5db3-4d7d-a11a-02b9733b7c3d":{"latitude":3.694617180059055,"longitude":-36.12486103719982},"f204ff21-b204-4552-aa17-0dc7af7b8fc5":{"latitude":-26.160564500079488,"longitude":153.55197946644313},"5712774a-6066-4e98-aeff-1a90f6179910":{"latitude":37.34790094263461,"longitude":132.68340020867527},"3c0e261b-e71c-4725-b9ed-40885a20538c":{"latitude":83.34551854125596,"longitude":86.86974666576987},"8ae174d1-9a06-4d97-beaa-232ce433bda3":{"latitude":-10.711629258694856,"longitude":171.46975123709865},"b2718a5c-47e1-4912-a28c-b1be7f5e4c29":{"latitude":-49.7627273949648,"longitude":35.49285948096795},"317c6cfc-d9b5-4f3b-ab0c-7d0acc1af5ae":{"latitude":-35.64553465687805,"longitude":-35.60739840315543},"478ca742-303f-42a7-9c65-6051193ca200":{"latitude":-47.89712089319668,"longitude":15.479310946137957},"4861c2c1-9117-4041-97e8-3ac4b0658b9b":{"latitude":-11.87309749006738,"longitude":-86.74517246509299},"a8e16ccc-81ba-41a3-afcb-b043a7e7562d":{"latitude":71.74290215451998,"longitude":6.660531306229387},"b65f8d7d-3929-4c6c-b9f6-4c75906f5cde":{"latitude":-65.12540500718733,"longitude":158.22731343123263},"12a02a3e-55fb-4f49-ac56-70567f805373":{"latitude":-80.56877652010392,"longitude":155.06839591112958},"01ef96a9-fad5-4cdc-a71f-94456f07a29d":{"latitude":-53.13235567828362,"longitude":-8.35207255488885},"5d250b78-a7fc-426b-a229-5a94d902c53b":{"latitude":21.617516073631577,"longitude":-116.77711595335944},"5d2e1ca1-3d1b-43d7-aa28-9e52751f461c":{"latitude":55.04632610745347,"longitude":42.875675390195624},"fad3962b-4b85-4dc1-a6fd-c6a564c0843f":{"latitude":34.40926727383635,"longitude":93.90415879632809},"c64777cf-451f-457d-86bd-dcff3dd44acf":{"latitude":12.070818971801074,"longitude":-177.91469878855483},"94fcc36e-5fe5-4f1e-b87b-718c404c8df3":{"latitude":-13.080788532810871,"longitude":-32.07943424405889},"42632b0b-4d38-4884-87c0-eacff55bb146":{"latitude":-27.310004645406714,"longitude":116.20283222769876},"b2b0aba8-aec5-43c0-9f09-e698af82ad26":{"latitude":35.531229605518845,"longitude":56.021555740162654},"b8a3ba9c-26ba-44cf-a320-82ca3a7f7344":{"latitude":61.043131973700014,"longitude":124.03331035076252},"9e910221-b3aa-4661-a51c-5f72589ae14e":{"latitude":-74.17041867747338,"longitude":173.72103718119996},"49890077-38ad-4920-b36b-5516ea44dfe8":{"latitude":20.01981925708826,"longitude":123.85944220425631},"839ac098-8c16-445c-adaa-2c9260cb34f2":{"latitude":62.76639642469078,"longitude":9.048999971212709},"60c12196-dbe6-4d13-9bd0-caa43bc985e8":{"latitude":-39.55001536780506,"longitude":-136.36648893159162},"9e81b9fb-6716-4ce4-871b-fdf85574b809":{"latitude":-32.81952730000184,"longitude":-8.982121541483082},"a7074c81-9e1c-4e61-a7c5-ce7d57c86e29":{"latitude":23.29011563805126,"longitude":-172.64996526424179},"2991d7c8-1812-4787-aba3-48b45f223793":{"latitude":-64.54433067693984,"longitude":30.545020965869696},"d99a4654-0f54-4bc8-a641-7109fffef019":{"latitude":34.53869085466104,"longitude":147.53221816500752},"4ebc4fbc-6c52-43fc-b6b3-e9fbf69239a9":{"latitude":48.852312226305855,"longitude":25.24092339885587},"4a52a1cd-80e7-4ed4-8578-c091f8b7b2fc":{"latitude":-54.52310062280527,"longitude":-145.95305049229435},"f1c8f76c-a163-403c-8156-fb8e5b409c07":{"latitude":-55.912457141983054,"longitude":-63.62456694843159},"6b8ecbbb-013d-498d-a416-f3e7be585e67":{"latitude":36.29304694846594,"longitude":-33.98000520759646},"dd987468-1289-4e30-a152-15fcd1979133":{"latitude":31.98626994517727,"longitude":75.0674616368313},"a83e23fc-164e-4a0c-b7f9-d86c953332c5":{"latitude":-12.258314640148527,"longitude":-2.9790248035536138},"1e723a10-162d-43ad-a90f-d9daa1901f5e":{"latitude":4.7694662761938815,"longitude":133.11496495618945},"bed84c33-9140-4dd8-8d8f-d7f597f01087":{"latitude":-42.477399540035854,"longitude":89.57477027152032},"60d1a328-a672-437c-a5fe-9db7f755ba0b":{"latitude":3.858418096499392,"longitude":-11.158633533418879},"52434940-bb29-4c54-9b9b-436f3d9c5ce7":{"latitude":-13.245937951451836,"longitude":-110.62155720041441},"fdca4304-8035-486b-b586-ca61d8fde08e":{"latitude":8.368193332079613,"longitude":31.164624259352223},"6cb21a50-352f-4857-8f89-649d88ea2d43":{"latitude":47.1040734202401,"longitude":177.41626172312164},"dec591eb-299b-4867-ba40-74a8c742c94e":{"latitude":-78.19917793797947,"longitude":-28.906124156673513},"f1759a15-0bfe-4a62-b5ad-3bd88d5f3f04":{"latitude":-20.094276057459396,"longitude":-146.133828026176}}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2020-12-30 20:56:13.736  INFO 30940 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

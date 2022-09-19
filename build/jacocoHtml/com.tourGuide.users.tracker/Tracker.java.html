@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Tracker.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">users</a> &gt; <a href="index.source.html" class="el_package">com.tourGuide.users.tracker</a> &gt; <span class="el_source">Tracker.java</span></div><h1>Tracker.java</h1><pre class="source lang-java linenums">package com.tourGuide.users.tracker;
+
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang3.time.StopWatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import com.tourGuide.users.domain.User;
+import com.tourGuide.users.services.UserService;
+
+@Component
+public class Tracker extends Thread {
+
+<span class="fc" id="L19">    private static final Logger LOGGER = LoggerFactory.getLogger(Tracker.class);</span>
+
+    private final UserService userService;
+
+    /**
+     * Used to update user's history visited location, all the 5 minutes.
+     */
+<span class="fc" id="L26">    private static final long TRACKING_POLLING_INTERVAL = TimeUnit.MINUTES</span>
+<span class="fc" id="L27">            .toSeconds(5);</span>
+
+<span class="fc" id="L29">    private final ExecutorService executorService = Executors</span>
+<span class="fc" id="L30">            .newSingleThreadExecutor();</span>
+
+<span class="fc" id="L32">    private boolean isStopTracking = false;</span>
+
+<span class="fc" id="L34">    public Tracker(UserService userService) {</span>
+<span class="fc" id="L35">        this.userService = userService;</span>
+<span class="fc" id="L36">    }</span>
+
+    public void startTracking() {
+<span class="fc" id="L39">        isStopTracking = false;</span>
+<span class="fc" id="L40">        executorService.submit(this);</span>
+<span class="fc" id="L41">    }</span>
+
+    /**
+     * Method used to track user location, add it to user's visited location
+     * history, and update user Rewards all the 5 minutes.
+     */
+    @Override
+    public void run() {
+<span class="fc" id="L49">        StopWatch stopWatch = new StopWatch();</span>
+        while (true) {
+<span class="pc bpc" id="L51" title="2 of 4 branches missed.">            if (Thread.currentThread().isInterrupted() || isStopTracking) {</span>
+<span class="nc" id="L52">                LOGGER.debug(&quot;Tracker stopping&quot;);</span>
+<span class="nc" id="L53">                break;</span>
+            } else {
+<span class="fc" id="L55">                List&lt;User&gt; users = userService.getAllUsers();</span>
+<span class="fc" id="L56">                LOGGER.debug(</span>
+<span class="fc" id="L57">                        &quot;Begin Tracker. Tracking &quot; + users.size() + &quot; users.&quot;);</span>
+
+<span class="fc" id="L59">                stopWatch.start();</span>
+<span class="fc" id="L60">                users.forEach(u -&gt; {</span>
+<span class="fc" id="L61">                    userService.trackUserLocation(u);</span>
+                    try {
+<span class="fc" id="L63">                        Thread.sleep(2);</span>
+<span class="nc" id="L64">                    } catch (InterruptedException e) {</span>
+<span class="nc" id="L65">                        e.printStackTrace();</span>
+<span class="fc" id="L66">                    }</span>
+<span class="fc" id="L67">                });</span>
+<span class="fc" id="L68">                stopWatch.stop();</span>
+<span class="fc" id="L69">                LOGGER.debug(&quot;TRACKING END for &quot; + users.size()</span>
+                        + &quot; users - Tracker Time Elapsed: &quot;
+<span class="fc" id="L71">                        + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime())</span>
+                        + &quot; seconds.&quot;);
+<span class="fc" id="L73">                stopWatch.reset();</span>
+            }
+            try {
+<span class="fc" id="L76">                LOGGER.debug(&quot;Tracker sleeping&quot;);</span>
+<span class="nc" id="L77">                TimeUnit.SECONDS.sleep(TRACKING_POLLING_INTERVAL);</span>
+<span class="nc" id="L78">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L79">                break;</span>
+<span class="nc" id="L80">            }</span>
+        }
+<span class="nc" id="L82">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

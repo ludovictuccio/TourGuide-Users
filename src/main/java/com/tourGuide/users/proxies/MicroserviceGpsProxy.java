@@ -11,7 +11,7 @@ import com.tourGuide.users.domain.ClosestAttraction;
 import com.tourGuide.users.domain.dto.AttractionDto;
 import com.tourGuide.users.domain.dto.VisitedLocationDto;
 
-@FeignClient(value = "microservice-gps", url = "localhost:9002/gps")
+@FeignClient(value = "microservice-gps", url = "${proxy.gps}")
 public interface MicroserviceGpsProxy {
 
     @GetMapping("/getClosestAttractions/{userName}")
